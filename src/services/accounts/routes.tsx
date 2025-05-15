@@ -11,6 +11,8 @@ export const GET_ACCOUNT_MOUVEMENTS = (id) => `api/fundings/accounts/${id}/mouve
 export const FIND_ACCOUNT_BY_REFERENCE = (reference) => `api/fundings/accounts/reference/${reference}`;
 export const FIND_ACTIVATION_ACCOUNT_DETAILS = (reference) => `api/fundings/accounts/${reference}/details/activation`;
 
+export const GET_ACTIVABLE_ACCOUNTS = 'api/fundings/accounts/activable';
+
 export const GET_EXTERNAL_ACCOUNTS = 'api/fundings/accounts/externals';
 export const CREATE_EXTERNAL_ACCOUNTS = 'api/fundings/accounts/externals';
 export const GET_SUBSCRIPTION_ACCOUNTS = 'api/fundings/accounts/subscriptions';

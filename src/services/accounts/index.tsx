@@ -137,4 +137,8 @@ export default class AccountService {
     static createJournal(reference: string, data: any): Promise<any> {
         return makeRequest('post', Routes.CREATE_CARNET_JOURNAL(reference), data);
     }
+
+    static getActivableAccounts(referralCode: string): Promise<any> {
+        return makeRequest('get', Routes.GET_ACTIVABLE_ACCOUNTS, {referralCode});
+    }
 }

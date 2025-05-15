@@ -68,7 +68,7 @@ const CreateInstitutionMember = (props) => {
         >
             <RctCardContent>
                 <UserSelect fromMyOrganisation={true} onChange={(_, user) => {
-                        setMember(user);
+                    setMember(user);
                 }}/>
                 <div className="col-md-12 col-sm-12 has-wrapper mb-30 p-0">
                     <InputLabel className="text-left">

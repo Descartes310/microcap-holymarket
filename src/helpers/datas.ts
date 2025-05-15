@@ -465,6 +465,18 @@ export const getUserAssistanceTypes = () => {
             value: 'UPDATE_USER_FOLDER',
             permission: 'ASSIST_UPDATE_USER_FOLDER_PRIVILEGE',
             regularizable: false
+        },
+        {
+            label: 'Envoyer la convention de compte',
+            value: 'ACTIVATE_ACCOUNT',
+            permission: 'ASSIST_ACTIVATE_ACCOUNT_PRIVILEGE',
+            regularizable: false
+        },
+        {
+            label: 'Rejoindre une communauté',
+            value: 'JOIN_COMMUNITY',
+            permission: 'ASSIST_JOIN_COMMUNITY_PRIVILEGE',
+            regularizable: false
         }
     ];
 }

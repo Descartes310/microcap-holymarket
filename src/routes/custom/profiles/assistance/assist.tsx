@@ -1,8 +1,10 @@
 import { connect } from 'react-redux';
+import { AUTH } from 'Url/frontendUrl';
 import UserService from 'Services/users';
 import BankService from 'Services/banks';
 import UnitService from 'Services/units';
 import OrderService from 'Services/orders';
+import GroupService from 'Services/groups';
 import Button from '@material-ui/core/Button';
 import { withRouter } from "react-router-dom";
 import ProductService from 'Services/products';
@@ -14,6 +16,7 @@ import DepositTickets from 'Components/DepositTickets';
 import { getUserAssistanceTypes } from 'Helpers/datas';
 import Autocomplete from '@material-ui/lab/Autocomplete';
 import { NotificationManager } from 'react-notifications';
+import AccountAgreement from "Components/AccountAgreement";
 import ActivationBox from '../../notifications/ActivationBox';
 import VerifyUserOTPModal from 'Components/verifyUserOTPModal';
 import InputLabel from '@material-ui/core/InputLabel/InputLabel';
@@ -25,12 +28,12 @@ import RctCollapsibleCard from 'Components/RctCollapsibleCard/RctCollapsibleCard
 import AccountVentilation from 'Components/Product/Ventilation/AccountVentilation';
 import CreateAccessBox from 'Routes/custom/profiles/users/components/createAccessBox';
 import AddFileToOrderModal from 'Routes/custom/marketplace/orders/addFileToOrderModal';
+import SendJoinRequestModal from 'Routes/custom/groups/components/sendJoinRequestModal';
 import AuthenticateUser from 'Routes/custom/networks/coverages/components/authenticateUser';
 import MemberDocumentsModal from 'Routes/custom/networks/coverages/components/memberFilesModal';
 import { getPriceWithCurrency, getReferralTypeLabel, getUserPermissions } from 'Helpers/helpers';
 import CodevSubscriptionModal from 'Routes/custom/marketplace/_components/codevSubscriptionModal';
 import OrderPaymentProofModal from 'Routes/custom/marketplace/orders/sales/components/OrderPaymentProof';
-import { AUTH } from 'Url/frontendUrl';
 
 const Assist = (props) => {
 
@@ -53,8 +56,10 @@ const Assist = (props) => {
     const [showSubscriptionModal, setShowSubscriptionModal] = useState(false);
     const [showOrderPaymentModal, setShowOrderPaymentModal] = useState(false);
     const [showCreateAccessModal, setShowCreateAccessModal] = useState(false);
+    const [showCommunityRequestBox, setShowCommunityRequestBox] = useState(false);
     const [showAuthentificationBox, setShowAuthentificationBox] = useState(false);
     const [showOrderManagementModal, setShowOrderManagementModal] = useState(false);
+    const [showAccountActivationBox, setShowAccountActivationBox] = useState(false);
 
     const [amount, setAmount] = useState(null);
     const [details, setDetails] = useState([]);
@@ -68,6 +73,8 @@ const Assist = (props) => {
     const [prestation, setPrestation] = useState(null);
     const [prestations, setPrestations] = useState([]);
     const [aggregations, setAggregations] = useState([]);
+    const [communities, setCommunities] = useState([]);
+    const [community, setCommunity] = useState(null);
 
     useEffect(() => {
         getCurrencies();
@@ -103,6 +110,12 @@ const Assist = (props) => {
                     break;
                 case 'INITIATE_OPERATION':
                     getAccounts(member.referralCode);
+                    break;
+                case 'ACTIVATE_ACCOUNT':
+                    getActivableAccounts(member.referralCode);
+                    break;
+                case 'JOIN_COMMUNITY':
+                    getGroups(member.referralCode);
                     break;
                 default:
                     break;
@@ -162,6 +175,13 @@ const Assist = (props) => {
             .finally(() => props.setRequestGlobalAction(false))
     }
 
+    const getGroups = (referralCode) => {
+        props.setRequestGlobalAction(true),
+        GroupService.getCommunityDatas({ belongs: 'OUT', user_reference: referralCode})
+        .then(response => setCommunities(response))
+        .finally(() => props.setRequestGlobalAction(false))
+    }
+
     const initiatePayment = () => {
         props.setRequestGlobalAction(true);
 
@@ -199,7 +219,7 @@ const Assist = (props) => {
 	}
 
     useEffect(() => {
-        if(account) {
+        if(account && action == 'INITIATE_OPERATION') {
             getAggregations();
             getPrestations(account.reference);
         } else {
@@ -240,6 +260,13 @@ const Assist = (props) => {
     const getAccounts = (reference: string) => {
         props.setRequestGlobalAction(true);
         BankService.getUserAccounts(reference)
+        .then(response => setAccounts(response))
+        .finally(() => props.setRequestGlobalAction(false))
+    }
+
+    const getActivableAccounts = (reference: string) => {
+        props.setRequestGlobalAction(true);
+        AccountService.getActivableAccounts(reference)
         .then(response => setAccounts(response))
         .finally(() => props.setRequestGlobalAction(false))
     }
@@ -334,6 +361,10 @@ const Assist = (props) => {
                 askForBankAuthorization()
                 break;
 
+            case 'ACTIVATE_ACCOUNT':
+                setShowAccountActivationBox(true)
+                break;
+
             case 'ORDER_FOLDER':
                 setShowOrderFolderModal(true);
                 break;
@@ -344,6 +375,10 @@ const Assist = (props) => {
 
             case 'ORDER_PAYMENT':
                 setShowOrderPaymentModal(true);
+                break;
+
+            case 'JOIN_COMMUNITY':
+                setShowCommunityRequestBox(true);
                 break;
         
             default:
@@ -409,7 +444,6 @@ const Assist = (props) => {
                                     getUserAssistanceTypes()
                                     .filter(a => getUserPermissions(props.authUser).includes(a.permission))
                                     .filter(a => (!member.active && a.value == 'ACTIVATE_PROFILE') || a.value !== 'ACTIVATE_PROFILE')
-                                    // .filter(a => (!member.authenticated && a.value == 'AUTHENTICATE_PROFILE') || a.value !== 'AUTHENTICATE_PROFILE')
                                     .filter(a => (member.active && a.value == 'BOOK_ORDER') || a)
                                     .filter(a => (member.active && a.value == 'PLACE_ORDER') || a)
                                     .filter(a => (member.active && a.value == 'PAY_ORDER') || a)
@@ -473,6 +507,40 @@ const Assist = (props) => {
                             renderInput={(params) => <TextField {...params} variant="outlined" />}
                         />
                     </FormGroup>
+                )}
+                { action?.value == 'JOIN_COMMUNITY' && (
+                    <div className="col-md-12 col-sm-12 has-wrapper mb-30">
+                        <InputLabel className="text-left">
+                            Communautés
+                        </InputLabel>
+                        <Autocomplete
+                            id="combo-box-demo"
+                            value={community}
+                            options={communities}
+                            onChange={(__, item) => {
+                                setCommunity(item);
+                            }}
+                            getOptionLabel={(option) => option.userName}
+                            renderInput={(params) => <TextField {...params} variant="outlined" />}
+                        />
+                    </div> 
+                )}
+                { action?.value == 'ACTIVATE_ACCOUNT' && (
+                    <div className="col-md-12 col-sm-12 has-wrapper mb-30">
+                        <InputLabel className="text-left">
+                            Comptes
+                        </InputLabel>
+                        <Autocomplete
+                            id="combo-box-demo"
+                            value={account}
+                            options={accounts}
+                            onChange={(__, item) => {
+                                setAccount(item);
+                            }}
+                            getOptionLabel={(option) => option.label}
+                            renderInput={(params) => <TextField {...params} variant="outlined" />}
+                        />
+                    </div> 
                 )}
                 { action?.value == 'INITIATE_OPERATION' && (
                     <div>
@@ -776,6 +844,38 @@ const Assist = (props) => {
                     item={order}
                     amount={order.amount + order.complementaryPayment - order.amountPaid}
                     currency={order?.currency}
+                />
+            )}
+
+            {member && showAccountActivationBox && account && (
+                <AccountAgreement 
+                    isUserValidating={true}
+                    show={showAccountActivationBox}
+                    title={'Convention de compte'}
+                    onClose={(reload) => {
+                        if(reload) {
+                            window.location.reload();
+                        } else {
+                            setShowAccountActivationBox(false)
+                        }
+                    }}
+                    accountReference={account.reference}
+                />
+            )}
+
+            { member && community && showCommunityRequestBox && (
+                <SendJoinRequestModal
+                    group={community}
+                    title={'Demander une adhésion'} 
+                    show={showCommunityRequestBox && community}
+                    onClose={(reload) => {
+                        if(reload) {
+                            window.location.reload();
+                        }
+                        setCommunity(null);
+                        setShowCommunityRequestBox(false);
+                    }}
+                    referralId={member.referralCode}
                 />
             )}
         </RctCollapsibleCard>

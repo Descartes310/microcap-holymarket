@@ -66,16 +66,17 @@ class AccountAgreement extends Component {
         }
 
         let data = {
-            agreement: this.state.file, 
-            notification_id: this.props.notification_id
+            agreement: this.state.file
         };
+
+        if(this.props.notification_id) {
+            data.notification_id = this.props.notification_id;
+        }
 
         if(this.state.account.type === 'SEGRAGATED_ACCOUNT' && this.state.aggregations.length > 0) {
             data.aggregations = this.state.aggregations.map(a => a.id);
             data.ventilations = this.state.aggregations.map(a => Number(a.percentage));
         }
-
-        // console.log(data);
 
         this.props.setRequestGlobalAction(true);
         AccountService.setAgreement(this.props.accountReference, data, { fileData: ['agreement'], multipart: true }).then((response) => {

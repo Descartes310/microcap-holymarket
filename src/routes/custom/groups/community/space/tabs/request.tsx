@@ -29,7 +29,7 @@ const Request = (props) => {
 
     const getMembers = () => {
         props.setRequestGlobalAction(true),
-            GroupService.getCommunityDatas({ belongs: 'OUT', status: ['REQUEST', 'INVITATION'] })
+            GroupService.getCommunityDatas({ belongs: 'REQUEST', status: ['REQUEST', 'INVITATION'] })
                 .then(response => setMembers(response))
                 .finally(() => props.setRequestGlobalAction(false))
     }

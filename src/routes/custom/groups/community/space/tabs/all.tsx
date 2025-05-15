@@ -9,7 +9,6 @@ import React, { useState, useEffect } from 'react';
 import TextField from '@material-ui/core/TextField';
 import GroupDetails from './components/groupDetails';
 import Autocomplete from '@material-ui/lab/Autocomplete';
-import {NotificationManager} from 'react-notifications';
 import CommunityItemGrid from './components/communityItemGrid';
 import InputLabel from '@material-ui/core/InputLabel/InputLabel';
 import { Form, FormGroup, Input as InputStrap } from 'reactstrap';
@@ -38,35 +37,6 @@ const All = (props) => {
         GroupService.getCommunityDatas(datas)
         .then(response => setGroups(response))
         .finally(() => props.setRequestGlobalAction(false))
-    }
-
-    const sendRequest = (motivation) => {
-        if(!motivation || !group) {
-            NotificationManager.error("Veuillez renseigner les informations");
-            return;
-        }
-        props.setRequestGlobalAction(true);
-        
-        let data = { 
-            type: 'REQUEST', 
-            postMotivationId: motivation.id, 
-            groupReference: group.groupReference, 
-            userReference: props.authUser.referralId, 
-        };
-
-        GroupService.makeGroupRequest(data)
-            .then(() => {
-                NotificationManager.success("La requête a bien été envoyée");
-                getGroups();
-            })
-            .catch(() => {
-                NotificationManager.error("Vous devez être authentifié au préalable");
-            })
-            .finally(() => {
-                setGroup(null);
-                setShowRequestModal(false);
-                props.setRequestGlobalAction(false);
-            })
     }
 
     return (
@@ -167,11 +137,15 @@ const All = (props) => {
                     group={group}
                     title={'Demander une adhésion'} 
                     show={showRequestModal && group}
-                    onClose={() => {
+                    onClose={(reload) => {
+                        if(reload) {
+                            getGroups();
+                        }
                         setGroup(null);
                         setShowRequestModal(false);
+
                     }}
-                    onSubmit={(motivation) => sendRequest(motivation)}
+                    referralId={props.authUser.referralId}
                 />
             )}
             { group && showDetailsModal && (

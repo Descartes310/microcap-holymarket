@@ -26,7 +26,6 @@ class SendJoinRequestModal extends Component {
 
      componentDidMount() {
          this.getPosts();
-         console.log("Folders => ", this.props.group);
      }
 
      getPosts = () => {
@@ -41,6 +40,34 @@ class SendJoinRequestModal extends Component {
         GroupService.getGroupPostMotivations(id)
         .then(response => this.setState({ motivations: response }))
         .finally(() => this.props.setRequestGlobalAction(false))
+    }
+
+    sendRequest = () => {
+        if(!this.state.motivation || !this.props.group) {
+            NotificationManager.error("Veuillez renseigner les informations");
+            return;
+        }
+
+        this.props.setRequestGlobalAction(true);
+        
+        let data = { 
+            type: 'REQUEST', 
+            userReference: this.props.referralId,
+            postMotivationId: this.state.motivation.id, 
+            groupReference: this.props.group.groupReference,
+        };
+
+        GroupService.makeGroupRequest(data)
+            .then(() => {
+                NotificationManager.success("La requête a bien été envoyée");
+            })
+            .catch(() => {
+                NotificationManager.error("Vous devez être authentifié au préalable");
+            })
+            .finally(() => {
+                this.props.onClose(true)
+                this.props.setRequestGlobalAction(false);
+            })
     }
 
     render() {
@@ -99,7 +126,7 @@ class SendJoinRequestModal extends Component {
                             color="primary"
                             variant="contained"
                             disabled={!motivation}
-                            onClick={() => onSubmit(motivation)}
+                            onClick={() => this.sendRequest()}
                             className="text-white font-weight-bold"
                         >
                             Envoyer la demande
