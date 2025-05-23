@@ -241,7 +241,7 @@ class CodevStep1 extends Component {
                         <Autocomplete
                             id="combo-box-demo"
                             value={subscriptionType}
-                            options={subscriptionTypeEnum}
+                            options={this.props.subscriptionType ? subscriptionTypeEnum.filter(t => t.value === this.props.subscriptionType) : subscriptionTypeEnum}
                             onChange={(__, item) => {
                                 this.setState({ subscriptionType: item, project: null, investment: null, investments: [], lineCount: null, lineCountWanted: null, tirages: [] });
                             }}

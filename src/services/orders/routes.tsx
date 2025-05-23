@@ -22,3 +22,4 @@ export const GET_ORDER_SELLERS = (reference) => `api/orders/${reference}/sellers
 export const SET_ORDER_SELLER = (reference) => `api/orders/${reference}/sellers`;
 export const GET_ORDER_PRODUCT = (reference) => `api/orders/${reference}/product`;
 export const CONFIGURE_ORDER_CODEV = (reference) => `api/orders/${reference}/codev`;
+export const SUBSCRIBE_NEW_LINE = (reference) => `api/orders/accounts/${reference}/subscriptions`;

@@ -91,4 +91,8 @@ export default class OrderService {
     static configureOrderCodev(reference: string, data: any): Promise<any> {
         return makeRequest('post', Routes.CONFIGURE_ORDER_CODEV(reference), data);
     }
+
+    static subscribeNewLine(reference: string, data: any): Promise<any> {
+        return makeRequest('post', Routes.SUBSCRIBE_NEW_LINE(reference), data);
+    }
 }
