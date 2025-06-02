@@ -156,7 +156,8 @@ class BillingForm extends Component<any, any> {
          this.props.setRequestGlobalAction(true);
          let data: any = {
             natures: ['MARKETPLACE', 'INVITATION'], 
-            productIds: this.props.productIds
+            productIds: this.props.productIds,
+            usable: true
          }
          if(this.props.referralCode) {
             data.referralCode = this.props.referralCode;

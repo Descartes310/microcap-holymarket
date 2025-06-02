@@ -207,7 +207,7 @@ const List = (props) => {
                             booking={booking}
                             show={showShareBox || showClientShareBox}
                             uniqueUsage={false}
-                            usable={false}
+                            usable={showClientShareBox}
                             title={'Partager '+booking.label}
                             onClose={() => {
                                 setShowShareBox(false);

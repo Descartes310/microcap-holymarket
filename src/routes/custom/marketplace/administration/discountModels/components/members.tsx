@@ -165,7 +165,7 @@ const List = (props) => {
                     show={showAddMemberbox || showClientMemberBox}
                     usable={showClientMemberBox}
                     reference={props.match.params.id}
-                    isSeller={true}
+                    isSeller={showAddMemberbox}
                     onClose={() => {
                         getDiscountMembers()
                         setShowAddMemberbox(false);
