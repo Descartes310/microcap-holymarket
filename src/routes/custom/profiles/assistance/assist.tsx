@@ -259,7 +259,7 @@ const Assist = (props) => {
 
     const getAccounts = (reference: string) => {
         props.setRequestGlobalAction(true);
-        BankService.getUserAccounts(reference)
+        BankService.getUserAccounts(reference, {all: true})
         .then(response => setAccounts(response))
         .finally(() => props.setRequestGlobalAction(false))
     }
