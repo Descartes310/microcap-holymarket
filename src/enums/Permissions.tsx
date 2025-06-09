@@ -206,6 +206,9 @@ export default class Permission extends BaseEnum {
             },
             user: {
                 "name": "COVERAGE_USER_PRIVILEGE"
+            },
+            resiliation: {
+                "name": "COVERAGE_RESILIATION_PRIVILEGE"
             }
         }
     };

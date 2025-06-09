@@ -808,6 +808,10 @@ export const NETWORK = {
             LIST: '/network/coverage/users/list',
             DETAILS: '/network/coverage/users/:id/details',
         },
+        RESILIATION: {
+            SELF: '/network/coverage/resiliations',
+            LIST: '/network/coverage/resiliations/list'
+        },
         USSD: '/network/coverage/ussd'
     }
 } as const;

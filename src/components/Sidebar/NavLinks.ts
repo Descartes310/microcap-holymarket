@@ -114,6 +114,15 @@ export default [
             "profiles": ['GROUP'],
          },
          {
+            "menu_title": "Résiliations",
+            "new_item": false,
+            "path": NETWORK.COVERAGE.RESILIATION.LIST,
+            "permissions": [
+               Permission.network.coverage.resiliation.name,
+            ],
+            "profiles": ['GROUP'],
+         },
+         {
             "menu_title": "USSD",
             "new_item": false,
             "path": NETWORK.COVERAGE.USSD,

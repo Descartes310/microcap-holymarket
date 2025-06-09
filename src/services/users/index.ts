@@ -95,6 +95,22 @@ export default class UserService {
         return makeRequest('get', Routes.GET_BRANCH_USERS);    
     }
 
+    static getResiliatedUsers(): Promise<any> {
+        return makeRequest('get', Routes.GET_RESILIATED_USERS);    
+    }
+
+    static findByEmail(data): Promise<any> {
+        return makeRequest('get', Routes.FIND_BY_EMAIL, data);    
+    }
+
+    static resiliateUser(reference, data): Promise<any> {
+        return makeRequest('delete', Routes.RESILIATE_USER(reference), data);    
+    }
+
+    static restoreResiliateUser(reference, data): Promise<any> {
+        return makeRequest('delete', Routes.RESTORE_RESILIATE_USER(reference), data);    
+    }
+
     static activateOrBlockAccess(data:any): Promise<any> {
         return makeRequest('put', Routes.ACTIVATE_OR_BLOCK_ACCESS, data);
     }

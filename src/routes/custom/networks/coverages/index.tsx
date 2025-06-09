@@ -9,6 +9,7 @@ import {injectIntl} from "react-intl";
 import Affectation from './affectation';
 import Partnership from './partnerships';
 import { NETWORK } from 'Url/frontendUrl';
+import resiliations from './resiliations';
 import {withRouter, Switch, Redirect, Route} from "react-router-dom";
 
 const Coverage = (props) => {
@@ -23,6 +24,7 @@ const Coverage = (props) => {
                     <Route path={NETWORK.COVERAGE.PARTNERSHIP.COMPLEMENTARY} component={Providers} />
                     <Route path={NETWORK.COVERAGE.PARTNERSHIP.SELF} component={Partnership} />
                     <Route path={NETWORK.COVERAGE.USERS.SELF} component={users} />
+                    <Route path={NETWORK.COVERAGE.RESILIATION.SELF} component={resiliations} />
                     <Route path={NETWORK.COVERAGE.AFFECTATION.SELF} component={Affectation} />
                     <Route path={NETWORK.COVERAGE.USSD} component={ussd} />
                 </Switch>
