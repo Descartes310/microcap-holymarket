@@ -44,14 +44,15 @@ const Update = (props) => {
     const [specialType, setSpecialType] = useState(null);
     const [accountUnit, setAccountUnit] = useState(null);
     const [saleTypeUnit, setSaleTypeUnit] = useState(null);
-    const [journalAccount, setJournalAccount] = useState(null);
     const [maximumByUser, setMaximumByUser] = useState(null);
     const [sellerProfiles, setSellerProfiles] = useState([]);
     const [isAggregation, setIsAggregation] = useState(false);
+    const [journalAccount, setJournalAccount] = useState(null);
     const [accountTypeUnit, setAccountTypeUnit] = useState(null);
     const [selectedProfiles, setSelectedProfiles] = useState([]);
     const [userAccountType, setUserAccountType] = useState(null);
     const [isMirrorAccount, setIsMirrorAccount] = useState(false);
+    const [isServiceAccount, setIsServiceAccount] = useState(false);
     const [minAccountbalance, setMinAccountBalance] = useState(null);
     const [maxAccountBalance, setMaxAccountBalance] = useState(null);
     const [associatedProducts, setAssociatedProducts] = useState([]);
@@ -97,6 +98,7 @@ const Update = (props) => {
             setMaxAccountBalance(response.maxBalance);
             setMinAccountBalance(response.minBalance);
             setIsMirrorAccount(response.mirrorAccount);
+            setIsServiceAccount(response.serviceAccount);
             setSelectedProfiles(profiles.filter(p => response.buyerProfiles.includes(p.reference)));
             setSellerProfiles(profiles.filter(p => response.sellerProfiles.includes(p.reference)));
             setAggregationProducts(products.filter(p => response.aggregations.includes(p.reference)));
@@ -195,6 +197,7 @@ const Update = (props) => {
             data.minBalance = minAccountbalance;
             data.maxBalance = maxAccountBalance;
             data.mirrorAccount = isMirrorAccount;
+            data.serviceAccount = isServiceAccount;
             data.accountUnitReference = accountUnit.reference;
         }
 
@@ -633,6 +636,17 @@ const Update = (props) => {
                                         checked={isMirrorAccount || ['SEGRAGATED_ACCOUNT'].includes(specialType?.value)}
                                     />
                                 } label={'Marquer comme compte mirroir'}
+                                />
+                            </FormGroup>
+
+                            <FormGroup className="col-sm-12 has-wrapper">
+                                <FormControlLabel control={
+                                    <Checkbox
+                                        color="primary"
+                                        onChange={() => setIsServiceAccount(!isServiceAccount)}
+                                        checked={isServiceAccount}
+                                    />
+                                } label={'Marquer comme compte de service'}
                                 />
                             </FormGroup>
 

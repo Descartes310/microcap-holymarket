@@ -45,11 +45,12 @@ const Create = (props) => {
     const [accountUnit, setAccountUnit] = useState(null);
     const [saleTypeUnit, setSaleTypeUnit] = useState(null);
     const [maximumByUser, setMaximumByUser] = useState(null);
+    const [sellerProfiles, setSellerProfiles] = useState([]);
     const [isAggregation, setIsAggregation] = useState(false);
     const [accountTypeUnit, setAccountTypeUnit] = useState(null);
     const [selectedProfiles, setSelectedProfiles] = useState([]);
-    const [sellerProfiles, setSellerProfiles] = useState([]);
     const [isMirrorAccount, setIsMirrorAccount] = useState(false);
+    const [isServiceAccount, setIsServiceAccount] = useState(false);
     const [minAccountbalance, setMinAccountBalance] = useState(null);
     const [maxAccountBalance, setMaxAccountBalance] = useState(null);
     const [associatedProducts, setAssociatedProducts] = useState([]);
@@ -150,6 +151,7 @@ const Create = (props) => {
             data.minBalance = minAccountbalance;
             data.maxBalance = maxAccountBalance;
             data.mirrorAccount = isMirrorAccount;
+            data.serviceAccount = isServiceAccount;
             data.accountUnitReference = accountUnit.reference;
         }
 
@@ -583,6 +585,17 @@ const Create = (props) => {
                                         checked={isMirrorAccount || ['SEGRAGATED_ACCOUNT'].includes(specialType?.value)}
                                     />
                                 } label={'Marquer comme compte mirroir'}
+                                />
+                            </FormGroup>
+
+                            <FormGroup className="col-sm-12 has-wrapper">
+                                <FormControlLabel control={
+                                    <Checkbox
+                                        color="primary"
+                                        onChange={() => setIsServiceAccount(!isServiceAccount)}
+                                        checked={isServiceAccount}
+                                    />
+                                } label={'Marquer comme compte de service'}
                                 />
                             </FormGroup>
 

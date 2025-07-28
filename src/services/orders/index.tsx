@@ -95,4 +95,8 @@ export default class OrderService {
     static subscribeNewLine(reference: string, data: any): Promise<any> {
         return makeRequest('post', Routes.SUBSCRIBE_NEW_LINE(reference), data);
     }
+
+    static activateMembership(data: any): Promise<any> {
+        return makeRequest('post', Routes.ACTIVATE_MEMBERSHIP, data);
+    }
 }

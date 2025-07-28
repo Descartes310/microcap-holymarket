@@ -13,6 +13,7 @@ export default class NotificationType extends BaseEnum {
     static FILE_AUTHENTIFICATION = 'FILE_AUTHENTIFICATION';
     static CODEV_INVITATION_REQUEST = 'CODEV_INVITATION_REQUEST';
     static ACTIVATE_FUNDING_ACCOUNT = 'ACTIVATE_FUNDING_ACCOUNT';
+    static MEMBERSHIP = 'MEMBERSHIP';
 
     static READ = 'READ';
     static UNREAD = 'UNREAD';

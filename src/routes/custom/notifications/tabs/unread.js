@@ -14,6 +14,7 @@ import ActivationBox from "Routes/custom/notifications/ActivationBox";
 import RctSectionLoader from "Components/RctSectionLoader/RctSectionLoader";
 import InitDealModal from "Routes/custom/fundings/components/InitDealModal";
 import CodevInvitationBox from "Routes/custom/notifications/CodevInvitationBox";
+import ConfirmMembershipBox from "Routes/custom/notifications/ConfirmMembershipBox";
 
 class Unread extends Component {
 
@@ -31,6 +32,7 @@ class Unread extends Component {
             showActivationPassBox: false,
             showCodevInvitationBox: false,
             showConfirmInjectionBox: false,
+            showConfirmMembershipBox: false,
             showAccountActivationBox: false,
             showConfirmCodevInvitationBox: false
         }
@@ -110,8 +112,12 @@ class Unread extends Component {
         this.setState({ showConfirmCodevInvitationBox: true, notification });
     };
 
+    onMembershipConfirmClick = (notification) => {
+        this.setState({ showConfirmMembershipBox: true, notification });
+    };
+
     render() {
-        const { notifications, loading, showActivationBox, notification, showInitDealBox,
+        const { notifications, loading, showActivationBox, notification, showInitDealBox, showConfirmMembershipBox,
             showCodevInvitationBox, showConfirmCodevInvitationBox, showAccountActivationBox, showConfirmInjectionBox } = this.state;
 
         if (loading) {
@@ -147,6 +153,7 @@ class Unread extends Component {
                                             onCodevInvitationClick={() => this.onCodevInvitationClick(notification)}
                                             onFundingActivationClick={() => this.onFundingActivationClick(notification)}
                                             onApproveInjection={(status) => this.onApproveInjection(notification, status)}
+                                            onMembershipConfirmClick={() => this.onMembershipConfirmClick(notification)}
                                             onCodevInvitationRequestClick={() => this.onCodevInvitationRequestClick(notification)}
                                         />
                                     ))}
@@ -168,6 +175,14 @@ class Unread extends Component {
                         notification={notification}
                         show={showCodevInvitationBox}
                         onClose={() => this.setState({ showCodevInvitationBox: false })}
+                    />
+                )}
+
+                {notification && showConfirmMembershipBox && (
+                    <ConfirmMembershipBox
+                        notification={notification}
+                        show={showConfirmMembershipBox}
+                        onClose={() => this.setState({ showConfirmMembershipBox: false, notification: null })}
                     />
                 )}
 

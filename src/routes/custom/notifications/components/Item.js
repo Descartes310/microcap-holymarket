@@ -11,7 +11,7 @@ class Item extends Component {
 
     ESCAPE_STATUSES = [NotificationType.ACTIVATION, NotificationType.ACTIVATION_PASS, NotificationType.CODEV_INVITATION,
         NotificationType.CODEV_INVITATION_REQUEST, NotificationType.ACTIVATE_FUNDING_ACCOUNT, NotificationType.DEDICATED_GRANT_OFFER,
-        NotificationType.INJECTION_REQUEST
+        NotificationType.INJECTION_REQUEST, NotificationType.MEMBERSHIP
     ]
 
     state = {
@@ -36,7 +36,7 @@ class Item extends Component {
 
     render() {
         const { notification, onActivationClick, authUser, onFundingActivationClick, tab, onApproveInjection,
-            onCodevInvitationClick, onCodevInvitationRequestClick, onActivationPassClick, onInitDealClick } = this.props;
+            onCodevInvitationClick, onCodevInvitationRequestClick, onActivationPassClick, onInitDealClick, onMembershipConfirmClick } = this.props;
         return (
             <ListItem className="row px-20 py-3 d-flex justify-content-between align-items-center">
                 <div className="d-flex col-sm-12 col-md-10">
@@ -57,6 +57,9 @@ class Item extends Component {
                             <DropdownMenu>
                                 { notification.type === NotificationType.ACTIVATION && !authUser.active && (
                                     <DropdownItem onClick={() => onActivationClick()}>Activer mon compte</DropdownItem>
+                                )}
+                                { notification.type === NotificationType.MEMBERSHIP && (
+                                    <DropdownItem onClick={() => onMembershipConfirmClick()}>Confirmer mon adhésion</DropdownItem>
                                 )}
                                 { notification.type === NotificationType.ACTIVATION_PASS && (
                                     <DropdownItem onClick={() => onActivationPassClick()}>Activer mon pass</DropdownItem>

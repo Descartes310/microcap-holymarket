@@ -440,4 +440,8 @@ export default class ProductService {
     static deleteBookingGift(reference: string): Promise<any> {
         return makeRequest('delete', Routes.DELETE_BOOKING_GIFT(reference));
     }
+
+    static getServiceAccountModels(): Promise<any> {
+        return makeRequest('get', Routes.GET_SERVICE_ACCOUNT_MODELS);
+    }
 }

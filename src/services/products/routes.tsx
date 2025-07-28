@@ -5,6 +5,7 @@ export const GET_PRODUCT_MODELS = 'api/products/models';
 export const CREATE_PRODUCT_MODEL = 'api/products/models';
 export const GET_PRODUCT_BY_MODEL_CODE = 'api/products/models/sellers';
 export const GET_PRODUCT_MODEL_AVAILABLES = 'api/products/models/availables';
+export const GET_SERVICE_ACCOUNT_MODELS = 'api/products/models/service-accounts';
 export const UPDATE_PRODUCT_MODEL = (reference) => `api/products/models/${reference}`;
 export const FIND_PRODUCT_MODEL = (reference) => `api/products/models/find/${reference}`;
 export const GET_PRODUCT_MODEL_DETAILS = (reference) => `api/products/models/details/${reference}`;
