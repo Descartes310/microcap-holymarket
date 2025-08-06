@@ -1151,9 +1151,9 @@ export default [
             "child_routes": null
          },
          {
-            "menu_title": "Profiles auto.",
+            "menu_title": "Générales",
             "new_item": false,
-            "path": SETTING.PROFILE.UPDATE,
+            "path": SETTING.GENERAL.UPDATE,
             "permissions": [Permission.setting.unit.name],
             "profiles": ['GROUP'],
             "child_routes": null

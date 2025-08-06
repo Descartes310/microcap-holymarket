@@ -9,7 +9,6 @@ export const PUBLIC = {
 
 export const LANDING = {
     SELF: '/landing',
-    CGU: '/landing/cgu',
     BLOG: '/landing/blog',
     HOME: '/landing/home',
     GETIN: '/landing/get-in',
@@ -28,7 +27,7 @@ export const LANDING = {
     GALERY_PROJECT: '/landing/projects-gallery',
     MONEY_MANAGEMENT: '/landing/money-management',
     SONDAGE_SECOND: '/landing/sondages/continue/:id',
-    TERMS: '/landing/conditions-generales-d-utilisation',
+    CGU: '/landing/conditions-generales-d-utilisation',
 }
 
 export const AUTH = {
@@ -729,9 +728,9 @@ export const SETTING = {
         CREATE: "/settings/pme-votes/create",
         UPDATE: "/settings/pme-votes/:id/update",
     },
-    PROFILE: {
-        SELF: "/settings/profiles",
-        UPDATE: "/settings/profiles/update"
+    GENERAL: {
+        SELF: "/settings/general",
+        UPDATE: "/settings/general/update"
     },
     AGENT: {
         SELF: "/settings/agents",

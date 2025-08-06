@@ -8,7 +8,6 @@ import Home from './discover/home';
 import {connect} from "react-redux";
 import Solidarity from './Solidarity';
 import {injectIntl} from "react-intl";
-import CGU from './discover/pages/CGU';
 import Discover from './discover/index';
 import { LANDING } from 'Url/frontendUrl';
 import LegalMention from './LegalMention';
@@ -30,10 +29,9 @@ const Landing = (props) => {
                 <Switch>
                     <Redirect exact from={`${match.url}/`} to={LANDING.HOME} />
                     <Route path={LANDING.HOME} component={Home} />
-                    <Route exact path={LANDING.CGU} component={CGU} />
+                    <Route exact path={LANDING.CGU} component={Terms} />
                     <Route exact path={LANDING.BLOG} component={Blog} />
                     <Route exact path={LANDING.GETIN} component={GetIn} />
-                    <Route exact path={LANDING.TERMS} component={Terms} />
                     <Route exact path={LANDING.AGENTS} component={Agents} />
                     <Route exact path={LANDING.VALUES} component={Values} />
                     <Route exact path={LANDING.EVENTS} component={Events} />

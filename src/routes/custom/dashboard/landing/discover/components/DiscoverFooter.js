@@ -38,7 +38,7 @@ const DiscoverFooter = ({props}) => {
                                     <h3 className="mmb-sm-0 mmt-sm-4">Informations légales</h3>
                                     <li><Link to={LANDING.CGU}><a><span className="ti-angle-right"/> CGU</a></Link></li>
                                     <li><Link to={LANDING.CGU}><a><span className="ti-angle-right"/> CGV</a></Link></li>
-                                    <li><Link to={LANDING.CGU}><a><span className="ti-angle-right"/> Mentions légales</a></Link></li>
+                                    <li><Link to={LANDING.LEGAL_MENTION}><a><span className="ti-angle-right"/> Mentions légales</a></Link></li>
                                 </ul>
                             </div>
 

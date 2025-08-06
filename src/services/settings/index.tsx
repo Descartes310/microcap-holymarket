@@ -189,11 +189,11 @@ export default class SettingService {
         return makeRequest('get', Routes.FIND_INVESTMENT_SETTING(reference));
     }
 
-    static getAuthorizedProfiles(): Promise<any> {
-        return makeRequest('get', Routes.GET_AUTHORIZED_PROFILE);
+    static getGeneralConfigs(): Promise<any> {
+        return makeRequest('get', Routes.GET_GENERAL_SETTINGS);
     }
 
-    static updateAuthorizedProfiles(data: any): Promise<any> {
-        return makeRequest('post', Routes.UPDATE_AUTHORIZED_PROFILE, data);
+    static updateGeneralSettings(data: any, config): Promise<any> {
+        return makeRequest('post', Routes.UPDATE_GENERAL_SETTINGS, data, config);
     }
 }

@@ -1,5 +1,4 @@
 import { connect } from 'react-redux';
-import { SETTING } from 'Url/frontendUrl';
 import {Form, FormGroup} from 'reactstrap';
 import { withRouter } from "react-router-dom";
 import Button from '@material-ui/core/Button';
@@ -13,11 +12,14 @@ import PageTitleBar from "Components/PageTitleBar/PageTitleBar";
 import InputLabel from '@material-ui/core/InputLabel/InputLabel';
 import RctCollapsibleCard from 'Components/RctCollapsibleCard/RctCollapsibleCard';
 import UserAccountTypeService from 'Services/account-types';
+import { FileUploader } from 'react-drag-drop-files';
 
 const Update = (props) => {
 
+    const [cgu, setCgu] = useState(null);
     const [profiles, setProfiles] = useState([]);
     const [psgProfiles, setPsgProfiles] = useState([]);
+    const [legalMention, setLegalMention] = useState(null);
     const [marketProfiles, setMarketProfiles] = useState([]);
     const [brokerProfiles, setBrokerProfiles] = useState([]);
     const [communityProfiles, setCommunityProfiles] = useState([]);
@@ -38,11 +40,11 @@ const Update = (props) => {
 
     const getProfiles = () => {
         props.setRequestGlobalAction(true);
-        SettingService.getAuthorizedProfiles().then((response) => {
-            setMarketProfiles(response.filter(p => p.scope === 'MARKET').map(p => p.userAccountType));
-            setPsgProfiles(response.filter(p => p.scope === 'PSGAV').map(p => p.userAccountType));
-            setBrokerProfiles(response.filter(p => p.scope === 'BROKER').map(p => p.userAccountType));
-            setCommunityProfiles(response.filter(p => p.scope === 'COMMUNITY').map(p => p.userAccountType));
+        SettingService.getGeneralConfigs().then((response) => {
+            setMarketProfiles(response.authorizedProfiles.filter(p => p.scope === 'MARKET').map(p => p.userAccountType));
+            setPsgProfiles(response.authorizedProfiles.filter(p => p.scope === 'PSGAV').map(p => p.userAccountType));
+            setBrokerProfiles(response.authorizedProfiles.filter(p => p.scope === 'BROKER').map(p => p.userAccountType));
+            setCommunityProfiles(response.authorizedProfiles.filter(p => p.scope === 'COMMUNITY').map(p => p.userAccountType));
         }).catch((err) => {
             console.log(err);
             NotificationManager.error("Une erreur est survenu lors du chargement");
@@ -52,13 +54,22 @@ const Update = (props) => {
     }
 
     const onSubmit = () => {
-        SettingService.updateAuthorizedProfiles({
+        let datas: any = {
             market_profiles: marketProfiles.map(p => p.reference).join(","), 
             psg_profiles: psgProfiles.map(p => p.reference).join(","),
             broker_profiles: brokerProfiles.map(p => p.reference).join(","),
             community_profiles: communityProfiles.map(p => p.reference).join(","),
-        }).then(() => {
-            NotificationManager.success("Profiles enregistrés avec succès");
+        };
+
+        if(cgu) {
+            datas.cgu = cgu;
+        }
+        if(legalMention) {
+            datas.legal_mention = legalMention;
+        }
+
+        SettingService.updateGeneralSettings(datas, { fileData: ['cgu', 'legal_mention'], multipart: true }).then(() => {
+            NotificationManager.success("Paramètres enregistrés avec succès");
             getTypes();
         }).catch((err) => {
             console.log(err);
@@ -72,7 +83,7 @@ const Update = (props) => {
     return (
         <>
             <PageTitleBar
-                title={"Gestion des profiles autorisés"}
+                title={"Paramètres généraux"}
             />
             <RctCollapsibleCard>
                 <Form onSubmit={onSubmit}>
@@ -140,6 +151,30 @@ const Update = (props) => {
                             renderInput={(params) => <TextField {...params} variant="outlined" />}
                         />
                     </div>
+
+                    <FormGroup className="has-wrapper">
+                        <InputLabel className="text-left" htmlFor="label">
+                            CGU
+                        </InputLabel>
+                        <FileUploader
+                            classes="mw-100"
+                            label="Sélectionner les CGUs ici"
+                            handleChange={(file) => {
+                                setCgu(file);
+                            }} name="file" types={["PDF"]} />
+                    </FormGroup>
+
+                    <FormGroup className="has-wrapper">
+                        <InputLabel className="text-left" htmlFor="label">
+                            Mentions légales
+                        </InputLabel>
+                        <FileUploader
+                            classes="mw-100"
+                            label="Sélectionner les mentions légales ici"
+                            handleChange={(file) => {
+                                setLegalMention(file);
+                            }} name="file" types={["PDF"]} />
+                    </FormGroup>
 
                     <FormGroup>
                         <Button

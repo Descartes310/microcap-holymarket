@@ -154,7 +154,7 @@ const Signin = (props) => {
                                             <IntlMessages id="auth.termOfService" values={{ name: AppConfig.brandName }} />
                                         </p>
                                         <p>
-                                            <a target="_blank" href={LANDING.TERMS} className="text-muted">
+                                            <a target="_blank" href={LANDING.CGU} className="text-muted">
                                                 <IntlMessages id="common.termOfService" />
                                             </a>
                                         </p>

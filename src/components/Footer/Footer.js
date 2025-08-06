@@ -10,6 +10,7 @@ import IntlMessages from 'Util/IntlMessages';
 
 // app config
 import AppConfig from 'Constants/AppConfig';
+import { LANDING } from '../../urls/frontendUrl';
 
 const Footer = () => (
 	<div className="rct-footer d-flex justify-content-between align-items-center">
@@ -18,7 +19,7 @@ const Footer = () => (
 				<Button component={Link} to="/app/about-us"><IntlMessages id="sidebar.aboutUs" /></Button>
 			</li>
 			<li className="list-inline-item">
-				<Button component={Link} to="/terms-condition"><IntlMessages id="sidebar.terms&Conditions" /></Button>
+				<Button component={Link} to={LANDING.LEGAL_MENTION}>Mentions légales</Button>
 			</li>
 		</ul>
 		<h5 className="mb-0">{AppConfig.copyRightText}</h5>

@@ -58,5 +58,5 @@ export const GET_INVESTMENT_SETTINGS = 'api/products/codevs/investments/settings
 export const FIND_INVESTMENT_SETTING = (reference) => `api/products/codevs/investments/settings/items/${reference}`;
 export const UPDATE_INVESTMENT_SETTING = (reference) => `api/products/codevs/investments/settings/items/${reference}`;
 
-export const GET_AUTHORIZED_PROFILE = 'api/settings/profiles/authorized';
-export const UPDATE_AUTHORIZED_PROFILE = 'api/settings/profiles/authorized';
+export const GET_GENERAL_SETTINGS = 'api/settings/generals';
+export const UPDATE_GENERAL_SETTINGS = 'api/settings/generals';
