@@ -1067,6 +1067,10 @@ export const SUPERVISION = {
         SELF: '/supervision/funding-campaigns',
         LIST: '/supervision/funding-campaigns/list',
     },
+    CONTACT_REQUEST: {
+        SELF: '/supervision/contact-requests',
+        LIST: '/supervision/contact-requests/list',
+    },
     VOTES: {
         SELF: '/supervision/votes',
         LIST: '/supervision/votes/list',

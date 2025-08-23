@@ -477,6 +477,12 @@ export const getUserAssistanceTypes = () => {
             value: 'JOIN_COMMUNITY',
             permission: 'ASSIST_JOIN_COMMUNITY_PRIVILEGE',
             regularizable: false
+        },
+        {
+            label: 'Envoyer un code de sécurité',
+            value: 'CONFIRM_OTP',
+            permission: 'ASSIST_SEND_OTP_PRIVILEGE',
+            regularizable: false
         }
     ];
 }

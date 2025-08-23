@@ -44,6 +44,7 @@ const Assist = (props) => {
     const [action, setAction] = useState(null);
     const [product, setProduct] = useState(null);
     const [products, setProducts] = useState([]);
+    const [contacts, setContacts] = useState([]);
     const [codevData, setCodevData] = useState(null);
     const [membership, setMembership] = useState(null);
     const [productModel, setProductModel] = useState(null);
@@ -61,6 +62,7 @@ const Assist = (props) => {
     const [showOrderManagementModal, setShowOrderManagementModal] = useState(false);
     const [showAccountActivationBox, setShowAccountActivationBox] = useState(false);
 
+    const [contact, setContact] = useState(null);
     const [amount, setAmount] = useState(null);
     const [details, setDetails] = useState([]);
     const [tickets, setTickets] = useState([]);
@@ -117,6 +119,9 @@ const Assist = (props) => {
                 case 'JOIN_COMMUNITY':
                     getGroups(member.referralCode);
                     break;
+                case 'CONFIRM_OTP':
+                    getContacts();
+                    break;
                 default:
                     break;
             }
@@ -135,8 +140,12 @@ const Assist = (props) => {
             return;
         }
         props.setRequestGlobalAction(true);
-        UserService.sendAuthOTP({targetReference: member.referralCode, type: action.value})
-        .then(response => {
+        let data: any = {targetReference: member.referralCode, type: action.value}
+        if(action.value === 'CONFIRM_OTP' && contact) {
+            data.contact_id = contact.id;
+        }
+        UserService.sendAuthOTP(data)
+        .then(() => {
             setShowOTPModal(true);
         })
         .catch((err) => {
@@ -175,6 +184,13 @@ const Assist = (props) => {
             .finally(() => props.setRequestGlobalAction(false))
     }
 
+    const getContacts = () => {
+        props.setRequestGlobalAction(true);
+        UserService.getContacts({referral_code: member.referralCode})
+            .then(response => setContacts(response.filter(c => c.type !== 'ALIAS')))
+            .finally(() => props.setRequestGlobalAction(false))
+    }
+
     const getGroups = (referralCode) => {
         props.setRequestGlobalAction(true),
         GroupService.getCommunityDatas({ belongs: 'OUT', user_reference: referralCode})
@@ -194,7 +210,14 @@ const Assist = (props) => {
               NotificationManager.error("Une erreur est survenue");
            })
            .finally(() => props.setRequestGlobalAction(false))
-     }    
+    }  
+    
+    const confirmOtpCode = () => {
+        NotificationManager.success("Le code est correct");
+        setTimeout(() => {
+            window.location.reload();
+        }, 2000);
+    }  
      
      const assistanceResetPassword = () => {
         props.setRequestGlobalAction(true);
@@ -351,6 +374,10 @@ const Assist = (props) => {
 
             case 'PAY_ORDER':
                 initiatePayment()
+                break;
+
+            case 'CONFIRM_OTP':
+                confirmOtpCode()
                 break;
 
             case 'RESET_PASSWORD':
@@ -538,6 +565,23 @@ const Assist = (props) => {
                                 setAccount(item);
                             }}
                             getOptionLabel={(option) => option.label}
+                            renderInput={(params) => <TextField {...params} variant="outlined" />}
+                        />
+                    </div> 
+                )}
+                { action?.value == 'CONFIRM_OTP' && (
+                    <div className="col-md-12 col-sm-12 has-wrapper mb-30">
+                        <InputLabel className="text-left">
+                            Contacts
+                        </InputLabel>
+                        <Autocomplete
+                            id="combo-box-demo"
+                            value={contact}
+                            options={contacts}
+                            onChange={(__, item) => {
+                                setContact(item);
+                            }}
+                            getOptionLabel={(option) => option.value}
                             renderInput={(params) => <TextField {...params} variant="outlined" />}
                         />
                     </div> 

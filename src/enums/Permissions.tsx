@@ -341,6 +341,9 @@ export default class Permission extends BaseEnum {
         dealFinancialStructure: {
             "name": "SUPERVISION_DEAL_FINANCIAL_STRUCTURE"
         },
+        contactRequest: {
+            "name": "SUPERVISION_CONTACT_REQUEST"
+        },
         logs: {
             "name": "SUPERVISION_AUDIT_LOGS"
         },

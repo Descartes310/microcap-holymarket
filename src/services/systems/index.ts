@@ -43,4 +43,12 @@ export default class SystemService {
         return makeRequest('get', Routes.GET_AUDIT_LOGS);
     }
 
+    static getContactRequests(): Promise<any> {
+        return makeRequest('get', Routes.GET_CONTACT_REQUESTS);
+    }    
+    
+    static treatContactRequest(reference, data): Promise<any> {
+        return makeRequest('post', Routes.TREAT_CONTACT_REQUEST(reference), data);
+    }
+
 }

@@ -11,3 +11,6 @@ export const UPDATE_VOTE_CONFIG = (reference) => `api/pme-votes/configurations/$
 export const GET_LOGS = "api/sequences/logs";
 
 export const GET_AUDIT_LOGS = 'api/audits/logs';
+
+export const GET_CONTACT_REQUESTS = 'api/systems/contact-requests';
+export const TREAT_CONTACT_REQUEST = (reference) => `api/systems/contact-requests/${reference}/treat`;

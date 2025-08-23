@@ -169,6 +169,7 @@ export default [
          Permission.general.operationAgencyValidation.name,
          Permission.supervision.dealCampaign.name,
          Permission.supervision.dealFinancialStructure.name,
+         Permission.supervision.contactRequest.name,
       ],
       "type_multi": true,
       "child_routes": [
@@ -242,6 +243,14 @@ export default [
             "path": SUPERVISION.FUNDING_CAMPAIGN.LIST,
             "permissions": [
                Permission.supervision.dealCampaign.name,
+            ],
+         },
+         {
+            "menu_title": "Demande d'assistance",
+            "new_item": false,
+            "path": SUPERVISION.CONTACT_REQUEST.LIST,
+            "permissions": [
+               Permission.supervision.contactRequest.name,
             ],
          }
       ]
