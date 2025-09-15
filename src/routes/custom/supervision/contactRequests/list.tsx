@@ -1,4 +1,5 @@
 import { Button } from 'reactstrap';
+import Details from "./details";
 import { connect } from 'react-redux';
 import TreatRequest from "./treatRequest";
 import SystemService from 'Services/systems';
@@ -13,6 +14,7 @@ const ContactRequests = (props) => {
 
     const [datas, setDatas] = useState([]);
     const [selectedRequest, setSelectedRequest] = useState(null);
+    const [showMessageList, setShowMessageList] = useState(false);
     const [showTreatRequest, setShowTreatRequest] = useState(false);
 
     useEffect(() => {
@@ -58,9 +60,6 @@ const ContactRequests = (props) => {
                                             <th className="fw-bold">Date</th>
                                             <th className="fw-bold">Demandeur</th>
                                             <th className="fw-bold">Contact</th>
-                                            <th className="fw-bold">Traitant</th>
-                                            <th className="fw-bold">Date traitement</th>
-                                            <th className="fw-bold">Commentaire</th>
                                             <th className="fw-bold">Action</th>
                                         </tr>
                                     </thead>
@@ -89,39 +88,28 @@ const ContactRequests = (props) => {
                                                     </div>
                                                 </td>
                                                 <td>
-                                                    <div className="media">
-                                                        <div className="media-body pt-10">
-                                                            <h4 className="m-0 fw-bold text-dark">{item.agentReferralCode ? (item.agentName ? item.agentName + " ("+item.agentReferralCode+")" :  item.agentReferralCode) : ''}</h4>
-                                                        </div>
-                                                    </div>
-                                                </td>
-                                                <td>
-                                                    <div className="media">
-                                                        <div className="media-body pt-10">
-                                                            <h4 className="m-0 fw-bold text-dark">{item.treatedAt && <TimeFromMoment time={item.treatedAt} showFullDate format='LLL' />}</h4>
-                                                        </div>
-                                                    </div>
-                                                </td>
-                                                <td>
-                                                    <div className="media">
-                                                        <div className="media-body pt-10">
-                                                            <h4 className="m-0 fw-bold text-dark">{item.comment}</h4>
-                                                        </div>
-                                                    </div>
-                                                </td>
-                                                <td>
-                                                    {!item.status && (
+                                                    {(item.state !== 'CLOSED') && (
                                                         <Button
                                                             color="primary"
-                                                            className="ml-0 text-white float-right"
+                                                            className="ml-0 text-white"
                                                             onClick={() => {
                                                                 setSelectedRequest(item);
                                                                 setShowTreatRequest(true);
                                                             }}
                                                         >
-                                                            Traiter
+                                                            Cloturer
                                                         </Button>
                                                     )}
+                                                    <Button
+                                                        color="primary"
+                                                        className="ml-5 text-white"
+                                                        onClick={() => {
+                                                            setSelectedRequest(item);
+                                                            setShowMessageList(true);
+                                                        }}
+                                                    >
+                                                        Détails
+                                                    </Button>
                                                 </td>
                                             </tr>
                                         ))}
@@ -140,6 +128,17 @@ const ContactRequests = (props) => {
                         setShowTreatRequest(false)
                     }}
                     reference={selectedRequest.reference}
+                />
+            )}
+            { (selectedRequest && showMessageList) && (
+                <Details
+                    show={showMessageList}
+                    onClose={() => {
+                        setSelectedRequest(null);
+                        setShowMessageList(false);
+
+                    }}
+                    request={selectedRequest}
                 />
             )}
         </>

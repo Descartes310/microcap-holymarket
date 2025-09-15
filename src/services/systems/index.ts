@@ -51,4 +51,12 @@ export default class SystemService {
         return makeRequest('post', Routes.TREAT_CONTACT_REQUEST(reference), data);
     }
 
+    static sendMessage(reference, data): Promise<any> {
+        return makeRequest('post', Routes.SEND_MESSAGE(reference), data);
+    }
+
+    static getMessages(reference): Promise<any> {
+        return makeRequest('get', Routes.GET_MESSAGES(reference));
+    }
+
 }

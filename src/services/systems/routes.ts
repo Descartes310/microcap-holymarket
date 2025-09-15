@@ -14,3 +14,5 @@ export const GET_AUDIT_LOGS = 'api/audits/logs';
 
 export const GET_CONTACT_REQUESTS = 'api/systems/contact-requests';
 export const TREAT_CONTACT_REQUEST = (reference) => `api/systems/contact-requests/${reference}/treat`;
+export const SEND_MESSAGE = (reference) => `api/systems/contact-requests/${reference}/messages`;
+export const GET_MESSAGES = (reference) => `api/systems/contact-requests/${reference}/messages`;

@@ -8,7 +8,7 @@ import DialogTitle from "@material-ui/core/DialogTitle/DialogTitle";
 import useMediaQuery from "@material-ui/core/useMediaQuery/useMediaQuery";
 import DialogContent from "@material-ui/core/DialogContent/DialogContent";
 
-const DialogComponent = ({show, title, size = 'lg', onClose, ...restProps}) => {
+const DialogComponent = ({show, title, size = 'lg', onClose, className, ...restProps}) => {
     const theme = useTheme();
     const fullScreen = useMediaQuery(theme.breakpoints.down('md'));
 
@@ -20,6 +20,7 @@ const DialogComponent = ({show, title, size = 'lg', onClose, ...restProps}) => {
             onClose={onClose}
             disableBackdropClick
             disableEscapeKeyDown
+            className={className}
             fullScreen={fullScreen}
             aria-labelledby="responsive-dialog-title"
         >
