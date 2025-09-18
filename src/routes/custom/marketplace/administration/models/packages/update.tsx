@@ -77,8 +77,9 @@ const Update = (props) => {
             setPrice(response.price);
             setPriceUnit(units.find(u => u.reference == response.priceUnitReference));
             setMaximumByUser(response.maximumByUser);
-            setSaleUnit(units.find(u => u.reference == response.saleUnitReference));
-            if(response.saleUnitReference) {
+            let tmpUnit = units.find(u => u.reference == response.saleUnitReference);
+            setSaleUnit(tmpUnit);
+            if(response.saleUnitReference && tmpUnit) {
                 setSaleTypeUnit(units.find(u => u.reference == response.saleUnitReference).type);
             }
             setCategory(categories.find(c => c.id == response.categoryProduct.id));
