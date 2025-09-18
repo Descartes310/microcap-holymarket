@@ -151,8 +151,8 @@ const Create = (props) => {
             return;
         }
 
-        if(saleTypeUnit) {
-            data.sale_unit_reference = saleTypeUnit.reference;
+        if(saleUnit) {
+            data.sale_unit_reference = saleUnit.reference;
         }
 
         data.associatedIds = associatedProducts.map(ap => ap.product.id);

@@ -86,8 +86,10 @@ const Update = (props) => {
             setPrice(response.price);
             setPriceUnit(units.find(u => u.reference == response.priceUnitReference));
             setMaximumByUser(response.maximumByUser);
-            setSaleUnit(units.find(u => u.code == response.currency));
-            setSaleTypeUnit(units.find(u => u.code == response.currency).type);
+            setSaleUnit(units.find(u => u.reference == response.saleUnitReference));
+            if(response.saleUnitReference) {
+                setSaleTypeUnit(units.find(u => u.reference == response.saleUnitReference).type);
+            }
             setCategory(categories.find(c => c.id == response.categoryProduct.id));
             setSellWay(getSellWay().find(s => s.value == response.sellWay));
             setNature(getProductNatures().find(p => p.value == response.nature));
@@ -232,8 +234,8 @@ const Update = (props) => {
             data.associatedIds = associatedProducts.map(ap => ap.id);
         }
 
-        if(saleTypeUnit) {
-            data.sale_unit_reference = saleTypeUnit.reference;
+        if(saleUnit) {
+            data.sale_unit_reference = saleUnit.reference;
         }
 
         // console.log(data);
