@@ -70,6 +70,11 @@ export const getPaymentMethods = () => {
             value: 'BANK_TRANSFER'
         },
         {
+            label: 'Bon de caisse',
+            enabled: true,
+            value: 'TICKET'
+        },
+        {
             label: 'Prélèvement automatique sur le compte MicroCap',
             enabled: false,
             value: 'DIRECT_DEBIT'

@@ -70,3 +70,5 @@ export const GET_ADDRESSES = "api/socialnetworks/users/self/addresses";
 export const CREATE_ADDRESS = "api/socialnetworks/users/self/addresses";
 export const FIND_ADDRESS = (reference) => `api/socialnetworks/users/self/addresses/${reference}`;
 export const UPDATE_ADDRESS = (reference) => `api/socialnetworks/users/self/addresses/${reference}`;
+export const GET_CODES = "api/socialnetworks/users/self/codes";
+export const GET_CREDIT_TICKET_PAYMENTS = "api/socialnetworks/users/self/credit-ticket/payments";

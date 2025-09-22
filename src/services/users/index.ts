@@ -256,4 +256,12 @@ export default class UserService {
         return makeRequest('get', Routes.UPDATE_ADDRESS(reference));
     }
 
+    static getCodes(): Promise<any> {
+        return makeRequest('get', Routes.GET_CODES);
+    }
+
+    static getCreditTicketPayments(status: string): Promise<any> {
+        return makeRequest('get', Routes.GET_CREDIT_TICKET_PAYMENTS, { status });
+    }
+
 }
