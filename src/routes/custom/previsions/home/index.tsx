@@ -16,6 +16,7 @@ class Home extends Component<any, any> {
         const defaultState = (function (url) {
             if (url.includes(MIPRO.HOME.DASHBOARD)) return 0;
             if (url.includes(MIPRO.HOME.ACTIVITY)) return 1;
+            if (url.includes(MIPRO.HOME.BENEFITS)) return 1;
             else return 0;
         })(window.location.pathname);
 
@@ -31,6 +32,7 @@ class Home extends Component<any, any> {
             switch (value) {
                 case 0: return this.props.history.push(MIPRO.HOME.DASHBOARD);
                 case 1: return this.props.history.push(MIPRO.HOME.ACTIVITY);
+                case 2: return this.props.history.push(MIPRO.HOME.BENEFITS);
                 default: return this.props.history.push(MIPRO.HOME.DASHBOARD);
             }
         }
@@ -38,7 +40,6 @@ class Home extends Component<any, any> {
 
     render() {
         const { activeTab } = this.state;
-
         return (
             <div>
                 <PageTitleBar title={"Mon Microcap"} match={this.props.match} />
@@ -62,6 +63,10 @@ class Home extends Component<any, any> {
                                         <Tab
                                             icon={<i className="zmdi zmdi-home" />}
                                             label={"Mes activités"}
+                                        />
+                                        <Tab
+                                            icon={<i className="zmdi zmdi-home" />}
+                                            label={"Mes avantages"}
                                         />
                                     </Tabs>
                                 </div>

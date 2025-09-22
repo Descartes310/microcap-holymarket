@@ -856,6 +856,7 @@ export const MIPRO = {
         SELF: '/360/home',
         DASHBOARD: '/360/home/dashboard',
         ACTIVITY: '/360/home/activities',
+        BENEFITS: '/360/home/benefits',
     },
     PREVISION: {
         SELF: '/360/previsions',
