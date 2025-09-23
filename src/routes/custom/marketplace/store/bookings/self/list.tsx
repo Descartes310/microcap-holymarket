@@ -9,6 +9,7 @@ import ConfirmBox from "Components/dialog/ConfirmBox";
 import TimeFromMoment from "Components/TimeFromMoment";
 import ShareBooking from '../../../_components/shareBooking';
 import BookingMembers from '../../../_components/bookingMembers';
+import BookingRequestsList from 'Components/BookingRequestsList';
 import { ButtonDropdown, DropdownToggle, DropdownMenu, DropdownItem } from 'reactstrap';
 
 const List = (props) => {
@@ -20,6 +21,7 @@ const List = (props) => {
     const [showMemberBox, setShowMemberBox] = useState(false);
     const [showConfirmBox, setShowConfirmBox] = useState(false);
     const [showClientShareBox, setShowClientShareBox] = useState(false);
+    const [showRequestsBox, setShowRequestsBox] = useState(false);
 
     useEffect(() => {
         getBookings();
@@ -150,6 +152,14 @@ const List = (props) => {
                                                                     >
                                                                         A un client
                                                                     </DropdownItem>
+                                                                    <DropdownItem style={{ color: 'black' }}
+                                                                        onClick={() => {
+                                                                            setShowRequestsBox(true);
+                                                                            setBooking(item);
+                                                                        }}
+                                                                    >
+                                                                        Requêtes
+                                                                    </DropdownItem>
                                                             </DropdownMenu>
                                                         </ButtonDropdown>
                                                         <Button
@@ -166,19 +176,6 @@ const List = (props) => {
                                                     </>
                                                 )}
                                             </td>
-                                            {/* <td>
-                                                <Button
-                                                    color="primary"
-                                                    variant="contained"
-                                                    onClick={() => {
-                                                        setBooking(item);
-                                                        setShowConfirmBox(true);
-                                                    }}
-                                                    className="btn-danger text-white font-weight-bold mr-3"
-                                                >
-                                                    Supprimer
-                                                </Button>
-                                            </td> */}
                                         </tr>
                                     ))}
                                 </tbody>
@@ -218,6 +215,16 @@ const List = (props) => {
                             show={showMemberBox}
                             onClose={() => {
                                 setShowMemberBox(false);
+                                setBooking(null);
+                            }}
+                        />
+                    )}
+                    { booking && showRequestsBox && (
+                        <BookingRequestsList
+                            bookingReference={booking.reference}
+                            show={showRequestsBox}
+                            onClose={() => {
+                                setShowRequestsBox(false);
                                 setBooking(null);
                             }}
                         />

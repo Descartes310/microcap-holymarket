@@ -444,4 +444,20 @@ export default class ProductService {
     static getServiceAccountModels(): Promise<any> {
         return makeRequest('get', Routes.GET_SERVICE_ACCOUNT_MODELS);
     }
+
+    static createBookingRequest(code: string, data: any): Promise<any> {
+        return makeRequest('post', Routes.CREATE_BOOKING_REQUEST(code), data);
+    }
+
+    static getBookingRequests(reference: string): Promise<any> {
+        return makeRequest('get', Routes.GET_BOOKING_REQUESTS(reference));
+    }
+
+    static approveBookingRequest(bookingReference: string, reference: string, data: any): Promise<any> {
+        return makeRequest('put', Routes.APPROVE_BOOKING_REQUEST(bookingReference, reference), data);
+    }
+
+    static rejectBookingRequest(bookingReference: string, reference: string): Promise<any> {
+        return makeRequest('put', Routes.REJECT_BOOKING_REQUEST(bookingReference, reference));
+    }
 }

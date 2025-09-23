@@ -119,6 +119,10 @@ export const GET_BOOKING_MEMBERS = (reference) => `api/bookings/${reference}/mem
 export const GET_BOOKING_GIFTS = (reference) => `api/bookings/${reference}/gifts`;
 export const CREATE_BOOKING_GIFT = (reference) => `api/bookings/${reference}/gifts`;
 export const DELETE_BOOKING_GIFT = (reference) => `api/bookings/${reference}/gifts`;
+export const CREATE_BOOKING_REQUEST = (code) => `api/bookings/${code}/requests`;
+export const GET_BOOKING_REQUESTS = (reference) => `api/bookings/${reference}/requests`;
+export const APPROVE_BOOKING_REQUEST = (bookingReference, reference) => `api/bookings/${bookingReference}/requests/${reference}/approve`;
+export const REJECT_BOOKING_REQUEST = (bookingReference, reference) => `api/bookings/${bookingReference}/requests/${reference}/reject`;
 
 export const GET_DISTRIBUTIONS = 'api/distributions';
 export const CREATE_DISTRIBUTION = 'api/distributions';

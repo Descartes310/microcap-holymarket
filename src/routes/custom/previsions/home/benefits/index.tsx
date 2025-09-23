@@ -1,19 +1,21 @@
 import './style.css';
+import moment from 'moment';
 import { connect } from "react-redux";
 import { injectIntl } from "react-intl";
 import React, { Component } from 'react';
+import UserService from "Services/users";
+import RequestCodeModal from './requestCode';
 import { withRouter } from "react-router-dom";
 import CustomList from "Components/CustomList";
 import { setRequestGlobalAction } from "Actions";
-import UserService from "Services/users";
-import moment from 'moment';
 import { getPriceWithCurrency } from 'Helpers/helpers';
 
 class Benefits extends Component<any, any> {
 
     state = {
         codes: [],
-        loading: false
+        loading: false,
+        showRequestForCodeModal: false
     };
 
     componentDidMount() {
@@ -42,14 +44,18 @@ class Benefits extends Component<any, any> {
 
     render() {
 
-        const { codes, loading } = this.state;
+        const { codes, loading, showRequestForCodeModal } = this.state;
 
         return (
             <div>
                 <CustomList
                     list={codes}
                     loading={loading}
+                    addText={'Demander un code avantage'}
                     itemsFoundText={n => `${n} code avantages trouvés`}
+                    onAddClick={() => {
+                        this.setState({ showRequestForCodeModal: true });
+                    }}
                     renderItem={list => (
                         <>
                             {list && list.length === 0 ? (
@@ -119,6 +125,14 @@ class Benefits extends Component<any, any> {
                         </>
                     )}
                 />
+                { showRequestForCodeModal && (
+                    <RequestCodeModal
+                        show={showRequestForCodeModal}
+                        onClose={() => {
+                            this.setState({ showRequestForCodeModal: false })
+                        }}
+                    />
+                )}
             </div>
         );
     }

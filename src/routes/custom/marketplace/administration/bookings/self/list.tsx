@@ -10,6 +10,7 @@ import TimeFromMoment from "Components/TimeFromMoment";
 import BookingGifts from '../../../_components/bookingGifts';
 import ShareBooking from '../../../_components/shareBooking';
 import BookingMembers from '../../../_components/bookingMembers';
+import BookingRequestsList from 'Components/BookingRequestsList';
 import { joinUrlWithParamsId, MARKETPLACE } from 'Url/frontendUrl';
 import { ButtonDropdown, DropdownToggle, DropdownMenu, DropdownItem } from 'reactstrap';
 
@@ -23,6 +24,7 @@ const List = (props) => {
     const [showMemberBox, setShowMemberBox] = useState(false);
     const [showConfirmBox, setShowConfirmBox] = useState(false);
     const [showClientShareBox, setShowClientShareBox] = useState(false);
+    const [showRequestsBox, setShowRequestsBox] = useState(false);
 
     useEffect(() => {
         getBookings();
@@ -180,6 +182,14 @@ const List = (props) => {
                                                                 >
                                                                     A un client
                                                                 </DropdownItem>
+                                                                <DropdownItem style={{ color: 'black' }}
+                                                                    onClick={() => {
+                                                                        setShowRequestsBox(true);
+                                                                        setBooking(item);
+                                                                    }}
+                                                                >
+                                                                    Requêtes
+                                                                </DropdownItem>
                                                         </DropdownMenu>
                                                     </ButtonDropdown>
                                                 )}
@@ -233,6 +243,16 @@ const List = (props) => {
                             show={showGiftBox}
                             onClose={() => {
                                 setShowGiftBox(false);
+                                setBooking(null);
+                            }}
+                        />
+                    )}
+                    { booking && showRequestsBox && (
+                        <BookingRequestsList
+                            bookingReference={booking.reference}
+                            show={showRequestsBox}
+                            onClose={() => {
+                                setShowRequestsBox(false);
                                 setBooking(null);
                             }}
                         />
