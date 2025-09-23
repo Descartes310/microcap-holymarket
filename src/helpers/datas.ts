@@ -827,11 +827,11 @@ export const bookingAdvantages = () => {
             value: 'DISCOUNT'
         },
         {
-            label: "Bon de caisse", 
+            label: "Bon de versement", 
             value: 'PAYOUT_BOND'
         },
         {
-            label: "Bond d'achat", 
+            label: "Bond de caisse", 
             value: 'SHOP_BOND'
         }
     ];
