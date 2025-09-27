@@ -129,3 +129,5 @@ export const CREATE_DISTRIBUTION = 'api/distributions';
 export const GET_MY_DISTRIBUTIONS = 'api/distributions/mines';
 export const UPDATE_DISTRIBUTION_PRICE = (reference) => `api/distributions/${reference}/price`;
 export const UPDATE_DISTRIBUTION_STATUS = (reference) => `api/distributions/${reference}/activate`;
+
+export const GET_AVAILABLE_DELIVERERS = 'api/deliveries/availables';

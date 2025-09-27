@@ -14,6 +14,7 @@ import AccountAgreement from 'Components/AccountAgreement';
 import PageTitleBar from 'Components/PageTitleBar/PageTitleBar';
 import PaymentRequestModal from '../../_components/paymentRequestModal';
 import AccountInformationModal from '../components/accountInformations';
+import DeliveryModal from '../components/deliveryModal';
 import { ButtonDropdown, DropdownToggle, DropdownMenu, DropdownItem } from 'reactstrap';
 
 const List = (props) => {
@@ -25,6 +26,7 @@ const List = (props) => {
     const [showPaymentRequest, setShowPaymentRequest] = useState(false);
     const [showAccountInfoModal, setShowAccountInfoModal] = useState(false);
     const [showAccountAgreementBox, setShowAccountAgreementBox] = useState(false);
+    const [showDeliveryModal, setShowDeliveryModal] = useState(false);
 
     const onToggleButton = (key) => {
         let currentArray = dropdownOpen;
@@ -42,6 +44,7 @@ const List = (props) => {
         .then(response => setPurchases(response))
         .finally(() => props.setRequestGlobalAction(false))
     }
+
 
     const sendPaymentRequest = (item: any) => {
         props.setRequestGlobalAction(true)
@@ -80,6 +83,7 @@ const List = (props) => {
             props.setRequestGlobalAction(false);
         });
     }
+
 
     return (
         <>
@@ -194,6 +198,17 @@ const List = (props) => {
                                                                     Encaissement
                                                                 </DropdownItem>
                                                             )}
+
+                                                            { item.physical && !item.parcelReference && (
+                                                                <DropdownItem style={{ color: 'black' }}
+                                                                    onClick={() => {
+                                                                        setSelectedItem(item);
+                                                                        setShowDeliveryModal(true);
+                                                                    }}
+                                                                >
+                                                                    Envoyer en livraison
+                                                                </DropdownItem>
+                                                            )}
                                                             { ((item.mirrorAccount || item.account) && item.externalReference && !item.accountActivated) && (
                                                                 <DropdownItem style={{ color: 'black' }} onClick={() => {
                                                                     setSelectedItem(item);
@@ -274,21 +289,12 @@ const List = (props) => {
                                 title={"Informations du compte"}
                             />
                         )}
-
-                        {/* { selectedItem && showConfirmBox && (
-                            <ConfirmBox
-                                show={showConfirmBox}
-                                rightButtonOnClick={() => {
-                                    setShowConfirmBox(false);
-                                    setShowPaymentRequest(true);
-                                }}
-                                leftButtonOnClick={() => {
-                                    setSelectedItem(null);
-                                    setShowConfirmBox(false);
-                                }}
-                                message={'Etes-vous sure de vouloir relancer la demande d\'encaissement ?'}
-                            />
-                        )} */}
+                        <DeliveryModal
+                            show={showDeliveryModal}
+                            onClose={() => setShowDeliveryModal(false)}
+                            orderReference={selectedItem?.reference}
+                            onSuccess={getPurchases}
+                        />
                     </>
                 )}
             />

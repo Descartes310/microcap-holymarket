@@ -22,6 +22,7 @@ const Update = (props) => {
     const [legalMention, setLegalMention] = useState(null);
     const [marketProfiles, setMarketProfiles] = useState([]);
     const [brokerProfiles, setBrokerProfiles] = useState([]);
+    const [deliveryProfiles, setDeliveryProfiles] = useState([]);
     const [communityProfiles, setCommunityProfiles] = useState([]);
 
     useEffect(() => {
@@ -45,6 +46,7 @@ const Update = (props) => {
             setPsgProfiles(response.authorizedProfiles.filter(p => p.scope === 'PSGAV').map(p => p.userAccountType));
             setBrokerProfiles(response.authorizedProfiles.filter(p => p.scope === 'BROKER').map(p => p.userAccountType));
             setCommunityProfiles(response.authorizedProfiles.filter(p => p.scope === 'COMMUNITY').map(p => p.userAccountType));
+            setDeliveryProfiles(response.authorizedProfiles.filter(p => p.scope === 'DELIVERY').map(p => p.userAccountType));
         }).catch((err) => {
             console.log(err);
             NotificationManager.error("Une erreur est survenu lors du chargement");
@@ -59,6 +61,7 @@ const Update = (props) => {
             psg_profiles: psgProfiles.map(p => p.reference).join(","),
             broker_profiles: brokerProfiles.map(p => p.reference).join(","),
             community_profiles: communityProfiles.map(p => p.reference).join(","),
+            delivery_profiles: deliveryProfiles.map(p => p.reference).join(","),
         };
 
         if(cgu) {
@@ -146,6 +149,22 @@ const Update = (props) => {
                             id="combo-box-demo"
                             onChange={(__, items) => {
                                 setCommunityProfiles(items);
+                            }}
+                            getOptionLabel={(option) => option.label}
+                            renderInput={(params) => <TextField {...params} variant="outlined" />}
+                        />
+                    </div>
+                    <div className="col-md-12 col-sm-12 has-wrapper mb-30">
+                        <InputLabel className="text-left">
+                            Profiles autorisés pour les livraisons
+                        </InputLabel>
+                        <Autocomplete
+                            multiple
+                            value={deliveryProfiles}
+                            options={profiles}
+                            id="combo-box-demo"
+                            onChange={(__, items) => {
+                                setDeliveryProfiles(items);
                             }}
                             getOptionLabel={(option) => option.label}
                             renderInput={(params) => <TextField {...params} variant="outlined" />}

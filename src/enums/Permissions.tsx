@@ -156,6 +156,14 @@ export default class Permission extends BaseEnum {
                 "name": "MARKETPLACE_PURCHASE_PRIVILEGE"
             }
         },
+        delivery: {
+            zone: {
+                "name": "MARKETPLACE_DELIVERY_ZONE_PRIVILEGE"
+            },
+            administration: {
+                "name": "MARKETPLACE_DELIVERY_PRIVILEGE"
+            },
+        },
         shop: {
             "name": "MARKETPLACE_ACCESS_PRILEGE"
         },

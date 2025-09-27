@@ -22,7 +22,13 @@ class UnitSelect extends Component {
      getUnits = () => {
         UnitService.getUnits()
         .then((response) => {
-            this.setState({ units: response });
+            if(this.props.currentCurrency) {
+                this.setState({ units: response, unit: response.find(c => c.code == this.props.currentCurrency) }, () => {
+                    this.props.onChange(this.state.unit)
+                });
+            } else {
+                this.setState({ units: response });
+            }
         }).catch((err) => {
             console.log(err);
         });

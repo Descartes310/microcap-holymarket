@@ -3,6 +3,7 @@ import Shop from './shop';
 import Cart from './cart';
 import Store from './store';
 import Orders from './orders';
+import Delivery from './delivery';
 import Sales from './orders/sales';
 import Checkout from './checkout';
 import {connect} from "react-redux";
@@ -40,6 +41,7 @@ const Marketplace = (props) => {
                 <Route path={MARKETPLACE.COMMERCIAL.SELF} component={Commercial} />
                 <Route path={MARKETPLACE.DISCOUNT_MODELS.SELF} component={DiscountModels} />
                 <Route path={MARKETPLACE.BOOKING.SELF} component={bookings} />
+                <Route path={MARKETPLACE.DELIVERY.SELF} component={Delivery} />
             </Switch>
         </div>
     );

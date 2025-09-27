@@ -1405,3 +1405,20 @@ export const logActionTypes = [
 export const getLogActionTypeLabel = (value) => {
     return logActionTypes.find(d => d.value == value)?.label
 }
+
+export const deliveryZoneTypes = () => {
+    return [
+        { value: 'NEIGHBORHOOD', label: 'Quartier' },
+        { value: 'CITY', label: 'Ville' },
+        { value: 'REGION', label: 'Région' },
+        { value: 'COUNTRY', label: 'Pays' }
+    ];
+}
+
+export const getDeliveryZoneTypeLabel = (value: any) => {
+    let deliveryZoneType = deliveryZoneTypes().find(rt => rt.value === value);
+    if (deliveryZoneType)
+        return deliveryZoneType.label;
+    else
+        return value;
+}

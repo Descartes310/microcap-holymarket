@@ -460,4 +460,8 @@ export default class ProductService {
     static rejectBookingRequest(bookingReference: string, reference: string): Promise<any> {
         return makeRequest('put', Routes.REJECT_BOOKING_REQUEST(bookingReference, reference));
     }
+
+    static getAvailableDeliverers(): Promise<any> {
+        return makeRequest('get', Routes.GET_AVAILABLE_DELIVERERS);
+    }
 }

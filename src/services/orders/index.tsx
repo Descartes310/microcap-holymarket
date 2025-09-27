@@ -99,4 +99,8 @@ export default class OrderService {
     static activateMembership(data: any): Promise<any> {
         return makeRequest('post', Routes.ACTIVATE_MEMBERSHIP, data);
     }
+
+    static assignDeliverer(data: any): Promise<any> {
+        return makeRequest('post', Routes.ASSIGN_DELIVERER, data);
+    }
 }

@@ -25,7 +25,7 @@ const reducers = combineReducers({
    appLoading: AppLoadingReducer,
    notifications: NotificationsReducer,
    requestGlobalLoader: RequestGlobalReducer,
-   permissionAlertBox: PermissionAlertBoxReducer,
+   permissionAlertBox: PermissionAlertBoxReducer
 });
 
 export default reducers;

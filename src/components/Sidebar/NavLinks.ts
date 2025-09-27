@@ -973,6 +973,32 @@ export default [
       ],
    },
    {
+      "menu_title": "Livraisons",
+      "menu_icon": "zmdi zmdi-store",
+      "new_item": false,
+      "permissions": [
+         Permission.marketplace.delivery.administration.name,
+         Permission.marketplace.delivery.zone.name,
+      ],
+      "profiles": ['GROUP'],
+      "child_routes": [
+         {
+            "menu_title": "Zone de livraisons",
+            "new_item": false,
+            "path": MARKETPLACE.DELIVERY.ZONE.LIST,
+            "permissions": [Permission.marketplace.delivery.zone.name],
+            "child_routes": null
+         },
+         {
+            "menu_title": "Administration",
+            "new_item": false,
+            "path": MARKETPLACE.DELIVERY.ADMINISTRATION.SELF,
+            "permissions": [Permission.marketplace.delivery.administration.name],
+            "child_routes": null
+         }
+      ],
+   },
+   {
       "path": MARKETPLACE.SHOP.CLASSIC,
       "menu_title": "MicroCap Store",
       "menu_icon": "zmdi zmdi-shopping-cart",

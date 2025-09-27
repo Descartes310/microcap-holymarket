@@ -533,6 +533,21 @@ export const PROJECT = {
 
 export const MARKETPLACE = {
     SELF: "/marketplace",
+    DELIVERY: {
+        SELF: "/marketplace/delivery",
+        ADMINISTRATION: {
+            SELF: "/marketplace/delivery/administration",
+            PENDING_PRODUCTS: "/marketplace/delivery/administration/pending-products",
+            PARCELS: "/marketplace/delivery/administration/parcels",
+            DELIVERIES: "/marketplace/delivery/administration/deliveries",
+        },
+        ZONE: {
+            SELF: "/marketplace/delivery/zones",
+            LIST: "/marketplace/delivery/zones/list",
+            CREATE: "/marketplace/delivery/zones/create",
+            UPDATE: "/marketplace/delivery/zones/:reference/update",
+        }
+    },
     CART: "/marketplace/cart",
     ORDERS: "/marketplace/orders",
     CHECKOUT: "/marketplace/checkout",
