@@ -1,9 +1,9 @@
 import { connect } from 'react-redux';
 import MarketService from 'Services/markets';
 import { withRouter } from "react-router-dom";
-import HitMarket from '../components/HitMarket';
 import { setRequestGlobalAction } from 'Actions';
 import React, { useState, useEffect } from 'react';
+import HitMarket from '../../components/HitMarket';
 
 const Shop = (props) => {
 
@@ -15,7 +15,7 @@ const Shop = (props) => {
 
 	const getMarkets = () => {
 		props.setRequestGlobalAction(true);
-		MarketService.getAvailables()
+		MarketService.getAvailables(props.match.params.categoryReference ? {category_reference: props.match.params.categoryReference} : {})
 		.then(response => setMarkets(response))
 		.finally(() => props.setRequestGlobalAction(false))
 	}

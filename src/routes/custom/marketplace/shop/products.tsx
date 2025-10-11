@@ -19,7 +19,16 @@ const Shop = (props) => {
 
 	const getProducts = () => {
 		props.setRequestGlobalAction(true);
-		ProductService.getShopProducts({ model_reference: props.match.params.reference })
+		let category = new URLSearchParams(props.location.search).get("category");
+		let market = new URLSearchParams(props.location.search).get("market");
+		let datas: any = {model_reference: props.match.params.reference};
+		if(category) {
+			datas.category_reference = category;
+		}
+		if(market) {
+			datas.market_reference = market;
+		}
+		ProductService.getShopProducts(datas)
 			.then(response => setProducts(response))
 			.finally(() => props.setRequestGlobalAction(false))
 	}

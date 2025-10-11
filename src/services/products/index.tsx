@@ -7,6 +7,9 @@ export default class ProductService {
     static getCategories(): Promise<any> {
         return makeRequest('get', Routes.GET_CATEGORIES);
     }
+    static getAvailableCategories(): Promise<any> {
+        return makeRequest('get', Routes.GET_AVAILABLE_CATEGORIES);
+    }
 
     static createCategory(data: any): Promise<any> {
         return makeRequest('post', Routes.CREATE_CATEGORY, data);

@@ -17,10 +17,9 @@ const Shop = (props) => {
     useEffect(() => {
         const defaultState = (function (url) {
             if (url.includes(MARKETPLACE.SHOP.CLASSIC)) return 0;
-            if (url.includes(MARKETPLACE.SHOP.HOLYMARKET)) return 1;
-            if (url.includes(MARKETPLACE.SHOP.FINANCIAL)) return 2;
-            if (url.includes(MARKETPLACE.SHOP.PRIVATE)) return 3;
-            if (url.includes(MARKETPLACE.SHOP.MARKETS)) return 4;
+            if (url.includes(MARKETPLACE.SHOP.FINANCIAL)) return 1;
+            if (url.includes(MARKETPLACE.SHOP.PRIVATE)) return 2;
+            if (url.includes(MARKETPLACE.SHOP.HOLYMARKET.SELF)) return 3;
             else return 0;
         })(window.location.pathname);
 
@@ -33,10 +32,9 @@ const Shop = (props) => {
         if (oldActivateTab !== value) {
             switch (value) {
                 case 0: return props.history.push(MARKETPLACE.SHOP.CLASSIC);
-                case 1: return props.history.push(MARKETPLACE.SHOP.HOLYMARKET);
-                case 2: return props.history.push(MARKETPLACE.SHOP.FINANCIAL);
-                case 3: return props.history.push(MARKETPLACE.SHOP.PRIVATE);
-                case 4: return props.history.push(MARKETPLACE.SHOP.MARKETS);
+                case 1: return props.history.push(MARKETPLACE.SHOP.FINANCIAL);
+                case 2: return props.history.push(MARKETPLACE.SHOP.PRIVATE);
+                case 3: return props.history.push(MARKETPLACE.SHOP.HOLYMARKET.SELF);
                 default: return props.history.push(MARKETPLACE.SHOP.CLASSIC);
             }
         }
@@ -63,10 +61,6 @@ const Shop = (props) => {
                                         label={"Produits MicroCap"}
                                     />
                                     <Tab
-                                        icon={<i className="zmdi zmdi-group-work" />}
-                                        label={"Holy Market"}
-                                    />
-                                    <Tab
                                         icon={<i className="ti-world"></i>}
                                         label={"Distributions bancaires"}
                                     />
@@ -75,9 +69,13 @@ const Shop = (props) => {
                                         label={"Ventes promotionnelles"}
                                     />
                                     <Tab
+                                        icon={<i className="zmdi zmdi-group-work" />}
+                                        label={"Holy Market"}
+                                    />
+                                    {/* <Tab
                                         icon={<i className="zmdi zmdi-store"></i>}
                                         label={"Marchés"}
-                                    />
+                                    /> */}
                                 </Tabs>
                             </div>
                         </div>

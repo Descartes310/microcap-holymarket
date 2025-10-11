@@ -557,7 +557,12 @@ export const MARKETPLACE = {
     SHOP: {
         SELF: "/marketplace/shop",
         PRIVATE: "/marketplace/shop/private",
-        HOLYMARKET: "/marketplace/shop/holy-market",
+        HOLYMARKET: {
+            SELF: "/marketplace/shop/holy-market",
+            CATEGORIES: "/marketplace/shop/holy-market/categories",
+            MARKETS: "/marketplace/shop/holy-market/categories/:categoryReference/markets",
+            PRODUCTS: "/marketplace/shop/holy-market/categories/:categoryReference/markets/:marketReference",
+        },
         CLASSIC: "/marketplace/shop/classic",
         MARKETS: "/marketplace/shop/markets",
         FINANCIAL: "/marketplace/shop/financial",

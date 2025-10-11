@@ -1,7 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import HolyMarket from './tabs/holy-market';
-import MarketSale from './tabs/market-sale';
+import MarketSale from './tabs/market';
 import { withRouter } from "react-router-dom";
 import { MARKETPLACE } from "Url/frontendUrl";
 import PrivateSale from './tabs/private-sale';
@@ -17,8 +16,7 @@ const ShopTabContent = ({ match }) => {
                 <Route path={MARKETPLACE.SHOP.CLASSIC} component={ClassicSale} />
                 <Route path={MARKETPLACE.SHOP.PRIVATE} component={PrivateSale} />
                 <Route path={MARKETPLACE.SHOP.FINANCIAL} component={FinancialSale} />
-                <Route path={MARKETPLACE.SHOP.MARKETS} component={MarketSale} />
-                <Route path={MARKETPLACE.SHOP.HOLYMARKET} component={HolyMarket} />
+                <Route path={MARKETPLACE.SHOP.HOLYMARKET.SELF} component={MarketSale} />
             </Switch>
         </div>
     )

@@ -12,8 +12,8 @@ export default class MarketService {
         return makeRequest('get', Routes.GET_MINE);
     }
 
-    static getAvailables(): Promise<any> {
-        return makeRequest('get', Routes.GET_AVAILABLES);
+    static getAvailables(data = {}): Promise<any> {
+        return makeRequest('get', Routes.GET_AVAILABLES, data);
     }
 
     static find(reference: string): Promise<any> {
