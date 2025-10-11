@@ -960,6 +960,10 @@ export const getSellWay = () => {
             value: 'CLASSIC'
         },
         {
+            label: 'Holy Market',
+            value: 'HOLYMARKET'
+        },
+        {
             label: 'Ventes promotionnelles',
             value: 'PRIVATE'
         },

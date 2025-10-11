@@ -557,6 +557,7 @@ export const MARKETPLACE = {
     SHOP: {
         SELF: "/marketplace/shop",
         PRIVATE: "/marketplace/shop/private",
+        HOLYMARKET: "/marketplace/shop/holy-market",
         CLASSIC: "/marketplace/shop/classic",
         MARKETS: "/marketplace/shop/markets",
         FINANCIAL: "/marketplace/shop/financial",
