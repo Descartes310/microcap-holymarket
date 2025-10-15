@@ -17,3 +17,5 @@ export const GET_CHAINS = (id) => `api/socialnetworks/user-account-types/self/${
 export const CREATE_CHAIN = (id) => `api/socialnetworks/user-account-types/self/${id}/chains`;
 export const UPDATE_CHAIN = (id) => `api/socialnetworks/user-account-types/self/chains/${id}`;
 export const FIND_CHAIN = (id) => `api/socialnetworks/user-account-types/self/chains/${id}`;
+export const CREATE_CHAIN_PRODUCTS = (id) => `api/socialnetworks/user-account-types/self/chains/${id}/products`;
+export const GET_CHAIN_PRODUCTS = (id) => `api/socialnetworks/user-account-types/self/chains/${id}/products`;

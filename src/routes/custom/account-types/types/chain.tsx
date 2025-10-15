@@ -8,11 +8,14 @@ import { getChainEventTypeValue } from 'Helpers/datas';
 import { getReferralTypeLabel } from 'Helpers/helpers';
 import UserAccountTypeService from 'Services/account-types';
 import PageTitleBar from "Components/PageTitleBar/PageTitleBar";
+import ChainProductModal from "../components/chainProductModal";
 import { joinUrlWithParams, joinUrlWithParamsId, USER_ACCOUNT_TYPE } from 'Url/frontendUrl';
 
 const List = (props) => {
 
     const [chains, setChains] = useState([]);
+    const [selectedChain, setSelectedChain] = useState(null);
+    const [showProductModal, setShowProductModal] = useState(false);
 
     useEffect(() => {
         getChains();
@@ -103,6 +106,17 @@ const List = (props) => {
                                                     >
                                                         Editer
                                                     </Button>
+                                                    <Button
+                                                        color="primary"
+                                                        variant="contained"
+                                                        className="text-white font-weight-bold ml-5"
+                                                        onClick={() => {
+                                                            setSelectedChain(item);
+                                                            setShowProductModal(true);
+                                                        }}
+                                                    >
+                                                        Produits
+                                                    </Button>
                                                 </td>
                                             </tr>
                                         ))}
@@ -113,6 +127,16 @@ const List = (props) => {
                     </>
                 )}
             />
+            { showProductModal && selectedChain && (
+                <ChainProductModal
+                    chain={selectedChain}
+                    show={showProductModal}
+                    onClose={() => {
+                        setShowProductModal(false);
+                        setSelectedChain(null);
+                    }}
+                />
+            )}
         </>
     );
 }

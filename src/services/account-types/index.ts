@@ -52,12 +52,20 @@ export default class UserAccountTypeService {
         return makeRequest('get', Routes.GET_CHAINS(id));
     }
 
+    static getChainProducts(id: number): Promise<any> {
+        return makeRequest('get', Routes.GET_CHAIN_PRODUCTS(id));
+    }
+
     static getTypeByTerritory(data: any): Promise<any> {
         return makeRequest('get', Routes.GET_BY_TERRITORY, data);
     }
 
     static createChain(id: number, data: any): Promise<any> {
         return makeRequest('post', Routes.CREATE_CHAIN(id), data);
+    }
+
+    static createChainProducts(id: number, data: any): Promise<any> {
+        return makeRequest('post', Routes.CREATE_CHAIN_PRODUCTS(id), data);
     }
 
     static updateChain(id: number, data: any): Promise<any> {

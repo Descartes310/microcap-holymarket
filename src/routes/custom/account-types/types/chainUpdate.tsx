@@ -1,5 +1,4 @@
 import { connect } from 'react-redux';
-import {Form, FormGroup} from 'reactstrap';
 import { withRouter } from "react-router-dom";
 import Button from '@material-ui/core/Button';
 import {setRequestGlobalAction} from 'Actions';
@@ -12,6 +11,7 @@ import {NotificationManager} from 'react-notifications';
 import Autocomplete from '@material-ui/lab/Autocomplete';
 import Checkbox from "@material-ui/core/Checkbox/Checkbox";
 import UserAccountTypeService from 'Services/account-types';
+import {Form, FormGroup, Input as InputStrap} from 'reactstrap';
 import PageTitleBar from "Components/PageTitleBar/PageTitleBar";
 import InputLabel from '@material-ui/core/InputLabel/InputLabel';
 import { joinUrlWithParamsId, USER_ACCOUNT_TYPE } from 'Url/frontendUrl';
@@ -31,7 +31,9 @@ const Update = (props) => {
     const [productReference, setProductReference] = useState(null);
     const [mustHaveMembership, setMustHaveMembership] = useState(false);
     const [contractAccountType, setContractAccountType] = useState(null);
+    const [delayForDesactivation, setDelayForDesactivation] = useState(0);
     const [contractTypeReference, setContractTypeReference] = useState(null);
+    const [hasDelayForDesactivation, setHasDelayForDesactivation] = useState(false);
 
     useEffect(() => {
         getTypes();
@@ -60,8 +62,10 @@ const Update = (props) => {
             setCreateAccess(response.createAccess);
             setProductReference(response.productModelReference);
             setContractTypeReference(response.contractTypeReference);
+            setDelayForDesactivation(response.delayForInactivity);
             setEvent(getChainEventTypes().find(e => e.value === response.event));
             setReferralType(referraTypes().find(e => e.value === response.referralType));
+            setHasDelayForDesactivation(response.delayForInactivity && response.delayForInactivity > 0)
         })
         .finally(() => setRequestGlobalAction(false))
     }
@@ -97,6 +101,11 @@ const Update = (props) => {
             return;
         }
 
+        if(hasDelayForDesactivation && (!delayForDesactivation || delayForDesactivation <= 0)) {
+            NotificationManager.error("Le nombre de jour est obligatoire");
+            return;
+        }
+
         let data: any = {
             event: event.value,
             nextId: accountType.id,
@@ -105,7 +114,11 @@ const Update = (props) => {
         }
 
         if(product) {
-            data.product_model_reference = product.reference;
+            data.pass_reference = product.reference;
+        }
+
+        if(hasDelayForDesactivation) {
+            data.delay_for_inactivity = delayForDesactivation;
         }
 
         if(contractAccountType) {
@@ -219,6 +232,34 @@ const Update = (props) => {
                         <FormControlLabel control={
                             <Checkbox
                                 color="primary"
+                                checked={hasDelayForDesactivation}
+                                onChange={() => setHasDelayForDesactivation(!hasDelayForDesactivation)}
+                            />
+                        } label={'Définir un delai (en jours) pour désactiver en cas d\'inactivité'}
+                        />
+                    </FormGroup>
+
+                    { hasDelayForDesactivation && (
+                        <FormGroup className="has-wrapper">
+                            <InputLabel className="text-left" htmlFor="delayForDesactivation">
+                                Nombre de jours pour désactivation
+                            </InputLabel>
+                            <InputStrap
+                                required
+                                type="number"
+                                className="input-lg"
+                                id="delayForDesactivation"
+                                name='delayForDesactivation'
+                                value={delayForDesactivation}
+                                onChange={(e) => setDelayForDesactivation(e.target.value)}
+                            />
+                        </FormGroup>
+                    )}
+
+                    <FormGroup className="col-sm-12 has-wrapper">
+                        <FormControlLabel control={
+                            <Checkbox
+                                color="primary"
                                 checked={mustHaveMembership}
                                 onChange={() => setMustHaveMembership(!mustHaveMembership)}
                             />
@@ -244,7 +285,7 @@ const Update = (props) => {
                             onClick={onSubmit}
                             className="text-white font-weight-bold"
                         >
-                            Ajouter
+                            Enregistrer
                         </Button>
                     </FormGroup>
                 </Form>
