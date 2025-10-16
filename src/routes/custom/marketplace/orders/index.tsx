@@ -18,8 +18,8 @@ const List = (props) => {
     const getOrders = () => {
         props.setRequestGlobalAction(true),
             OrderService.getOrders()
-                .then(response => setOrders(response))
-                .finally(() => props.setRequestGlobalAction(false))
+            .then(response => setOrders(response))
+            .finally(() => props.setRequestGlobalAction(false))
     }
 
 
@@ -29,6 +29,7 @@ const List = (props) => {
             <PageTitleBar title={'Mes commandes'} />
             <OrderComponent 
                 orders={orders}
+                getOrders={getOrders}
                 openSubOrders={(reference) => props.history.push(joinUrlWithParamsId(MARKETPLACE.SUB_ORDERS, reference))} 
                 openPayments={(id) => props.history.push(joinUrlWithParamsId(MARKETPLACE.SALES, id))} 
             />

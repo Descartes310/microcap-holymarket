@@ -1,5 +1,6 @@
 import { connect } from 'react-redux';
 import PassDetails from './PassDetails';
+import SetSellerModal from './SetSeller';
 import OrderService from 'Services/orders';
 import { withRouter } from "react-router-dom";
 import Button from '@material-ui/core/Button';
@@ -18,12 +19,13 @@ import CodevStep4 from 'Routes/custom/marketplace/shop/components/codev/step4';
 
 const OrderComponent = (props) => {
 
-    const {openSubOrders, openPayments, orders} = props;
+    const {openSubOrders, openPayments, orders, getOrders} = props;
 
     const [order, setOrder] = useState(null);
     const [product, setProduct] = useState(null);
     const [codevData, setCodevData] = useState(null);
     const [showPassBox, setShowPassBox] = useState(false);
+    const [showSellerBox, setShowSellerBox] = useState(false);
     const [showAddFileBox, setShowAddFileBox] = useState(false);
     const [showCodevStep1, setShowCodevStep1] = useState(false);
     const [showCodevStep2, setShowCodevStep2] = useState(false);
@@ -46,13 +48,6 @@ const OrderComponent = (props) => {
                 NotificationManager.error("Une erreur est survenue, veuillez reessayer plus tard");
             })
             .finally(() => props.setRequestGlobalAction(false))
-    }
-
-    const getOrders = () => {
-        props.setRequestGlobalAction(true),
-            OrderService.getOrders()
-                .then(response => setOrders(response))
-                .finally(() => props.setRequestGlobalAction(false))
     }
 
 
@@ -186,20 +181,6 @@ const OrderComponent = (props) => {
                                                     </div>
                                                 </td>
                                                 <td>
-                                                    {/* {item.paymentStatus == 'PAID' && ['CONFIRMED', 'DELIVERED'].includes(item.status) && item?.type == 'CODEV' && item?.details?.find(d => d.type == "CODEV_SUBSCRIPTION_TYPE")?.value != "INDIVIDUAL" && (
-                                                        <Button
-                                                            color="primary"
-                                                            variant="contained"
-                                                            className="text-white font-weight-bold"
-                                                            onClick={() => {
-                                                                setOrder(item);
-                                                                setShowParticipants(true);
-                                                            }}
-                                                        >
-                                                            Souscriptions
-                                                        </Button>
-                                                    )} */}
-
                                                     {item.hasSeller && item.status === 'PENDING' && item.type == 'CODEV' && (
                                                         <Button
                                                             color="primary"
@@ -211,6 +192,19 @@ const OrderComponent = (props) => {
                                                             }}
                                                         >
                                                             Configurations
+                                                        </Button>
+                                                    )}
+                                                    {(!item.hasSeller && ['PENDING', 'NONE'].includes(item.paymentStatus)) && (
+                                                        <Button
+                                                            color="primary"
+                                                            variant="contained"
+                                                            className="text-white font-weight-bold"
+                                                            onClick={() => {
+                                                                setOrder(item);
+                                                                setShowSellerBox(true);
+                                                            }}
+                                                        >
+                                                            Commercant
                                                         </Button>
                                                     )}
                                                     {item.paymentStatus == 'PAID' && ['CONFIRMED', 'DELIVERED'].includes(item.status) && item?.type == "PASS" && (
@@ -239,7 +233,7 @@ const OrderComponent = (props) => {
                                                 </td>
                                                 <td>
                                                     { 
-                                                        (item.status !== 'REJECTED')  ?
+                                                        (item.status !== 'REJECTED' && (item.hasSeller || item.hasSubOrder))  ?
                                                         <Button
                                                             color="primary"
                                                             variant="contained"
@@ -383,6 +377,17 @@ const OrderComponent = (props) => {
                         setShowCodevStep2(false);
                         setShowCodevStep3(false);
                         setShowCodevStep4(false);
+                    }}
+                />
+            )}
+            { (order && showSellerBox) && (
+                <SetSellerModal
+                    order={order}
+                    show={showSellerBox}
+                    onClose={() => {
+                        setOrder(null);
+                        setShowSellerBox(false);
+                        getOrders();
                     }}
                 />
             )}

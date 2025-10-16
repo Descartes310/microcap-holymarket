@@ -6,7 +6,6 @@ import React, { useState, useEffect } from 'react';
 import OrderComponent from '../orders/orderComponent';
 import SubOrderComponent from '../orders/subOrderComponent';
 import DialogComponent from "Components/dialog/DialogComponent";
-import { MARKETPLACE, joinUrlWithParamsId } from 'Url/frontendUrl';
 
 const OrderModal = (props) => {
 
