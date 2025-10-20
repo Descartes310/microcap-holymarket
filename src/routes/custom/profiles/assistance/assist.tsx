@@ -144,9 +144,13 @@ const Assist = (props) => {
         if(action.value === 'CONFIRM_OTP' && contact) {
             data.contact_id = contact.id;
         }
-        UserService.sendAuthOTP(data)
-        .then(() => {
-            setShowOTPModal(true);
+        UserService.sendAuthOTP(data, {wantSuccessCode: true})
+        .then((response) => {
+            if(response.status === 201) {
+                setShowOTPModal(true);
+            } else {
+                onSubmit();
+            }
         })
         .catch((err) => {
             console.log(err);
@@ -359,6 +363,10 @@ const Assist = (props) => {
                 break;
             case 'AUTHENTICATE_PROFILE':
                 setShowMemberFileBox(true);
+
+            case 'UPDATE_USER_FOLDER':
+                setShowMemberFileBox(true);
+
                 break;
             case 'ACTIVATE_CONTRACT':
                 setShowCreateAccessModal(true);
@@ -734,8 +742,11 @@ const Assist = (props) => {
                                 variant="contained"
                                 disabled={!member}
                                 onClick={() => {
-                                    sendOtp();
-                                    // onSubmit();
+                                    if(['ACTIVATE_PROFILE'].includes(action?.value)) {
+                                        onSubmit();
+                                    } else {
+                                        sendOtp();
+                                    }
                                 }}
                                 className="text-white font-weight-bold mr-20"
                             >
@@ -761,6 +772,7 @@ const Assist = (props) => {
             { member && showMemberFileBox && (
                 <MemberDocumentsModal
                     user={member}
+                    type={'ALL'}
                     show={showMemberFileBox}
                     reference={member.referralCode}
                     onClose={() => {
@@ -768,7 +780,11 @@ const Assist = (props) => {
                     }}
                     onValidate={() => {
                         setShowMemberFileBox(false);
-                        setShowAuthentificationBox(true);
+                        if(action?.value == 'AUTHENTICATE_PROFILE') {
+                            setShowAuthentificationBox(true);
+                        } else {
+                            window.location.reload();
+                        }
                     }}
                 />
             )}

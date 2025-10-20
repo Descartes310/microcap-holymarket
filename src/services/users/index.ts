@@ -208,8 +208,8 @@ export default class UserService {
         return makeRequest('get', Routes.GET_INSTITUTION_MEMBERS(id), data);
     }
 
-    static sendAuthOTP(data: any): Promise<any> {
-        return makeRequest('post', Routes.SEND_OTP, data);
+    static sendAuthOTP(data: any, config = {}): Promise<any> {
+        return makeRequest('post', Routes.SEND_OTP, data, config);
     }
 
     static findAuthOTP(data: any): Promise<any> {

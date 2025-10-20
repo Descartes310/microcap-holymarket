@@ -539,7 +539,7 @@ export const makeRequest = (verb, url, data = null, config = {}) => {
         }
         const params = (verb === 'get' || verb === 'delete') ? [_url, config] : [_url, data, config];
         api[verb](...params)
-            .then(result => resolve(result.data))
+            .then(result => config['wantSuccessCode'] ? resolve(result) : resolve(result.data))
             .catch(error => reject(error));
     });
 };
