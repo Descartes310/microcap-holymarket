@@ -133,7 +133,7 @@ const List = (props) => {
                                                     </div>
                                                 </td>
                                                 <td>
-                                                    <Button
+                                                    {/* <Button
                                                         color="primary"
                                                         variant="contained"
                                                         className="text-white font-weight-bold"
@@ -143,7 +143,7 @@ const List = (props) => {
                                                         }}
                                                     >
                                                         Restorer
-                                                    </Button>
+                                                    </Button> */}
                                                 </td>
                                             </tr>
                                         ))}

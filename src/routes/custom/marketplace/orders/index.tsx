@@ -22,8 +22,6 @@ const List = (props) => {
             .finally(() => props.setRequestGlobalAction(false))
     }
 
-
-
     return (
         <>
             <PageTitleBar title={'Mes commandes'} />

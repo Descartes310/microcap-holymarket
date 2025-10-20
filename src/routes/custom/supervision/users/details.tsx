@@ -235,7 +235,7 @@ const UserDetails = (props) => {
                                     </div>
                                 </td>
                             </tr>
-                            <tr className="cursor-pointer">
+                            {/* <tr className="cursor-pointer">
                                 <td>
                                     <div className="media">
                                         <div className="media-body pt-10">
@@ -275,7 +275,7 @@ const UserDetails = (props) => {
                                         </div>
                                     </div>
                                 </td>
-                            </tr>
+                            </tr> */}
                             <tr className="cursor-pointer">
                                 <td>
                                     <div className="media">

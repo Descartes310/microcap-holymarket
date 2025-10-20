@@ -194,7 +194,7 @@ const OrderComponent = (props) => {
                                                             Configurations
                                                         </Button>
                                                     )}
-                                                    {(!item.hasSeller && ['PENDING', 'NONE'].includes(item.paymentStatus)) && (
+                                                    {!item.hasSeller && (
                                                         <Button
                                                             color="primary"
                                                             variant="contained"
@@ -204,7 +204,7 @@ const OrderComponent = (props) => {
                                                                 setShowSellerBox(true);
                                                             }}
                                                         >
-                                                            Commercant
+                                                            {!item.account ? 'Commercant' : 'Banque'}
                                                         </Button>
                                                     )}
                                                     {item.paymentStatus == 'PAID' && ['CONFIRMED', 'DELIVERED'].includes(item.status) && item?.type == "PASS" && (
@@ -247,7 +247,7 @@ const OrderComponent = (props) => {
                                                     }
                                                 </td>
                                                 <td>
-                                                    { item.status !== 'DELIVERED' && (
+                                                    { (item.status !== 'DELIVERED' && item.hasSeller) && (
                                                         <Button
                                                             color="primary"
                                                             variant="contained"

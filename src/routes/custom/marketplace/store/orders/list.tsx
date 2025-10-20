@@ -224,14 +224,15 @@ const List = (props) => {
                                                                     setShowDetails(false);
                                                                     setShowPaymentRequest(false);
                                                                     setShowAccountAgreementBox(false);
-                                                                    if(item.mirrorAccount) {
+                                                                    if(item.account) {
                                                                         setSelectedItem(item);
                                                                         setShowAccountInfoModal(true);
-                                                                    } else {
-                                                                        activateAccount(item.externalReference);
-                                                                    }
+                                                                    } 
+                                                                    // else {
+                                                                    //     activateAccount(item.externalReference);
+                                                                    // }
                                                                 }}>
-                                                                    { item.mirrorAccount ? 'Configurer et activer' : 'Activer le compte' }
+                                                                    { item.account ? 'Configurer et activer' : 'Activer le compte' }
                                                                 </DropdownItem>
                                                             )}
                                                             <DropdownItem style={{ color: 'black' }} onClick={() => {

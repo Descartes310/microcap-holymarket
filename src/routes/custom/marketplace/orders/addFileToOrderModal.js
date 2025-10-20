@@ -51,7 +51,7 @@ class AddFileToOrderModal extends Component {
             this.setState({ order: response }, () => {
                 this.getUserFileTypes();
                 this.getUserFiles();
-                if(this.state.order.mirrorAccount) {
+                if(this.state.order.account) {
                     this.getBankAgencies()
                 }
             });
@@ -83,7 +83,7 @@ class AddFileToOrderModal extends Component {
     }
 
     onSubmit = () => {
-        if(!this.state.agency && this.state.order?.mirrorAccount) {
+        if(!this.state.agency && this.state.order?.account) {
             NotificationManager.error("Veuillez renseigner les informations");
             return;
         }
@@ -100,7 +100,7 @@ class AddFileToOrderModal extends Component {
         
         let data = {};
 
-        if(this.state.order?.mirrorAccount) {
+        if(this.state.order?.account) {
             data.agencyId = this.state.agency.id;
         }
 
@@ -206,7 +206,7 @@ class AddFileToOrderModal extends Component {
                         </table>
                     </div>
 
-                    { order?.mirrorAccount && (
+                    { order?.account && (
                         <FormGroup className="col-md-12 col-sm-12 has-wrapper">
                             <InputLabel className="text-left">
                                 Domiciliation
