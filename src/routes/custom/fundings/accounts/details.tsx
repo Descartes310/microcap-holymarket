@@ -272,6 +272,7 @@ const Details = (props) => {
                                         <div className="col-md-4 col-sm-12 has-wrapper balance-details">
                                             <p>Solde</p>
                                             <p className='fw-bold mt-10' style={{ fontSize: '2.5rem' }}>{getPriceWithCurrency(account?.balance, account?.currencyCode)}</p>
+                                            <p className='fw-bold mt-10' style={{ fontSize: '1.5rem', opacity: 0.3 }}>{getPriceWithCurrency(account?.balanceGlobal, account?.currencyCode)}</p>
                                         </div>
 
                                     </div>
