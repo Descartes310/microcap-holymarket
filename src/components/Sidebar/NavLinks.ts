@@ -1107,7 +1107,7 @@ export default [
             "menu_title": "Recharges",
             "new_item": false,
             "path": BANK.CHARGE.AGENT.SELF,
-            "permissions": [Permission.general.charge.name],
+            "permissions": [],
             "profiles": ['PROVIDER_AGENT', 'PROVIDER_COUNTER'],
             "child_routes": null
          },
