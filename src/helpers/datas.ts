@@ -747,6 +747,8 @@ export const productSpecialTypes = () => {
         }, {
             label: "Ndjangui Business", value: "CODEV"
         }, {
+            label: "Reserve MicroCap", value: "RSMCM"
+        }, {
             label: "Deal Plan", value: "CODEV_DEAL_PLAN"
         }, {
             label: "Pass MicroCap", value: "PASS"

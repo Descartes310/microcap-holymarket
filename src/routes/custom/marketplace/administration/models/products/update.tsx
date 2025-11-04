@@ -43,6 +43,8 @@ const Update = (props) => {
     const [description, setDescription] = useState('');
     const [specialType, setSpecialType] = useState(null);
     const [accountUnit, setAccountUnit] = useState(null);
+    const [reserveDelay, setReserveDelay] = useState(null);
+    const [reserveLimit, setReserveLimit] = useState(null);
     const [saleTypeUnit, setSaleTypeUnit] = useState(null);
     const [maximumByUser, setMaximumByUser] = useState(null);
     const [sellerProfiles, setSellerProfiles] = useState([]);
@@ -50,7 +52,6 @@ const Update = (props) => {
     const [journalAccount, setJournalAccount] = useState(null);
     const [accountTypeUnit, setAccountTypeUnit] = useState(null);
     const [selectedProfiles, setSelectedProfiles] = useState([]);
-    const [userAccountType, setUserAccountType] = useState(null);
     const [isMirrorAccount, setIsMirrorAccount] = useState(false);
     const [isServiceAccount, setIsServiceAccount] = useState(false);
     const [minAccountbalance, setMinAccountBalance] = useState(null);
@@ -80,7 +81,6 @@ const Update = (props) => {
             setLabel(response.label);
             setCode(response.code);
             setSpecialType(productSpecialTypes().find(st => st.value == response.specialType));
-            setUserAccountType(profiles.find(p => p.reference == response.userAccountTypeReference));
             setDescription(response.description);
             setTransactionalPageCount(response.numberOfJournals);
             setPrice(response.price);
@@ -102,6 +102,8 @@ const Update = (props) => {
             setMinAccountBalance(response.minBalance);
             setIsMirrorAccount(response.mirrorAccount);
             setIsServiceAccount(response.serviceAccount);
+            setReserveDelay(response.reserveDelay);
+            setReserveLimit(response.reserveLimit);
             setSelectedProfiles(profiles.filter(p => response.buyerProfiles.includes(p.reference)));
             setSellerProfiles(profiles.filter(p => response.sellerProfiles.includes(p.reference)));
             setAggregationProducts(products.filter(p => response.aggregations.includes(p.reference)));
@@ -190,7 +192,7 @@ const Update = (props) => {
 
         // if(lines) data.lines = lines;
 
-        if (isAccount || ['TRANSACTION_BOOK', 'SEGRAGATED_ACCOUNT'].includes(specialType?.value)) {
+        if (isAccount || ['TRANSACTION_BOOK', 'SEGRAGATED_ACCOUNT', 'RSMCM'].includes(specialType?.value)) {
             
             if (minAccountbalance == null || maxAccountBalance == null || !accountUnit) {
                 NotificationManager.error('Les détails du compte sont invalides');
@@ -202,6 +204,11 @@ const Update = (props) => {
             data.mirrorAccount = isMirrorAccount;
             data.serviceAccount = isServiceAccount;
             data.accountUnitReference = accountUnit.reference;
+
+            if(reserveDelay != null && reserveLimit != null) {
+                data.reserveDelay = reserveDelay;
+                data.reserveLimit = reserveLimit;
+            }
         }
 
         if(specialType) {
@@ -304,23 +311,6 @@ const Update = (props) => {
                             />
                         </FormGroup>
                     </div>
-                    {/* { specialType?.value == 'PASS' && (
-                        <div className="col-md-12 col-sm-12 has-wrapper mb-30">
-                            <InputLabel className="text-left">
-                                Profile utilisateur associé
-                            </InputLabel>
-                            <Autocomplete
-                                options={profiles}
-                                value={userAccountType}
-                                id="combo-box-demo"
-                                onChange={(__, item) => {
-                                    setUserAccountType(item);
-                                }}
-                                getOptionLabel={(option) => option.label}
-                                renderInput={(params) => <TextField {...params} variant="outlined" />}
-                            />
-                        </div>
-                    )} */}
                     <div className="row">
                         <FormGroup className='col-md-12 col-sm-12 has-wrapper'>
                             <InputLabel className="text-left" htmlFor="description">
@@ -630,6 +620,40 @@ const Update = (props) => {
                                     />
                                 </div>
                             </div>
+                            {
+                                specialType?.value == 'RSMCM' && (
+                                    <div className="row">
+                                        <div className="col-md-6 col-sm-12 has-wrapper mb-30">
+                                            <InputLabel className="text-left">
+                                                Plafond de la reserve
+                                            </InputLabel>
+                                            <InputStrap
+                                                required
+                                                id="reserveLimit"
+                                                type="number"
+                                                name='reserveLimit'
+                                                className="input-lg"
+                                                value={reserveLimit}
+                                                onChange={(e) => setReserveLimit(e.target.value)}
+                                            />
+                                        </div>
+                                        <div className="col-md-6 col-sm-12 has-wrapper mb-30">
+                                            <InputLabel className="text-left">
+                                                Delai (en jours)
+                                            </InputLabel>
+                                            <InputStrap
+                                                required
+                                                id="reserveDelay"
+                                                type="number"
+                                                name='reserveDelay'
+                                                className="input-lg"
+                                                value={reserveDelay}
+                                                onChange={(e) => setReserveDelay(e.target.value)}
+                                            />
+                                        </div>
+                                    </div>
+                                )
+                            }
                             <FormGroup className="col-sm-12 has-wrapper">
                                 <FormControlLabel control={
                                     <Checkbox

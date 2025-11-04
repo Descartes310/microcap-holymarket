@@ -1,4 +1,5 @@
 import { connect } from 'react-redux';
+import UnitService from 'Services/units';
 import GroupService from 'Services/groups';
 import { withRouter } from "react-router-dom";
 import Button from '@material-ui/core/Button';
@@ -20,8 +21,6 @@ import RctCollapsibleCard from 'Components/RctCollapsibleCard/RctCollapsibleCard
 import { getIndirectSaleProcess, uneditableProductModelType } from 'Helpers/datas';
 import FormControlLabel from "@material-ui/core/FormControlLabel/FormControlLabel";
 import AccountVentilation from 'Components/Product/Ventilation/AccountVentilation';
-import UnitService from 'Services/units';
-import { setCurrency } from 'Actions/AppSettingsActions';
 
 const fileTypes = ["JPG", "PNG", "GIF", "JPEG"];
 
@@ -41,6 +40,8 @@ const Update = (props) => {
     const [updatable, setUpdatable] = useState(true);
     const [description, setDescription] = useState('');
     const [aggregations, setAggregations] = useState([]);
+    const [reserveDelay, setReserveDelay] = useState(null);
+    const [reserveLimit, setReserveLimit] = useState(null);
     const [selectedPieces, setSelectedPieces] = useState([]);
     const [isIndirectSell, setIsIndirectSell] = useState(false);
     const [selectedProcesses, setSelectedProcesses] = useState([]);
@@ -70,6 +71,8 @@ const Update = (props) => {
             setLabel(response.label);
             setPrice(response.price);
             setDescription(response.description);
+            setReserveLimit(response.reserveLimit);
+            setReserveDelay(response.reserveDelay);
             setAcceptManyPayment(response.acceptManyPayment);
             setMinimumPaymentAmount(response.minimumPaymentAmount);
             setMaximumDaysToPay(response.numberMaxOfDaysForPayment);
@@ -150,6 +153,11 @@ const Update = (props) => {
         }
 
         data.indirectSell = isIndirectSell || product?.mirrorAccount || product?.account
+
+        if(['RSMCM'].includes(product?.specialProduct) && (reserveDelay != null || reserveLimit != null)) {
+            data.reserveDelay = reserveDelay;
+            data.reserveLimit = reserveLimit;
+        }
 
         if (file)
             data.image = file;
@@ -284,6 +292,40 @@ const Update = (props) => {
                                     renderInput={(params) => <TextField {...params} variant="outlined" />}
                                 />
                             </FormGroup>
+                            {
+                                product?.specialProduct == 'RSMCM' && (
+                                    <>
+                                        <div className="col-md-6 col-sm-12 has-wrapper mb-30">
+                                            <InputLabel className="text-left">
+                                                Plafond de la reserve
+                                            </InputLabel>
+                                            <InputStrap
+                                                required
+                                                id="reserveLimit"
+                                                type="number"
+                                                name='reserveLimit'
+                                                className="input-lg"
+                                                value={reserveLimit}
+                                                onChange={(e) => setReserveLimit(e.target.value)}
+                                            />
+                                        </div>
+                                        <div className="col-md-6 col-sm-12 has-wrapper mb-30">
+                                            <InputLabel className="text-left">
+                                                Delai (en jours)
+                                            </InputLabel>
+                                            <InputStrap
+                                                required
+                                                id="reserveDelay"
+                                                type="number"
+                                                name='reserveDelay'
+                                                className="input-lg"
+                                                value={reserveDelay}
+                                                onChange={(e) => setReserveDelay(e.target.value)}
+                                            />
+                                        </div>
+                                    </>
+                                )
+                            }
                             <div className={`col-md-${range?.value !== 'COMMUNITY' ? '12' : '6'} col-sm-12 has-wrapper mb-30`}>
                                 <InputLabel className="text-left">
                                     Portée du produit

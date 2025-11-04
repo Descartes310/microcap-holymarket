@@ -42,6 +42,8 @@ const Create = (props) => {
     const [updatable, setUpdatable] = useState(true);
     const [description, setDescription] = useState('');
     const [aggregations, setAggregations] = useState([]);
+    const [reserveDelay, setReserveDelay] = useState(null);
+    const [reserveLimit, setReserveLimit] = useState(null);
     const [selectedPieces, setSelectedPieces] = useState([]);
     const [isIndirectSell, setIsIndirectSell] = useState(false);
     const [commercialOffer, setCommercialOffer] = useState(null);
@@ -65,6 +67,8 @@ const Create = (props) => {
             setLabel(product.label);
             setCode(product.code);
             setPrice(product.price);
+            setReserveLimit(product.reserveLimit)
+            setReserveDelay(product.reserveDelay)
             setDescription(product.description);
             setRange(getProductRanges().find(pr => pr.value === product.range));
             if(product?.account) {
@@ -154,6 +158,11 @@ const Create = (props) => {
 
         if(isIndirectSell) {
             data.indirectSell = isIndirectSell || product?.mirrorAccount || product?.account
+        }
+
+        if(['RSMCM'].includes(product?.specialType) && (reserveDelay != null || reserveLimit != null)) {
+            data.reserveDelay = reserveDelay;
+            data.reserveLimit = reserveLimit;
         }
 
         if (file)
@@ -324,6 +333,40 @@ const Create = (props) => {
                                         renderInput={(params) => <TextField {...params} variant="outlined" />}
                                     />
                                 </FormGroup>
+                                {
+                                    product.specialType == 'RSMCM' && (
+                                        <>
+                                            <div className="col-md-6 col-sm-12 has-wrapper mb-30">
+                                                <InputLabel className="text-left">
+                                                    Plafond de la reserve
+                                                </InputLabel>
+                                                <InputStrap
+                                                    required
+                                                    id="reserveLimit"
+                                                    type="number"
+                                                    name='reserveLimit'
+                                                    className="input-lg"
+                                                    value={reserveLimit}
+                                                    onChange={(e) => setReserveLimit(e.target.value)}
+                                                />
+                                            </div>
+                                            <div className="col-md-6 col-sm-12 has-wrapper mb-30">
+                                                <InputLabel className="text-left">
+                                                    Delai (en jours)
+                                                </InputLabel>
+                                                <InputStrap
+                                                    required
+                                                    id="reserveDelay"
+                                                    type="number"
+                                                    name='reserveDelay'
+                                                    className="input-lg"
+                                                    value={reserveDelay}
+                                                    onChange={(e) => setReserveDelay(e.target.value)}
+                                                />
+                                            </div>
+                                        </>
+                                    )
+                                }
                                 <div className={`col-md-${range?.value !== 'COMMUNITY' ? '12' : '6'} col-sm-12 has-wrapper mb-30`}>
                                     <InputLabel className="text-left">
                                         Portée du produit
