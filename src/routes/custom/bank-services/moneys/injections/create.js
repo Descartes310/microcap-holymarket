@@ -68,10 +68,10 @@ class CreateInjectionModal extends Component {
 
         BankService.createInjection(data, { fileData: ['proof'], multipart: true }).then(() => {
             NotificationManager.success("L'injection a été demandée avec succès");
+            this.props.onClose();
         }).catch((err) => {
             NotificationManager.error("Associé un IBAN au compte d'injection");
         }).finally(() => {
-            this.props.onClose();
             this.props.setRequestGlobalAction(false);
         })
     }

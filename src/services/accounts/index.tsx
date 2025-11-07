@@ -35,6 +35,14 @@ export default class AccountService {
         return makeRequest('post', Routes.DEBIT_ACCOUNT(id), data);
     }
 
+    static cantonnatedAccount(id, data: any): Promise<any> {
+        return makeRequest('post', Routes.CANTONATE_ACCOUNT(id), data);
+    }
+
+    static provisioning(reference, data: any): Promise<any> {
+        return makeRequest('post', Routes.PROVISIONING(reference), data);
+    }
+
     static activeAccount(id, data: any): Promise<any> {
         return makeRequest('put', Routes.ACTIVATE_ACCOUNT(id), data);
     }

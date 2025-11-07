@@ -41,23 +41,6 @@ const Create = (props) => {
         }
     }, [broker])
 
-    const findUserByMembership = () => {
-        props.setRequestGlobalAction(true);
-        UserService.findUserByReference(membership, {from_group: true})
-        .then(response => {
-            // if(response.referralType === 'PERSON' || (props.authUser.referralTypes.includes('PROVIDER_INTERMEDIARY') && props.authUser.referralId === response.referralCode)) {
-            setMember(response);
-            // }
-        })
-        .catch((err) => {
-            console.log(err);
-            NotificationManager.error("Ce numéro utilisateur est inexistant");
-        })
-        .finally(() => {
-            props.setRequestGlobalAction(false);
-        })
-    }
-
     const getTypes = () => {
         props.setRequestGlobalAction(true),
         UserAccountTypeService.getAccountTypes({based_from_member: true})
@@ -151,45 +134,11 @@ const Create = (props) => {
                     </FormGroup>
                     
                     <FormGroup className="has-wrapper">
-                        <InputLabel className="text-left" htmlFor="membership">
-                            Numéro utilisateur
-                        </InputLabel>
-                        <InputStrap
-                            required
-                            type="text"
-                            id="membership"
-                            name='membership'
-                            value={membership}
-                            className="input-lg"
-                            onChange={(e) => setMembership(e.target.value)}
-                        />
+                        <UserSelect isSelect={true} label={'Sélectionner le responsable'} onChange={(_, user) => {
+                            setMember(user);
+                            setMembership(user.referralId)
+                        }}/>
                     </FormGroup>
-
-                    {member && (
-                        <div className="row">
-                            <FormGroup className="col-md-4 col-sm-12 has-wrapper">
-                                <InputStrap
-                                    disabled
-                                    className="input-lg"
-                                    value={member.userName}
-                                />
-                            </FormGroup>
-                            <FormGroup className="col-md-4 col-sm-12 has-wrapper">
-                                <InputStrap
-                                    disabled
-                                    className="input-lg"
-                                    value={member.email}
-                                />
-                            </FormGroup>
-                            <FormGroup className="col-md-4 col-sm-12 has-wrapper">
-                                <InputStrap
-                                    disabled
-                                    className="input-lg"
-                                    value={getReferralTypeLabel(member.referralType)}
-                                />
-                            </FormGroup>
-                        </div>
-                    )}
 
                     <div className="col-md-12 col-sm-12 has-wrapper mb-30">
                         <InputLabel className="text-left">
@@ -224,15 +173,6 @@ const Create = (props) => {
                     </div>
 
                     <FormGroup>
-                        <Button
-                            color="primary"
-                            variant="contained"
-                            disabled={!membership}
-                            onClick={() => findUserByMembership()}
-                            className="text-white font-weight-bold mr-20 bg-blue"
-                        >
-                            Vérifier l'utilisateur
-                        </Button>
                         <Button
                             color="primary"
                             onClick={onSubmit}

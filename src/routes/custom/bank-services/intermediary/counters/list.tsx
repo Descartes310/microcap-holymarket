@@ -48,7 +48,8 @@ const List = (props) => {
                                         <tr>
                                             <th className="fw-bold">Désignation</th>
                                             <th className="fw-bold">Reference</th>
-                                            <th className="fw-bold">Description</th>
+                                            <th className="fw-bold">Responsable</th>
+                                            <th className="fw-bold">Email</th>
                                             <th className="fw-bold">Méthode de règlement</th>
                                         </tr>
                                     </thead>
@@ -72,7 +73,14 @@ const List = (props) => {
                                                 <td>
                                                     <div className="media">
                                                         <div className="media-body pt-10">
-                                                            <h4 className="m-0 fw-bold text-dark">{item.description}</h4>
+                                                            <h4 className="m-0 fw-bold text-dark">{item.userName}</h4>
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <div className="media">
+                                                        <div className="media-body pt-10">
+                                                            <h4 className="m-0 fw-bold text-dark">{item.email}</h4>
                                                         </div>
                                                     </div>
                                                 </td>

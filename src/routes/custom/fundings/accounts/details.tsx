@@ -12,9 +12,12 @@ import CodevChildTicket from './codevChildTickets';
 import DebitAccount from 'Components/DebitAccount';
 import React, { useState, useEffect } from 'react';
 import { ACCOUNT_PERIOD_LIMIT } from 'Helpers/datas';
-import CreditAccount from 'Components/CreditAccount';
+import ConfirmBox from "Components/dialog/ConfirmBox";
+import Provisioning from '../components/Provisioning';
+import Cantonnement from '../components/Cantonnement';
 import { Card, CardBody, CardTitle } from 'reactstrap';
 import TimeFromMoment from 'Components/TimeFromMoment';
+import { NotificationManager } from 'react-notifications';
 import { FUNDING, joinUrlWithParamsId } from 'Url/frontendUrl';
 import PageTitleBar from "Components/PageTitleBar/PageTitleBar";
 import InputLabel from '@material-ui/core/InputLabel/InputLabel';
@@ -30,13 +33,16 @@ const Details = (props) => {
     const [mouvements, setMouvements] = useState([]);
     const [provisions, setProvisions] = useState([]);
     const [showDealBox, setShowDealBox] = useState(false);
+    const [provisionData, setProvisionData] = useState(null);
     const [showTicketBox, setShowTicketBox] = useState(false);
     const [selectedTicket, setSelectedTicket] = useState(null);
+    const [showConfirmBox, setShowConfirmBox] = useState(false);
     const [showParticipants, setShowParticipants] = useState(false);
     previousDate.setDate(previousDate.getDate() - ACCOUNT_PERIOD_LIMIT);
     const [showChildTicketBox, setShowChildTicketBox] = useState(false);
     const [showDebitAccountBox, setShowDebitAccountBox] = useState(false);
-    const [showCreditAccountBox, setShowCreditAccountBox] = useState(false);
+    const [showCantonnementBox, setShowCantonnementBox] = useState(false);
+    const [showProvisioningBox, setShowProvisioningBox] = useState(false);
     const [endDate, setEndDate] = useState(convertDate(today, 'YYYY-MM-DD'));
     const [showCreateChildTicketBox, setShowCreateChildTicketBox] = useState(false);
     const [startDate, setStartDate] = useState(convertDate(previousDate, 'YYYY-MM-DD'));
@@ -99,29 +105,40 @@ const Details = (props) => {
         return details ? details.value : null
     }
 
-    const onStripeSubmit = (token, amount) => {
+    const onProvisioning = (paymentAccount, amount, currency, use_reserve = false) => {
 
-        if(amount <= 0)
+        if(amount <= 0 || !paymentAccount || !currency) {
             return;
+        }
 
         props.setRequestGlobalAction(true);
 
-        let data: any = {};
+        let data: any = {amount, currency, use_reserve};
 
-        data.amount = amount;
-        data.token = token;
-        data.PaymentMethod = 'STRIPE';
+        data.paymentAccountReference = paymentAccount.reference;
        
-        AccountService.creditAccount(account.id, data).then(() => {
+        AccountService.provisioning(account.reference, data).then(() => {
             findAccount();
             getMouvements();
+            setShowProvisioningBox(false);
+            setProvisionData(null);
+            setShowConfirmBox(false);
         })
         .catch((err) => {
-            console.log(err);
+            if(err?.response?.status === 412) {
+                NotificationManager.error("Le solde du compte de paiement est insuffisant");
+                setShowConfirmBox(false);
+            } else if(err?.response?.status === 426) {
+                setProvisionData(data);
+                setShowConfirmBox(true);
+                console.log("ICI => ", data)
+            } else {
+                NotificationManager.error("Une erreur est survenue, veuillez réessayer plus tard.");
+                setShowConfirmBox(false);
+            }
         })
         .finally(() => {
             props.setRequestGlobalAction(false);
-            setShowCreditAccountBox(false);
         })
     }
 
@@ -147,6 +164,32 @@ const Details = (props) => {
         .finally(() => {
             props.setRequestGlobalAction(false);
             setShowDebitAccountBox(false);
+        })
+    }
+
+    const onCantonnement = (amount, reason) => {
+
+        if(amount <= 0) {
+            return;
+        }
+
+        props.setRequestGlobalAction(true);
+
+        let data: any = {};
+
+        data.amount = amount;
+        data.reason = reason;
+       
+        AccountService.cantonnatedAccount(account.id, data).then(() => {
+            findAccount();
+            getMouvements();
+        })
+        .catch((err) => {
+            console.log(err);
+        })
+        .finally(() => {
+            props.setRequestGlobalAction(false);
+            setShowCantonnementBox(false);
         })
     }
 
@@ -218,9 +261,7 @@ const Details = (props) => {
                                                     Distributions
                                                 </Button>
                                             )}
-                                        </div>
-                                        { account?.consolidation && !account?.subAccount && (
-                                            <div>
+                                            { account?.consolidation && !account?.subAccount && (
                                                 <Button
                                                     color="primary"
                                                     variant="contained"
@@ -231,8 +272,32 @@ const Details = (props) => {
                                                 >
                                                     Journaux
                                                 </Button>
-                                            </div>
-                                        )}
+                                            )}
+                                            { ['CANTO'].includes(account?.order?.type) && (
+                                                <Button
+                                                    color="primary"
+                                                    variant="contained"
+                                                    className="text-white font-weight-bold mr-5"
+                                                    onClick={() => {
+                                                        setShowProvisioningBox(true);
+                                                    }}
+                                                >
+                                                    Provisionner
+                                                </Button>
+                                            )}
+                                            { account?.order?.type === 'CANTO' && (
+                                                <Button
+                                                    color="primary"
+                                                    variant="contained"
+                                                    className="text-white font-weight-bold"
+                                                    onClick={() => {
+                                                        setShowCantonnementBox(true);
+                                                    }}
+                                                >
+                                                    Cantonnement
+                                                </Button>
+                                            )}
+                                        </div>
                                     </div>
                                 </CardTitle>
                                 <CardBody>
@@ -400,17 +465,28 @@ const Details = (props) => {
                         </Card>
                     </div>
                 </div>
-                <CreditAccount
-                    title='Encaisser le compte'
-                    onSubmit={onStripeSubmit}
-                    show={showCreditAccountBox}
-                    onClose={() => setShowCreditAccountBox(false)}
-                />
+                { account && showProvisioningBox && (
+                    <Provisioning
+                        title='Approvisionner le compte'
+                        onSubmit={onProvisioning}
+                        account={account}
+                        show={showProvisioningBox}
+                        onClose={() => setShowProvisioningBox(false)}
+                    />
+                )}
                 <DebitAccount
                     title='Décaisser le compte'
                     onSubmit={onDebit}
                     show={showDebitAccountBox}
                     onClose={() => setShowDebitAccountBox(false)}
+                />
+                <Cantonnement
+                    title='Faire un cantonnement'
+                    onSubmit={(amount, reason) => {
+                        onCantonnement(amount, reason);
+                    }}
+                    show={showCantonnementBox}
+                    onClose={() => setShowCantonnementBox(false)}
                 />
                 { showTicketBox && account && (
                     <CodevPrevisions
@@ -463,6 +539,18 @@ const Details = (props) => {
                         referralCode={account.referralCode}
                         type={account.codevSubscriptionType}
                         isPrivate={account.codevDistribution == 'PRIVATE'}
+                    />
+                )}
+                { provisionData && showConfirmBox && (
+                    <ConfirmBox
+                        show={showConfirmBox}
+                        rightButtonOnClick={() => {
+                            onProvisioning({reference: provisionData.paymentAccountReference}, provisionData.amount, provisionData.currency, true);
+                        }}
+                        leftButtonOnClick={() => {
+                            setShowConfirmBox(false)
+                        }}
+                        message={'Souhaitez vous utiliser votre reserve ?'}
                     />
                 )}
             </RctCollapsibleCard>

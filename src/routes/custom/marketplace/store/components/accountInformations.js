@@ -29,6 +29,8 @@ class AccountInformationModal extends Component {
         number: null,
         referralCode: null,
         member: null,
+        reserveLimit: null,
+        reserveDelay: null,
         members: [],
         units: [],
         currency: [],
@@ -74,9 +76,14 @@ class AccountInformationModal extends Component {
     }
 
     onSubmit = () => {
-        const { iban, agency, bic, referralCode, key, number, member, balance, currency } = this.state;
+        const { iban, agency, bic, referralCode, key, number, member, balance, currency, reserveLimit, reserveDelay } = this.state;
 
         if(!iban || !bic || !agency || !referralCode || !member || !key || !number || !currency) {
+            NotificationManager.error('Toutes les informations du formulaire sont requises');
+            return;
+        }
+
+        if(this.props.order?.type === 'RSMCM' && (!reserveLimit || !reserveDelay)) {
             NotificationManager.error('Toutes les informations du formulaire sont requises');
             return;
         }
@@ -91,6 +98,11 @@ class AccountInformationModal extends Component {
             data.balance = 0;
         } else {
             data.balance = balance;
+        }
+
+        if(this.props.order?.type === 'RSMCM' && reserveLimit && reserveDelay) {
+            data.reserveLimit = reserveLimit;
+            data.reserveDelay = reserveDelay;
         }
 
         this.props.setRequestGlobalAction(true);
@@ -116,8 +128,8 @@ class AccountInformationModal extends Component {
 
     render() {
 
-        const { onClose, show, title, authUser } = this.props;
-        const { iban, agency, agencies, bic, key, number, member, members, currency, units, balance } = this.state;
+        const { onClose, show, title, authUser, order } = this.props;
+        const { iban, agency, agencies, bic, key, number, member, members, currency, units, balance, reserveLimit, reserveDelay } = this.state;
 
         return (
             <DialogComponent
@@ -131,16 +143,6 @@ class AccountInformationModal extends Component {
                 )}
             >
                 <RctCardContent>
-                    {/* <FormGroup className="col-sm-12 has-wrapper">
-                        <FormControlLabel control={
-                            <Checkbox
-                                color="primary"
-                                checked={useDomiciliationDatas}
-                                onChange={() => this.setState({useDomiciliationDatas : !this.state.useDomiciliationDatas})}
-                            />
-                        } label={'Utiliser les informations de domiciliation'}
-                        />
-                    </FormGroup> */}
                     <h2>Réference</h2>
                     <FormGroup className="has-wrapper mt-20">
                         <InputLabel className="text-left" htmlFor="iban">
@@ -214,6 +216,38 @@ class AccountInformationModal extends Component {
                             onChange={(e) => this.setState({ balance: e.target.value })}
                         />
                     </FormGroup>
+                    { order?.type === 'RSMCM' && (
+                        <>
+                            <FormGroup className="has-wrapper">
+                                <InputLabel className="text-left" htmlFor="reserveLimit">
+                                    Plancher de la reserve
+                                </InputLabel>
+                                <InputStrap
+                                    required
+                                    type="number"
+                                    id="reserveLimit"
+                                    name='reserveLimit'
+                                    value={reserveLimit}
+                                    className="input-lg"
+                                    onChange={(e) => this.setState({ reserveLimit: e.target.value })}
+                                />
+                            </FormGroup>
+                            <FormGroup className="has-wrapper">
+                                <InputLabel className="text-left" htmlFor="reserveDelay">
+                                    Delai de régularisation (en jours)
+                                </InputLabel>
+                                <InputStrap
+                                    required
+                                    type="number"
+                                    id="reserveDelay"
+                                    name='reserveDelay'
+                                    value={reserveDelay}
+                                    className="input-lg"
+                                    onChange={(e) => this.setState({ reserveDelay: e.target.value })}
+                                />
+                            </FormGroup>
+                        </>
+                    )}
                     <FormGroup className="col-md-12 col-sm-12 has-wrapper">
                         <InputLabel className="text-left">
                             Devise

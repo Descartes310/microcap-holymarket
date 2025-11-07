@@ -749,6 +749,8 @@ export const productSpecialTypes = () => {
         }, {
             label: "Reserve MicroCap", value: "RSMCM"
         }, {
+            label: "Compte de cantonnement", value: "CANTO"
+        }, {
             label: "Deal Plan", value: "CODEV_DEAL_PLAN"
         }, {
             label: "Pass MicroCap", value: "PASS"

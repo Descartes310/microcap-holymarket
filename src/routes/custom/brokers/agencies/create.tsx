@@ -4,6 +4,7 @@ import UserService from 'Services/users';
 import { BROKER } from 'Url/frontendUrl';
 import Button from '@material-ui/core/Button';
 import { withRouter } from "react-router-dom";
+import UserSelect from 'Components/UserSelect';
 import { setRequestGlobalAction } from 'Actions';
 import { getReferralTypeLabel } from 'Helpers/helpers';
 import { NotificationManager } from 'react-notifications';
@@ -19,20 +20,6 @@ const Create = (props) => {
     const [member, setMember] = useState(null);
     const [reference, setReference] = useState('');
     const [description, setDescription] = useState('');
-
-    const findUserByReference = () => {
-        if (!reference)
-            return;
-        props.setRequestGlobalAction(true),
-            UserService.findUserByReference(reference, {from_group: true})
-                .then(response => setMember(response))
-                .catch(err => {
-                    setMember(null);
-                    console.log(err);
-                    NotificationManager.error("Reference incorrecte");
-                })
-                .finally(() => props.setRequestGlobalAction(false))
-    }
 
     const onSubmit = () => {
         if(!label || !reference) {
@@ -92,56 +79,13 @@ const Create = (props) => {
                         />
                     </FormGroup>
                     <FormGroup className="has-wrapper">
-                        <InputLabel className="text-left" htmlFor="reference">
-                            Référence du gestionnaire
-                        </InputLabel>
-                        <InputStrap
-                            required
-                            type="text"
-                            id="reference"
-                            name='reference'
-                            value={reference}
-                            className="input-lg"
-                            onChange={(e) => setReference(e.target.value)}
-                        />
+                        <UserSelect isSelect={true} label={'Sélectionner le gestionnaire'} onChange={(_, user) => {
+                            setMember(user);
+                            setReference(user.referralId)
+                        }}/>
                     </FormGroup>
 
-                    {member && (
-                        <>
-                            <FormGroup className="has-wrapper">
-                                <InputStrap
-                                    disabled
-                                    className="input-lg"
-                                    value={member.userName}
-                                />
-                            </FormGroup>
-                            <FormGroup className="has-wrapper">
-                                <InputStrap
-                                    disabled
-                                    className="input-lg"
-                                    value={member.email}
-                                />
-                            </FormGroup>
-                            <FormGroup className="has-wrapper">
-                                <InputStrap
-                                    disabled
-                                    className="input-lg"
-                                    value={getReferralTypeLabel(member.referralType)}
-                                />
-                            </FormGroup>
-                        </>
-                    )}
-
                     <FormGroup>
-                        <Button
-                            color="primary"
-                            variant="contained"
-                            disabled={!reference}
-                            onClick={() => findUserByReference()}
-                            className="text-white font-weight-bold mr-20 bg-blue"
-                        >
-                            Vérifier l'utilisateur
-                        </Button>
                         <Button
                             color="primary"
                             variant="contained"

@@ -1,11 +1,11 @@
 import { connect } from 'react-redux';
 import { BANK } from 'Url/frontendUrl';
-import UserService from 'Services/users';
 import BankService from 'Services/banks';
 import Button from '@material-ui/core/Button';
 import { withRouter } from "react-router-dom";
 import UserSelect from 'Components/UserSelect';
 import { setRequestGlobalAction } from 'Actions';
+import { PAYMENT_METHODS } from 'Helpers/helpers';
 import React, { useState, useEffect } from 'react';
 import TextField from '@material-ui/core/TextField';
 import Autocomplete from '@material-ui/lab/Autocomplete';
@@ -13,7 +13,6 @@ import { NotificationManager } from 'react-notifications';
 import UserAccountTypeService from 'Services/account-types';
 import InputLabel from '@material-ui/core/InputLabel/InputLabel';
 import { Form, FormGroup, Input as InputStrap } from 'reactstrap';
-import { getReferralTypeLabel, PAYMENT_METHODS } from 'Helpers/helpers';
 import RctCollapsibleCard from 'Components/RctCollapsibleCard/RctCollapsibleCard';
 
 const Create = (props) => {
