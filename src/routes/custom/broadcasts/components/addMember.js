@@ -1,9 +1,9 @@
 import { Button } from 'reactstrap';
 import { connect } from 'react-redux';
 import React, { useState } from 'react';
+import { withRouter } from "react-router-dom";
 import MessageService from 'Services/messages';
 import UserSelect from 'Components/UserSelect';
-import { withRouter } from "react-router-dom";
 import { setRequestGlobalAction } from 'Actions';
 import { RctCardContent } from 'Components/RctCard';
 import { NotificationManager } from 'react-notifications';

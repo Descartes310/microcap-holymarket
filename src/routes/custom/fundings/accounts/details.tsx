@@ -90,7 +90,7 @@ const Details = (props) => {
 
     const getProvisions = () => {
         props.setRequestGlobalAction(true);
-        AccountService.getAccountMouvements(account.id, {types: ['PROVISION']}).then(response => {
+        AccountService.getAccountMouvements(account.id, {types: ['PROVISION', 'FREEZE']}).then(response => {
             setProvisions(response);
         }).catch((err) => {
             console.log(err);
@@ -142,6 +142,29 @@ const Details = (props) => {
         })
     }
 
+    const onCantonnement = (amount, currency, receiverAccount, dueDate, reason) => {
+
+        if(amount <= 0 || !receiverAccount || !currency || !dueDate || !reason) {
+            return;
+        }
+
+        props.setRequestGlobalAction(true);
+
+        let data: any = {amount, currency, account_reference: receiverAccount.reference, dueDate, reason};
+
+        AccountService.cantonnatedAccount(account.reference, data).then(() => {
+            findAccount();
+            getMouvements();
+            setShowCantonnementBox(false);
+        })
+        .catch(() => {
+            NotificationManager.error("Une erreur est survenue, veuillez réessayer plus tard.");
+        })
+        .finally(() => {
+            props.setRequestGlobalAction(false);
+        })
+    }
+
     const onDebit = (amount, reason) => {
 
         if(amount <= 0)
@@ -164,32 +187,6 @@ const Details = (props) => {
         .finally(() => {
             props.setRequestGlobalAction(false);
             setShowDebitAccountBox(false);
-        })
-    }
-
-    const onCantonnement = (amount, reason) => {
-
-        if(amount <= 0) {
-            return;
-        }
-
-        props.setRequestGlobalAction(true);
-
-        let data: any = {};
-
-        data.amount = amount;
-        data.reason = reason;
-       
-        AccountService.cantonnatedAccount(account.id, data).then(() => {
-            findAccount();
-            getMouvements();
-        })
-        .catch((err) => {
-            console.log(err);
-        })
-        .finally(() => {
-            props.setRequestGlobalAction(false);
-            setShowCantonnementBox(false);
         })
     }
 
@@ -336,8 +333,8 @@ const Details = (props) => {
                                         </div>
                                         <div className="col-md-4 col-sm-12 has-wrapper balance-details">
                                             <p>Solde</p>
-                                            <p className='fw-bold mt-10' style={{ fontSize: '2.5rem' }}>{getPriceWithCurrency(account?.balance, account?.currencyCode)}</p>
-                                            <p className='fw-bold mt-10' style={{ fontSize: '1.5rem', opacity: 0.3 }}>{getPriceWithCurrency(account?.balanceGlobal, account?.currencyCode)}</p>
+                                            <p className='fw-bold mt-10' style={{ fontSize: '2.5rem' }}>{getPriceWithCurrency(account?.balanceGlobal, account?.currencyCode)}</p>
+                                            <p className='fw-bold mt-10' style={{ fontSize: '1.5rem', opacity: 0.3 }}>{getPriceWithCurrency(account?.balance, account?.currencyCode)}</p>
                                         </div>
 
                                     </div>
@@ -401,7 +398,7 @@ const Details = (props) => {
                                         </div>
                                     </div>
 
-                                    <div style={{ marginTop: '3em', opacity: 0.3 }}>
+                                    <div style={{ marginTop: '3em', opacity: 0.6 }}>
                                         <div>
                                             <h2 className='fw-bold'>Opérations non comptabilisées</h2>
                                             <table className="table table-hover table-middle mb-60 mt-20">
@@ -417,7 +414,7 @@ const Details = (props) => {
                                                 <tbody>
                                                     {
                                                         provisions.map((mouvement, index) => (
-                                                            <tr key={index}>
+                                                            <tr key={index} style={{ background: mouvement.type === 'FREEZE' ? '#ff000026' : 'white' }}>
                                                                 <td>
                                                                     <div className="media">
                                                                         <div className="media-body">
@@ -480,14 +477,15 @@ const Details = (props) => {
                     show={showDebitAccountBox}
                     onClose={() => setShowDebitAccountBox(false)}
                 />
-                <Cantonnement
-                    title='Faire un cantonnement'
-                    onSubmit={(amount, reason) => {
-                        onCantonnement(amount, reason);
-                    }}
-                    show={showCantonnementBox}
-                    onClose={() => setShowCantonnementBox(false)}
-                />
+                { account && showCantonnementBox && (
+                    <Cantonnement
+                        title='Faire un cantonnement'
+                        onSubmit={onCantonnement}
+                        account={account}
+                        show={showCantonnementBox}
+                        onClose={() => setShowCantonnementBox(false)}
+                    />
+                )}
                 { showTicketBox && account && (
                     <CodevPrevisions
                         show={showTicketBox}
