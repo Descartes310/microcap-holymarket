@@ -142,15 +142,15 @@ const Details = (props) => {
         })
     }
 
-    const onCantonnement = (amount, currency, receiverAccount, dueDate, reason) => {
+    const onCantonnement = (amount, currency, receiverAccount, referralCode, dueDate, reason) => {
 
-        if(amount <= 0 || !receiverAccount || !currency || !dueDate || !reason) {
+        if(amount <= 0 || !receiverAccount || !currency || !dueDate || !reason || !referralCode) {
             return;
         }
 
         props.setRequestGlobalAction(true);
 
-        let data: any = {amount, currency, account_reference: receiverAccount.reference, dueDate, reason};
+        let data: any = {amount, currency, account_reference: receiverAccount.reference, dueDate, reason, referralCode};
 
         AccountService.cantonnatedAccount(account.reference, data).then(() => {
             findAccount();

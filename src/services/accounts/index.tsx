@@ -69,6 +69,10 @@ export default class AccountService {
         return makeRequest('get', Routes.GET_ACCOUNT_MOUVEMENTS(id), data);
     }
 
+    static getFreezingTransactions(data: any): Promise<any> {
+        return makeRequest('get', Routes.GET_FREEZING_TRANSACTION, data);
+    }
+
     static getAccountByTypes(data: any): Promise<any> {
         return makeRequest('get', Routes.GET_ACCOUNTS_BY_TYPE, data);
     }

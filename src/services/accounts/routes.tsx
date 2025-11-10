@@ -9,6 +9,7 @@ export const ACTIVATE_ACCOUNT = (id) => `api/fundings/accounts/${id}/activate`;
 export const GET_ACCOUNTS_BY_SPECIALITY = 'api/fundings/accounts/by-speciality';
 export const PROVISIONING = (id) => `api/fundings/accounts/${id}/provisioning`;
 export const CANTONATE_ACCOUNT = (id) => `api/fundings/accounts/${id}/cantonate`;
+export const GET_FREEZING_TRANSACTION = `api/fundings/accounts/freezed-transactions`;
 export const GET_ACCOUNT_MOUVEMENTS = (id) => `api/fundings/accounts/${id}/mouvements`;
 export const FIND_ACCOUNT_BY_REFERENCE = (reference) => `api/fundings/accounts/reference/${reference}`;
 export const FIND_ACTIVATION_ACCOUNT_DETAILS = (reference) => `api/fundings/accounts/${reference}/details/activation`;

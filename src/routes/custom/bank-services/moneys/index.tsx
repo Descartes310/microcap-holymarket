@@ -15,8 +15,8 @@ class Moneys extends Component<any, any> {
         super(props);
         const defaultState = (function (url) {
             if (url.includes(BANK.MONEY.INJECTION.SELF)) return 0;
-            else if (url.includes(BANK.MONEY.EXTINCTION.SELF)) return 1;
-            else if (url.includes(BANK.MONEY.EXPLOITATION.SELF)) return 2;
+            else if (url.includes(BANK.MONEY.EXPLOITATION.SELF)) return 1;
+            else if (url.includes(BANK.MONEY.EXTINCTION.SELF)) return 2;
             else return 0;
         })(window.location.pathname);
 
@@ -31,8 +31,8 @@ class Moneys extends Component<any, any> {
         if (oldActivateTab !== value) {
             switch (value) {
                 case 0: return this.props.history.push(BANK.MONEY.INJECTION.SELF);
-                case 1: return this.props.history.push(BANK.MONEY.EXTINCTION.SELF);
-                case 2: return this.props.history.push(BANK.MONEY.EXPLOITATION.SELF);
+                case 1: return this.props.history.push(BANK.MONEY.EXPLOITATION.SELF);
+                case 2: return this.props.history.push(BANK.MONEY.EXTINCTION.SELF);
                 default: return this.props.history.push(BANK.MONEY.INJECTION.SELF);
             }
         }
@@ -63,11 +63,11 @@ class Moneys extends Component<any, any> {
                                         />
                                         <Tab
                                             icon={<i className="zmdi zmdi-home" />}
-                                            label={"Extinctions"}
+                                            label={"Exploitations"}
                                         />
                                         <Tab
                                             icon={<i className="zmdi zmdi-home" />}
-                                            label={"Exploitations"}
+                                            label={"Extinctions"}
                                         />
                                     </Tabs>
                                 </div>

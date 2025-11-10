@@ -40,7 +40,7 @@ class Cantonnement extends Component {
     }
   
     onSubmit = () => {
-        this.props.onSubmit(this.state.amount, this.state.currency, this.state.account, this.state.dueDate, this.state.reason);
+        this.props.onSubmit(this.state.amount, this.state.currency, this.state.account, this.state.member.referralCode, this.state.dueDate, this.state.reason);
     }
   
 

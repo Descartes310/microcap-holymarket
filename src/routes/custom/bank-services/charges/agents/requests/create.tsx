@@ -22,25 +22,14 @@ const Create = (props) => {
 
     const [file, setFile] = useState(null);
     const [unit, setUnit] = useState(null);
-    const [banks, setBanks] = useState([]);
     const [units, setUnits] = useState([]);
-    const [bank, setBank] = useState(null);
     const [amount, setAmount] = useState(null);
     const [paidAt, setPaidAt] = useState(moment().format("YYYY-MM-DD"));
     const [direction, setDirection] = useState(null);  
 
     useEffect(() => {
-        getBanks();
-        //getCoverages();
         getUnits();
-    }, []);
-
-    // const getCoverages = () => {
-    //     props.setRequestGlobalAction(true),
-    //     BankService.getCoverages()
-    //     .then(response => setCoverages(response))
-    //     .finally(() => props.setRequestGlobalAction(false))
-    // }    
+    }, []); 
     
     const getUnits = () => {
         props.setRequestGlobalAction(false);
@@ -54,15 +43,8 @@ const Create = (props) => {
         })
     }
 
-    const getBanks = () => {
-        props.setRequestGlobalAction(true),
-        BankService.getIntermediateBanks()
-        .then(response => setBanks(response))
-        .finally(() => props.setRequestGlobalAction(false))
-    }
-
     const onSubmit = () => {
-        if(!amount || !paidAt || !bank || !file || !unit || !direction) {
+        if(!amount || !paidAt || !unit || !direction) {
             NotificationManager.error('Veuillez bien remplir le formulaire')
             return;
         }
@@ -72,15 +54,13 @@ const Create = (props) => {
         let data: any = {
             amount,
             paidAt,
-            proof: file,
-            // coverageReference,
             currency: unit.code,
-            // coverageId: coverage.id,
-            codeBank: bank.reference,
             direction: direction.value
         };
 
-        //console.log(data);
+        if(file) {
+            data.proof = file;
+        }
 
         BankService.createChargeRequest(data, { fileData: ['proof'], multipart: true }).then(() => {
             NotificationManager.success("La demande a été créée avec succès");
@@ -141,50 +121,6 @@ const Create = (props) => {
                             renderInput={(params) => <TextField {...params} variant="outlined" />}
                         />
                     </div>
-                    <div className="col-md-12 col-sm-12 has-wrapper mb-30">
-                        <InputLabel className="text-left">
-                            Banque de paiement
-                        </InputLabel>
-                        <Autocomplete
-                            value={bank}
-                            id="combo-box-demo"
-                            options={banks}
-                            onChange={(__, item) => {
-                                setBank(item);
-                            }}
-                            getOptionLabel={(option) => option.label}
-                            renderInput={(params) => <TextField {...params} variant="outlined" />}
-                        />
-                    </div>
-                    {/* <div className="col-md-12 col-sm-12 has-wrapper mb-30">
-                        <InputLabel className="text-left">
-                            Couverture
-                        </InputLabel>
-                        <Autocomplete
-                            value={coverage}
-                            id="combo-box-demo"
-                            options={coverages}
-                            onChange={(__, item) => {
-                                setCoverage(item);
-                            }}
-                            getOptionLabel={(option) => option.label}
-                            renderInput={(params) => <TextField {...params} variant="outlined" />}
-                        />
-                    </div> */}
-                    {/* <FormGroup className="has-wrapper">
-                        <InputLabel className="text-left" htmlFor="reference">
-                            Reference couverture
-                        </InputLabel>
-                        <InputStrap
-                            required
-                            id="reference"
-                            type="text"
-                            name='reference'
-                            className="input-lg"
-                            value={coverageReference}
-                            onChange={(e) => setCoverageReference(e.target.value)}
-                        />
-                    </FormGroup> */}
                     <FormGroup className="has-wrapper">
                         <InputLabel className="text-left" htmlFor="paidAt">
                             Date de paiement

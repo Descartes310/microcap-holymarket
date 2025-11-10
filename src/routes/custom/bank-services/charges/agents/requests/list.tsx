@@ -50,9 +50,6 @@ const List = (props) => {
                                         <tr>
                                             <th className="fw-bold">Nature</th>
                                             <th className="fw-bold">Montant</th>
-                                            <th className="fw-bold">Banque</th>
-                                            {/* <th className="fw-bold">Couverture</th>
-                                            <th className="fw-bold">Reference couv.</th> */}
                                             <th className="fw-bold">Date</th>
                                             <th className="fw-bold">Status</th>
                                         </tr>
@@ -74,27 +71,6 @@ const List = (props) => {
                                                         </div>
                                                     </div>
                                                 </td>
-                                                <td>
-                                                    <div className="media">
-                                                        <div className="media-body pt-10">
-                                                            <h4 className="m-0 fw-bold text-dark">{item.bankCode}</h4>
-                                                        </div>
-                                                    </div>
-                                                </td>
-                                                {/* <td>
-                                                    <div className="media">
-                                                        <div className="media-body pt-10">
-                                                            <h4 className="m-0 fw-bold text-dark">{item.typeCoverage?.label}</h4>
-                                                        </div>
-                                                    </div>
-                                                </td>
-                                                <td>
-                                                    <div className="media">
-                                                        <div className="media-body pt-10">
-                                                            <h4 className="m-0 fw-bold text-dark">{item.coverageReference}</h4>
-                                                        </div>
-                                                    </div>
-                                                </td> */}
                                                 <td>
                                                     <div className="media">
                                                         <div className="media-body pt-10">
