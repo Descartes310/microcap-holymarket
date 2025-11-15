@@ -3,14 +3,15 @@ import { injectIntl } from "react-intl";
 import React, { Component } from 'react';
 import UserService from 'Services/users';
 import { withRouter } from "react-router-dom";
+import UserSelect from 'Components/UserSelect';
 import ContractService from 'Services/contracts';
 import { setRequestGlobalAction } from 'Actions';
 import TextField from '@material-ui/core/TextField';
 import { RctCardContent } from 'Components/RctCard';
 import PartnershipService from 'Services/partnerships';
-import { getReferralTypeLabel } from 'Helpers/helpers';
 import Autocomplete from '@material-ui/lab/Autocomplete';
 import { NotificationManager } from 'react-notifications';
+import { specializedProviderTypes } from 'Helpers/helpers';
 import DialogComponent from "Components/dialog/DialogComponent";
 import InputLabel from '@material-ui/core/InputLabel/InputLabel';
 import { FormGroup, Button, Input as InputStrap  } from 'reactstrap';
@@ -23,6 +24,7 @@ class CreateProviderModal extends Component {
         contract: null,
         membership: null,
         commercialName: null,
+        specialization: null,
         immatriculation: null,
     }
 
@@ -62,21 +64,26 @@ class CreateProviderModal extends Component {
 
     onSubmit = () => {
 
-        const { member, contract, commercialName, immatriculation } = this.state;
+        const { member, contract, commercialName, immatriculation, specialization } = this.state;
 
         if(!contract || !member || !commercialName || !immatriculation) {
             NotificationManager.error("Les informations renseignées sont incompletes ou incorrectes");
             return;
         }
 
+        
         this.props.setRequestGlobalAction(true);
-
+        
         let data = {
             type: this.props.type,
             contractId: contract.id,
             commercialName: commercialName,
             referralCode: member.referralCode,
             immatriculation: immatriculation,
+        }
+        
+        if(this.props.isSpecialized && specialization) {
+            data.type = specialization.value;
         }
 
         PartnershipService.createPartnership(data).then(() => {
@@ -94,8 +101,7 @@ class CreateProviderModal extends Component {
     render() {
 
         const { onClose, show, title } = this.props;
-        const { contracts, membership, member, contract, 
-            commercialName, immatriculation } = this.state;
+        const { contracts, membership, member, contract, commercialName, immatriculation, specialization } = this.state;
 
         return (
             <DialogComponent
@@ -109,45 +115,25 @@ class CreateProviderModal extends Component {
                 )}
             >
                 <RctCardContent>
-                    <FormGroup className="has-wrapper">
-                        <InputLabel className="text-left" htmlFor="membership">
-                            Numéro utilisateur
-                        </InputLabel>
-                        <InputStrap
-                            required
-                            type="text"
-                            id="membership"
-                            name='membership'
-                            value={membership}
-                            className="input-lg"
-                            onChange={(e) => this.setState({ membership: e.target.value })}
-                        />
-                    </FormGroup>
-
-                    {member && (
-                        <>
-                            <FormGroup className="has-wrapper">
-                                <InputStrap
-                                    disabled
-                                    className="input-lg"
-                                    value={member.userName}
-                                />
-                            </FormGroup>
-                            <FormGroup className="has-wrapper">
-                                <InputStrap
-                                    disabled
-                                    className="input-lg"
-                                    value={member.email}
-                                />
-                            </FormGroup>
-                            <FormGroup className="has-wrapper">
-                                <InputStrap
-                                    disabled
-                                    className="input-lg"
-                                    value={getReferralTypeLabel(member.referralType)}
-                                />
-                            </FormGroup>
-                        </>
+                    <UserSelect label={'Numéro utilisateur'} onlyOrganisation={true} onChange={(_, user) => {
+                        this.setState({ member: user, membership: user.referralCode });
+                    }}/>
+                    {this.props.isSpecialized && (
+                        <div className="col-md-12 col-sm-12 has-wrapper mb-30">
+                            <InputLabel className="text-left">
+                                Spécialisation
+                            </InputLabel>
+                            <Autocomplete
+                                id="combo-box-demo"
+                                value={specialization}
+                                options={specializedProviderTypes()}
+                                onChange={(__, item) => {
+                                    this.setState({ specialization: item });
+                                }}
+                                getOptionLabel={(option) => option.label}
+                                renderInput={(params) => <TextField {...params} variant="outlined" />}
+                            />
+                        </div>
                     )}
                     <div className="col-md-12 col-sm-12 has-wrapper mb-30">
                         <InputLabel className="text-left">
@@ -195,15 +181,6 @@ class CreateProviderModal extends Component {
                     </FormGroup>
                     
                     <FormGroup>
-                        <Button
-                            color="primary"
-                            variant="contained"
-                            disabled={!membership}
-                            onClick={() => this.findUserByMembership()}
-                            className="text-white font-weight-bold mr-20 bg-blue"
-                        >
-                            Vérifier l'utilisateur
-                        </Button>
                         <Button
                             color="primary"
                             disabled={!member}

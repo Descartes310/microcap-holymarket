@@ -14,42 +14,31 @@ import UserAccountTypeService from 'Services/account-types';
 import InputLabel from '@material-ui/core/InputLabel/InputLabel';
 import { Form, FormGroup, Input as InputStrap } from 'reactstrap';
 import RctCollapsibleCard from 'Components/RctCollapsibleCard/RctCollapsibleCard';
+import UserService from 'Services/users';
 
 const Create = (props) => {
 
-    const [type, setType] = useState(null);
-    const [types, setTypes] = useState([]);
     const [name, setName] = useState(null);
-    const [party, setParty] = useState(null);
-    const [parties, setParties] = useState([]);
+    const [agency, setAgency] = useState(null);
+    const [agencies, setAgencies] = useState([]);
     const [member, setMember] = useState(null);
     const [membership, setMembership] = useState(null);
     const [paymentMethod, setPaymentMethod] = useState(null); 
 
     useEffect(() => {
-        getTypes();
-        if(props.authUser.referralTypes.includes('PROVIDER_INTERMEDIARY')) {
-            getParties();
-        }
+        getCounters()
     }, []);
 
-    const getParties = () => {
+    const getCounters = () => {
         props.setRequestGlobalAction(true),
-        BankService.getAgents()
-        .then(response => setParties(response))
+        UserService.getInstitutions({type: 'PSG_COUNTER'})
+        .then(response => setAgencies(response))
         .finally(() => props.setRequestGlobalAction(false))
     }
-
-    const getTypes = () => {
-        props.setRequestGlobalAction(true),
-        UserAccountTypeService.getAccountTypes({based_from_member: true})
-        .then(response => setTypes(response.filter(at => at.show)))
-        .finally(() => props.setRequestGlobalAction(false))
-    }
-
+    
     const onSubmit = () => {
 
-        if(!member || !type || !paymentMethod || !name || (!party && props.authUser.referralTypes.includes('PROVIDER_INTERMEDIARY'))) {
+        if(!member || !agency || !paymentMethod || !name) {
             NotificationManager.error("Les informations renseignées sont incompletes ou incorrectes");
             return;
         }
@@ -58,14 +47,9 @@ const Create = (props) => {
 
         let data: any = {
             name: name,
+            agency_id: agency.id,
             reference: membership,
             payment_mode: paymentMethod.value,
-            account_type_reference: type.reference,
-        }
-
-        if(props.authUser.referralTypes.includes('PROVIDER_INTERMEDIARY')) {
-            data.party_reference = party.reference;
-            // data.counter_reference = counter.reference
         }
 
         BankService.createCounter(data).then(() => {
@@ -103,40 +87,21 @@ const Create = (props) => {
                         />
                     </FormGroup>
 
-                    { props.authUser.referralTypes.includes('PROVIDER_INTERMEDIARY') && (
-                        <>
-                            <div className="col-md-12 col-sm-12 has-wrapper mb-30">
-                                <InputLabel className="text-left">
-                                    Agence
-                                </InputLabel>
-                                <Autocomplete
-                                    id="combo-box-demo"
-                                    options={parties}
-                                    value={party}
-                                    onChange={(__, item) => {
-                                        setParty(item);
-                                    }}
-                                    getOptionLabel={(option) => option.commercialName}
-                                    renderInput={(params) => <TextField {...params} variant="outlined" />}
-                                />
-                            </div>
-                            {/* <div className="col-md-12 col-sm-12 has-wrapper mb-30">
-                                <InputLabel className="text-left">
-                                    Guichets potentiels
-                                </InputLabel>
-                                <Autocomplete
-                                    id="combo-box-demo"
-                                    options={counters}
-                                    value={counter}
-                                    onChange={(__, item) => {
-                                        setCounter(item);
-                                    }}
-                                    getOptionLabel={(option) => option.label}
-                                    renderInput={(params) => <TextField {...params} variant="outlined" />}
-                                />
-                            </div> */}
-                        </>
-                    )}
+                    <div className="col-md-12 col-sm-12 has-wrapper mb-30">
+                        <InputLabel className="text-left">
+                            Etablissement
+                        </InputLabel>
+                        <Autocomplete
+                            id="combo-box-demo"
+                            options={agencies}
+                            value={agency}
+                            onChange={(__, item) => {
+                                setAgency(item);
+                            }}
+                            getOptionLabel={(option) => option.label}
+                            renderInput={(params) => <TextField {...params} variant="outlined" />}
+                        />
+                    </div>
 
                     <div className="col-md-12 col-sm-12 has-wrapper mb-30">
                         <InputLabel className="text-left">
@@ -150,22 +115,6 @@ const Create = (props) => {
                                 setPaymentMethod(item);
                             }}
                             getOptionLabel={(option) => option.label}
-                            renderInput={(params) => <TextField {...params} variant="outlined" />}
-                        />
-                    </div>
-
-                    <div className="col-md-12 col-sm-12 has-wrapper mb-30">
-                        <InputLabel className="text-left">
-                            Type d'accès
-                        </InputLabel>
-                        <Autocomplete
-                            value={type}
-                            id="combo-box-demo"
-                            onChange={(__, item) => {
-                                setType(item);
-                            }}
-                            getOptionLabel={(option) => option.label}
-                            options={types}
                             renderInput={(params) => <TextField {...params} variant="outlined" />}
                         />
                     </div>

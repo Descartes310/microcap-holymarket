@@ -22,6 +22,7 @@ import { FUNDING, joinUrlWithParamsId } from 'Url/frontendUrl';
 import PageTitleBar from "Components/PageTitleBar/PageTitleBar";
 import InputLabel from '@material-ui/core/InputLabel/InputLabel';
 import { getPriceWithCurrency, convertDate } from 'Helpers/helpers';
+import OperationProvisioning from '../components/OperationProvisioning';
 import CodevParticipants from "Routes/custom/marketplace/orders/Participants";
 import RctCollapsibleCard from 'Components/RctCollapsibleCard/RctCollapsibleCard';
 
@@ -46,6 +47,7 @@ const Details = (props) => {
     const [endDate, setEndDate] = useState(convertDate(today, 'YYYY-MM-DD'));
     const [showCreateChildTicketBox, setShowCreateChildTicketBox] = useState(false);
     const [startDate, setStartDate] = useState(convertDate(previousDate, 'YYYY-MM-DD'));
+    const [showOperationProvisioningBox, setShowOperationProvisioningBox] = useState(false);
 
     useEffect(() => {
         findAccount();
@@ -136,6 +138,32 @@ const Details = (props) => {
                 NotificationManager.error("Une erreur est survenue, veuillez réessayer plus tard.");
                 setShowConfirmBox(false);
             }
+        })
+        .finally(() => {
+            props.setRequestGlobalAction(false);
+        })
+    }
+
+    const onOperationProvisioning = (amount, paymentMethod, paymentReference, file) => {
+
+        props.setRequestGlobalAction(true);
+
+        let data: any = {amount, paymentMethod};
+        if(paymentReference) {
+            data.paymentReference = paymentReference;
+        }
+
+        if(file) {
+            data.file = file;
+        }
+       
+        AccountService.operationProvisioning(account.reference, data, { fileData: ['proof'], multipart: true }).then(() => {
+            findAccount();
+            getMouvements();
+            setShowOperationProvisioningBox(false);
+        })
+        .catch((err) => {
+            NotificationManager.error("Une erreur est survenue, veuillez réessayer plus tard.");
         })
         .finally(() => {
             props.setRequestGlobalAction(false);
@@ -280,6 +308,18 @@ const Details = (props) => {
                                                     }}
                                                 >
                                                     Provisionner
+                                                </Button>
+                                            )}
+                                            { account?.accountType.referenceProduct === 'operation_account' && (
+                                                <Button
+                                                    color="primary"
+                                                    variant="contained"
+                                                    className="text-white font-weight-bold mr-5"
+                                                    onClick={() => {
+                                                        setShowOperationProvisioningBox(true);
+                                                    }}
+                                                >
+                                                    Approvisionner
                                                 </Button>
                                             )}
                                             { account?.order?.type === 'CANTO' && (
@@ -468,6 +508,15 @@ const Details = (props) => {
                         onSubmit={onProvisioning}
                         account={account}
                         show={showProvisioningBox}
+                        onClose={() => setShowProvisioningBox(false)}
+                    />
+                )}
+                { account && showOperationProvisioningBox && (
+                    <OperationProvisioning
+                        title="Demande d'approvisionnement"
+                        account={account}
+                        onSubmit={onOperationProvisioning}
+                        show={showOperationProvisioningBox}
                         onClose={() => setShowProvisioningBox(false)}
                     />
                 )}

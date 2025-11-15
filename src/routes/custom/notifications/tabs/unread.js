@@ -15,6 +15,7 @@ import RctSectionLoader from "Components/RctSectionLoader/RctSectionLoader";
 import InitDealModal from "Routes/custom/fundings/components/InitDealModal";
 import CodevInvitationBox from "Routes/custom/notifications/CodevInvitationBox";
 import ConfirmMembershipBox from "Routes/custom/notifications/ConfirmMembershipBox";
+import SettlementRequestModal from "Routes/custom/notifications/components/SettlementRequest";
 
 class Unread extends Component {
 
@@ -33,6 +34,7 @@ class Unread extends Component {
             showCodevInvitationBox: false,
             showConfirmInjectionBox: false,
             showConfirmMembershipBox: false,
+            showSettlementRequestBox: false,
             showAccountActivationBox: false,
             showConfirmCodevInvitationBox: false
         }
@@ -116,9 +118,13 @@ class Unread extends Component {
         this.setState({ showConfirmMembershipBox: true, notification });
     };
 
+    onSettlementRequestClick = (notification) => {
+        this.setState({ showSettlementRequestBox: true, notification });
+    };
+
     render() {
         const { notifications, loading, showActivationBox, notification, showInitDealBox, showConfirmMembershipBox,
-            showCodevInvitationBox, showConfirmCodevInvitationBox, showAccountActivationBox, showConfirmInjectionBox } = this.state;
+            showCodevInvitationBox, showConfirmCodevInvitationBox, showAccountActivationBox, showConfirmInjectionBox, showSettlementRequestBox } = this.state;
 
         if (loading) {
             return (<RctSectionLoader />);
@@ -151,6 +157,7 @@ class Unread extends Component {
                                             onActivationClick={() => this.onActivationClick(notification)}
                                             onActivationPassClick={() => this.onActivationPassClick(notification)}
                                             onCodevInvitationClick={() => this.onCodevInvitationClick(notification)}
+                                            onSettlementRequestClick={() => this.onSettlementRequestClick(notification)}
                                             onFundingActivationClick={() => this.onFundingActivationClick(notification)}
                                             onApproveInjection={(status) => this.onApproveInjection(notification, status)}
                                             onMembershipConfirmClick={() => this.onMembershipConfirmClick(notification)}
@@ -207,6 +214,18 @@ class Unread extends Component {
                         }}
                         notification={notification?.id}
                         reference={notification.details.find(nd => nd.type === "GRANT_OFFER_REFERENCE")?.value}
+                    />
+                )}
+
+                {notification && showSettlementRequestBox && (
+                    <SettlementRequestModal 
+                        show={showSettlementRequestBox}
+                        title="Demande de règlement"
+                        onClose={() => {
+                            this.setState({ showSettlementRequestBox: false, notification: null })
+                        }}
+                        notification={notification?.id}
+                        reference={notification.details.find(nd => nd.type === "SETTLEMENT_REFERENCE")?.value}
                     />
                 )}
 

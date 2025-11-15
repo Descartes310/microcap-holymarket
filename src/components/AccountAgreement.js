@@ -140,7 +140,7 @@ class AccountAgreement extends Component {
                                             style={{ cursor: 'pointer',  }} 
                                             onClick={() => window.open(getFilePath(agreements?.agreement), 'blank')}>
                                                 Voir l'ancienne version
-                                        </span> 
+                                        </span>
                                     }
                                 </InputLabel>
                                 <FileUploader

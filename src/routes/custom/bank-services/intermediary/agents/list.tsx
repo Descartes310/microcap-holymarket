@@ -17,7 +17,7 @@ const List = (props) => {
 
     const getParties = () => {
         props.setRequestGlobalAction(true),
-        BankService.getAgents()
+        BankService.getAgents({statuses: ['AGENT']})
         .then(response => setParties(response))
         .finally(() => props.setRequestGlobalAction(false))
     }

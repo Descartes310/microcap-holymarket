@@ -6,45 +6,44 @@ import Button from '@material-ui/core/Button';
 import { withRouter } from "react-router-dom";
 import UserSelect from 'Components/UserSelect';
 import { setRequestGlobalAction } from 'Actions';
+import { PAYMENT_METHODS } from 'Helpers/helpers';
 import React, { useState, useEffect } from 'react';
 import TextField from '@material-ui/core/TextField';
 import Autocomplete from '@material-ui/lab/Autocomplete';
 import { NotificationManager } from 'react-notifications';
-import UserAccountTypeService from 'Services/account-types';
 import InputLabel from '@material-ui/core/InputLabel/InputLabel';
 import { Form, FormGroup, Input as InputStrap } from 'reactstrap';
 import RctCollapsibleCard from 'Components/RctCollapsibleCard/RctCollapsibleCard';
-import { getReferralTypeLabel, PAYMENT_METHODS } from 'Helpers/helpers';
 
 const Create = (props) => {
 
     const [name, setName] = useState(null);
-    const [type, setType] = useState(null);
-    const [types, setTypes] = useState([]);
-    const [agents, setAgents] = useState([]);
+    // const [agents, setAgents] = useState([]);
     const [member, setMember] = useState(null); 
-    const [broker, setBroker] = useState(null);
-    const [brokerCode, setBrokerCode] = useState(null);
+    // const [broker, setBroker] = useState(null);
+    // const [brokerCode, setBrokerCode] = useState(null);
+    const [agency, setAgency] = useState(null);
+    const [agencies, setAgencies] = useState([]);
     const [prestations, setPrestations] = useState([]);
     const [membership, setMembership] = useState(null);
     const [paymentMethod, setPaymentMethod] = useState(null);
-    const [selectedAgent, setSelectedAgent] = useState(null);  
+    // const [selectedAgent, setSelectedAgent] = useState(null);  
 
     useEffect(() => {
-        getTypes();
+        getAgencies();
         getPrestations();
     }, []);
 
-    useEffect(() => {
-        if(broker) {
-            getPotentialAgents();
-        }
-    }, [broker])
+    // useEffect(() => {
+    //     if(broker) {
+    //         getPotentialAgents();
+    //     }
+    // }, [broker])
 
-    const getTypes = () => {
+    const getAgencies = () => {
         props.setRequestGlobalAction(true),
-        UserAccountTypeService.getAccountTypes({based_from_member: true})
-        .then(response => setTypes(response.filter(at => at.show)))
+        UserService.getInstitutions({type: 'PSG_AGENCY'})
+        .then(response => setAgencies(response))
         .finally(() => props.setRequestGlobalAction(false))
     }
 
@@ -55,16 +54,16 @@ const Create = (props) => {
         .finally(() => props.setRequestGlobalAction(false))
     }
 
-    const getPotentialAgents = () => {
-        props.setRequestGlobalAction(true),
-        BankService.getPotentialAgents({referralCode: brokerCode})
-        .then(response => setAgents(response))
-        .finally(() => props.setRequestGlobalAction(false))
-    }
+    // const getPotentialAgents = () => {
+    //     props.setRequestGlobalAction(true),
+    //     BankService.getPotentialAgents({referralCode: brokerCode})
+    //     .then(response => setAgents(response))
+    //     .finally(() => props.setRequestGlobalAction(false))
+    // }
 
     const onSubmit = () => {
 
-        if(!selectedAgent || !type || !paymentMethod || !name) {
+        if(!paymentMethod || !name || !agency) {
             NotificationManager.error("Les informations renseignées sont incompletes ou incorrectes");
             return;
         }
@@ -73,10 +72,9 @@ const Create = (props) => {
 
         let data = {
             name: name,
+            agency_id: agency.id,
             reference: membership,
-            payment_mode: paymentMethod.value,
-            account_type_reference: type.reference,
-            agence_reference: selectedAgent.reference
+            payment_mode: paymentMethod.value
         }
 
         BankService.createAgent(data).then(() => {
@@ -94,7 +92,7 @@ const Create = (props) => {
         <>
             <RctCollapsibleCard>
                 <Form onSubmit={onSubmit}>
-                    <div className="col-md-12 col-sm-12 has-wrapper mb-30">
+                    {/* <div className="col-md-12 col-sm-12 has-wrapper mb-30">
                         <UserSelect label={"Réference du Broker"} type='BROKER' fromMyOrganisation={false} onChange={(membership, user) => {
                             setBrokerCode(membership);
                             setBroker(user);
@@ -116,7 +114,8 @@ const Create = (props) => {
                                 renderInput={(params) => <TextField {...params} variant="outlined" />}
                             />
                         </div>
-                    )}
+                    )} */}
+                    
 
                     <FormGroup className="has-wrapper">
                         <InputLabel className="text-left" htmlFor="name">
@@ -132,6 +131,22 @@ const Create = (props) => {
                             onChange={(e) => setName(e.target.value)}
                         />
                     </FormGroup>
+
+                    <div className="col-md-12 col-sm-12 has-wrapper mb-30">
+                        <InputLabel className="text-left">
+                            Etablissement
+                        </InputLabel>
+                        <Autocomplete
+                            id="combo-box-demo"
+                            options={agencies}
+                            value={agency}
+                            onChange={(__, item) => {
+                                setAgency(item);
+                            }}
+                            getOptionLabel={(option) => option.label}
+                            renderInput={(params) => <TextField {...params} variant="outlined" />}
+                        />
+                    </div>
                     
                     <FormGroup className="has-wrapper">
                         <UserSelect isSelect={true} label={'Sélectionner le responsable'} onChange={(_, user) => {
@@ -150,22 +165,6 @@ const Create = (props) => {
                             value={paymentMethod}
                             onChange={(__, item) => {
                                 setPaymentMethod(item);
-                            }}
-                            getOptionLabel={(option) => option.label}
-                            renderInput={(params) => <TextField {...params} variant="outlined" />}
-                        />
-                    </div>
-
-                    <div className="col-md-12 col-sm-12 has-wrapper mb-30">
-                        <InputLabel className="text-left">
-                            Type du mandat
-                        </InputLabel>
-                        <Autocomplete
-                            value={type}
-                            options={types}
-                            id="combo-box-demo"
-                            onChange={(__, item) => {
-                                setType(item);
                             }}
                             getOptionLabel={(option) => option.label}
                             renderInput={(params) => <TextField {...params} variant="outlined" />}

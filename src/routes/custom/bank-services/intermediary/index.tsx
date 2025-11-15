@@ -10,15 +10,16 @@ import { withRouter } from "react-router-dom";
 import PageTitleBar from "Components/PageTitleBar/PageTitleBar";
 import { setRequestGlobalAction } from "Actions/RequestGlobalAction";
 
-class Catalogues extends Component<any, any> {
+class BankService extends Component<any, any> {
     constructor(props: any) {
         super(props);
         const defaultState = (function (url) {
             // if (url.includes(BANK.PARTY.CASHDESK.SELF)) return 0;
             if (url.includes(BANK.PARTY.COUNTER.SELF)) return 0;
             else if (url.includes(BANK.PARTY.AGENT.SELF)) return 1;
-            else if (url.includes(BANK.PARTY.COVERAGE.SELF)) return 2;
-            else if (url.includes(BANK.PARTY.PRESTATION.SELF)) return 3;
+            else if (url.includes(BANK.PARTY.SUPER_AGENT.SELF)) return 2;
+            else if (url.includes(BANK.PARTY.MANDATE.SELF)) return 3;
+            else if (url.includes(BANK.PARTY.COVERAGE.SELF)) return 4;
             else return 0;
         })(window.location.pathname);
 
@@ -35,8 +36,9 @@ class Catalogues extends Component<any, any> {
                 // case 0: return this.props.history.push(BANK.PARTY.CASHDESK.SELF);
                 case 0: return this.props.history.push(BANK.PARTY.COUNTER.SELF);
                 case 1: return this.props.history.push(BANK.PARTY.AGENT.SELF);
-                case 2: return this.props.history.push(BANK.PARTY.COVERAGE.SELF);
-                case 3: return this.props.history.push(BANK.PARTY.PRESTATION.SELF);
+                case 2: return this.props.history.push(BANK.PARTY.SUPER_AGENT.SELF);
+                case 3: return this.props.history.push(BANK.PARTY.MANDATE.SELF);
+                case 4: return this.props.history.push(BANK.PARTY.COVERAGE.SELF);
                 default: return this.props.history.push(BANK.PARTY.COUNTER.SELF);
             }
         }
@@ -61,30 +63,31 @@ class Catalogues extends Component<any, any> {
                                         variant="scrollable"
                                         centered
                                     >
-                                        { (this.props.authUser.referralTypes.includes('PROVIDER_INTERMEDIARY') || this.props.authUser.referralTypes.includes('PROVIDER_AGENT')) && (
-                                            <Tab
-                                                icon={<i className="zmdi zmdi-home" />}
-                                                label={"Guichets"}
-                                            />
-                                        )}
-                                        { this.props.authUser.referralTypes.includes('PROVIDER_INTERMEDIARY') && (
-                                            <Tab
-                                                icon={<i className="zmdi zmdi-home" />}
-                                                label={"Agences"}
-                                            />
-                                        )}
-                                        { this.props.authUser.referralTypes.includes('PROVIDER_INTERMEDIARY') && (
-                                            <Tab
-                                                icon={<i className="zmdi zmdi-home" />}
-                                                label={"Couvertures"}
-                                            />
-                                        )}
-                                        { this.props.authUser.referralTypes.includes('PROVIDER_INTERMEDIARY') && (
-                                            <Tab
-                                                icon={<i className="zmdi zmdi-home" />}
-                                                label={"Prestations"}
-                                            />
-                                        )}
+                                        <Tab
+                                            disabled={!this.props.authUser.referralTypes.includes('AGENT')}
+                                            icon={<i className="zmdi zmdi-home" />}
+                                            label={"Guichets"}
+                                        />
+                                        <Tab
+                                            disabled={!this.props.authUser.referralTypes.includes('PROVIDER_INTERMEDIARY') && !this.props.authUser.referralTypes.includes('PROVIDER_SUPER_AGENT')}
+                                            icon={<i className="zmdi zmdi-home" />}
+                                            label={"Mon réseau d'agence"}
+                                        />
+                                        <Tab
+                                            disabled={!this.props.authUser.referralTypes.includes('PROVIDER_INTERMEDIARY') && !this.props.authUser.referralTypes.includes('PROVIDER_SUPER_AGENT')}
+                                            icon={<i className="zmdi zmdi-home" />}
+                                            label={"Mes agents"}
+                                        />
+                                        <Tab
+                                            disabled={!this.props.authUser.referralTypes.includes('PROVIDER_INTERMEDIARY') && !this.props.authUser.referralTypes.includes('PROVIDER_AGENT') && !this.props.authUser.referralTypes.includes('PROVIDER_SUPER_AGENT')}
+                                            icon={<i className="zmdi zmdi-home" />}
+                                            label={"Mes mandats"}
+                                        />
+                                        <Tab
+                                            disabled={!this.props.authUser.referralTypes.includes('PROVIDER_INTERMEDIARY')}
+                                            icon={<i className="zmdi zmdi-home" />}
+                                            label={"Mes couvertures"}
+                                        />
                                     </Tabs>
                                 </div>
                             </div>
@@ -102,4 +105,4 @@ const mapStateToProps = ({ authUser }) => {
     return { authUser: authUser.data, }
 };
 
-export default connect(mapStateToProps, { setRequestGlobalAction })(withRouter(Catalogues));
+export default connect(mapStateToProps, { setRequestGlobalAction })(withRouter(BankService));

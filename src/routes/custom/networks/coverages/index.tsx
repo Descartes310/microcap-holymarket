@@ -22,6 +22,7 @@ const Coverage = (props) => {
                     <Route path={NETWORK.COVERAGE.TERRITORY.SELF} component={Territory} />
                     <Route path={NETWORK.COVERAGE.CONTRACT.SELF} component={Contract} />
                     <Route path={NETWORK.COVERAGE.PARTNERSHIP.COMPLEMENTARY} component={Providers} />
+                    <Route path={NETWORK.COVERAGE.PARTNERSHIP.PROVIDER_SPE} component={Providers} />
                     <Route path={NETWORK.COVERAGE.PARTNERSHIP.SELF} component={Partnership} />
                     <Route path={NETWORK.COVERAGE.USERS.SELF} component={users} />
                     <Route path={NETWORK.COVERAGE.RESILIATION.SELF} component={resiliations} />

@@ -7,6 +7,10 @@ export default class AccountService {
         return makeRequest('get', Routes.GET_ACCOUNTS);
     }
 
+    static getAvailableBanks(): Promise<any> {
+        return makeRequest('get', Routes.GET_AVAILABLE_BANKS);
+    }
+
     static getAccountProfiles(): Promise<any> {
         return makeRequest('get', Routes.GET_ACCOUNT_PROFILES);
     }
@@ -41,6 +45,10 @@ export default class AccountService {
 
     static provisioning(reference, data: any): Promise<any> {
         return makeRequest('post', Routes.PROVISIONING(reference), data);
+    }
+
+    static operationProvisioning(reference, data: any, config: any): Promise<any> {
+        return makeRequest('post', Routes.OPERATION_PROVISIONING(reference), data, config);
     }
 
     static activeAccount(id, data: any): Promise<any> {

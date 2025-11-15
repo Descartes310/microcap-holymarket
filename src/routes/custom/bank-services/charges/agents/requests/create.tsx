@@ -1,4 +1,3 @@
-import moment from 'moment';
 import { connect } from 'react-redux';
 import { BANK } from 'Url/frontendUrl';
 import BankService from 'Services/banks';
@@ -9,23 +8,18 @@ import { setRequestGlobalAction } from 'Actions';
 import React, { useState, useEffect } from 'react';
 import { RECHARGE_NATURES } from 'Helpers/helpers';
 import TextField from '@material-ui/core/TextField';
-import { FileUploader } from "react-drag-drop-files";
 import {NotificationManager} from 'react-notifications';
 import Autocomplete from '@material-ui/lab/Autocomplete';
 import InputLabel from '@material-ui/core/InputLabel/InputLabel';
 import { Form, FormGroup, Input as InputStrap } from 'reactstrap';
 import RctCollapsibleCard from 'Components/RctCollapsibleCard/RctCollapsibleCard';
 
-const fileTypes = ["JPG", "PNG", "GIF", "JPEG", "PDF"];
-
 const Create = (props) => {
 
-    const [file, setFile] = useState(null);
     const [unit, setUnit] = useState(null);
     const [units, setUnits] = useState([]);
     const [amount, setAmount] = useState(null);
-    const [paidAt, setPaidAt] = useState(moment().format("YYYY-MM-DD"));
-    const [direction, setDirection] = useState(null);  
+    const [direction, setDirection] = useState(null);
 
     useEffect(() => {
         getUnits();
@@ -44,7 +38,7 @@ const Create = (props) => {
     }
 
     const onSubmit = () => {
-        if(!amount || !paidAt || !unit || !direction) {
+        if(!amount || !unit || !direction) {
             NotificationManager.error('Veuillez bien remplir le formulaire')
             return;
         }
@@ -53,14 +47,9 @@ const Create = (props) => {
 
         let data: any = {
             amount,
-            paidAt,
             currency: unit.code,
-            direction: direction.value
+            direction: direction.value,
         };
-
-        if(file) {
-            data.proof = file;
-        }
 
         BankService.createChargeRequest(data, { fileData: ['proof'], multipart: true }).then(() => {
             NotificationManager.success("La demande a été créée avec succès");
@@ -121,31 +110,6 @@ const Create = (props) => {
                             renderInput={(params) => <TextField {...params} variant="outlined" />}
                         />
                     </div>
-                    <FormGroup className="has-wrapper">
-                        <InputLabel className="text-left" htmlFor="paidAt">
-                            Date de paiement
-                        </InputLabel>
-                        <InputStrap
-                            required
-                            type="date"
-                            id="paidAt"
-                            name='paidAt'
-                            className="input-lg"
-                            value={paidAt}
-                            onChange={(e) => setPaidAt(e.target.value)}
-                        />
-                    </FormGroup>
-                    <FormGroup className="has-wrapper">
-                        <InputLabel className="text-left" htmlFor="title">
-                            Charger la couverture
-                        </InputLabel>
-                        <FileUploader
-                            classes="mw-100"
-                            label="Sélectionner la couverture ici"
-                            handleChange={(file) => {
-                                setFile(file);
-                            }} name="file" types={fileTypes} />
-                    </FormGroup>
 
                     <FormGroup>
                         <Button

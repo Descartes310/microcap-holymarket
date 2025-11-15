@@ -5,12 +5,14 @@ export const GET_PAYMENT_ACCOUNTS = 'api/fundings/accounts/payments';
 export const GET_ACCOUNTS_BY_TYPE = 'api/fundings/accounts/by-types';
 export const DEBIT_ACCOUNT = (id) => `api/fundings/accounts/${id}/debit`;
 export const CREDIT_ACCOUNT = (id) => `api/fundings/accounts/${id}/credit`;
+export const GET_AVAILABLE_BANKS = 'api/fundings/accounts/available-banks';
 export const ACTIVATE_ACCOUNT = (id) => `api/fundings/accounts/${id}/activate`;
 export const GET_ACCOUNTS_BY_SPECIALITY = 'api/fundings/accounts/by-speciality';
 export const PROVISIONING = (id) => `api/fundings/accounts/${id}/provisioning`;
 export const CANTONATE_ACCOUNT = (id) => `api/fundings/accounts/${id}/cantonate`;
 export const GET_FREEZING_TRANSACTION = `api/fundings/accounts/freezed-transactions`;
 export const GET_ACCOUNT_MOUVEMENTS = (id) => `api/fundings/accounts/${id}/mouvements`;
+export const OPERATION_PROVISIONING = (id) => `api/fundings/accounts/${id}/provisioning/operations`;
 export const FIND_ACCOUNT_BY_REFERENCE = (reference) => `api/fundings/accounts/reference/${reference}`;
 export const FIND_ACTIVATION_ACCOUNT_DETAILS = (reference) => `api/fundings/accounts/${reference}/details/activation`;
 

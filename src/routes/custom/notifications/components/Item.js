@@ -11,7 +11,7 @@ class Item extends Component {
 
     ESCAPE_STATUSES = [NotificationType.ACTIVATION, NotificationType.ACTIVATION_PASS, NotificationType.CODEV_INVITATION,
         NotificationType.CODEV_INVITATION_REQUEST, NotificationType.ACTIVATE_FUNDING_ACCOUNT, NotificationType.DEDICATED_GRANT_OFFER,
-        NotificationType.INJECTION_REQUEST, NotificationType.MEMBERSHIP
+        NotificationType.INJECTION_REQUEST, NotificationType.MEMBERSHIP, NotificationType.SETTLEMENT_REQUEST
     ]
 
     state = {
@@ -35,7 +35,7 @@ class Item extends Component {
     };
 
     render() {
-        const { notification, onActivationClick, authUser, onFundingActivationClick, tab, onApproveInjection,
+        const { notification, onActivationClick, authUser, onFundingActivationClick, tab, onApproveInjection, onSettlementRequestClick,
             onCodevInvitationClick, onCodevInvitationRequestClick, onActivationPassClick, onInitDealClick, onMembershipConfirmClick } = this.props;
         return (
             <ListItem className="row px-20 py-3 d-flex justify-content-between align-items-center">
@@ -78,6 +78,9 @@ class Item extends Component {
                                 )}
                                 { (notification.type === NotificationType.FILE_AUTHENTIFICATION && notification.treatedAt == null) && (
                                     <DropdownItem onClick={() => this.props.history.push(joinUrlWithParamsId(SUPERVISION.USERS.DETAILS, notification.details.find(nd => nd.type === "USER_REFERENCE")?.value))}>Consulter la pièce</DropdownItem>
+                                )}
+                                { (notification.type === NotificationType.SETTLEMENT_REQUEST && notification.treatedAt == null) && (
+                                    <DropdownItem onClick={() => onSettlementRequestClick()}>Traiter la demande</DropdownItem>
                                 )}
                                 { (notification.type === NotificationType.INJECTION_REQUEST && notification.treatedAt == null) && (
                                     <>

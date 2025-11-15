@@ -745,6 +745,14 @@ export const referraTypes = () => {
     ]
 }
 
+export const getReferralTypeLabel = (value: any) => {
+    let referralType = referraTypes().find(rt => rt.value === value);
+    if (referralType)
+        return referralType.label;
+    else
+        return value;
+}
+
 export const groupTypes = () => {
     return [
         {
@@ -760,14 +768,6 @@ export const groupTypes = () => {
             value: 'UNCONVENTIONATED_COMMUNITY'
         }
     ]
-}
-
-export const getReferralTypeLabel = (value: any) => {
-    let referralType = referraTypes().find(rt => rt.value === value);
-    if (referralType)
-        return referralType.label;
-    else
-        return value;
 }
 
 export const getGroupTypeLabel = (value: any) => {
@@ -1390,6 +1390,21 @@ export const RECHARGE_NATURES = [
     }
 ]
 
+export const RECHARGE_METHODS = [
+    {
+        label: 'Versement en compte',
+        value: 'ACCOUNT_DEPOSIT'
+    },
+    {
+        label: 'Virement MicroCap',
+        value: 'MICROCAP_TRANSFER'
+    },
+    {
+        label: 'Règlement différé',
+        value: 'DEFERRED_PAYMENT'
+    },
+]
+
 
 export const logActionTypes = [
     {
@@ -1410,6 +1425,10 @@ export const getLogActionTypeLabel = (value) => {
     return logActionTypes.find(d => d.value == value)?.label
 }
 
+export const getRechargeMethodLabel = (value) => {
+    return RECHARGE_METHODS.find(d => d.value == value)?.label
+}
+
 export const deliveryZoneTypes = () => {
     return [
         { value: 'NEIGHBORHOOD', label: 'Quartier' },
@@ -1423,6 +1442,27 @@ export const getDeliveryZoneTypeLabel = (value: any) => {
     let deliveryZoneType = deliveryZoneTypes().find(rt => rt.value === value);
     if (deliveryZoneType)
         return deliveryZoneType.label;
+    else
+        return value;
+}
+
+export const specializedProviderTypes = () => {
+    return [
+        {
+            label: 'Agent de prestation de guichet avancé',
+            value: 'PROVIDER_SUPER_AGENT'
+        },
+        {
+            label: 'Agent d\'agent de guichet avancé',
+            value: 'PROVIDER_AGENT'
+        }
+    ]
+}
+
+export const getSpecializedProviderTypesLabel = (value: any) => {
+    let referralType = specializedProviderTypes().find(rt => rt.value === value);
+    if (referralType)
+        return referralType.label;
     else
         return value;
 }

@@ -3,16 +3,18 @@ import List from './list';
 import {connect} from "react-redux";
 import {injectIntl} from "react-intl";
 import { BANK } from 'Url/frontendUrl';
+import Prestations from '../prestations';
 import {withRouter, Switch, Redirect, Route} from "react-router-dom";
 
-const Accounts = (props) => {
+const Mandates = (props) => {
     const { match } = props;
     return (
         <div className="full-height">
             <>
                 <Switch>
-                    <Redirect exact from={`${match.url}/`} to={BANK.ACCOUNT.LIST} />
-                    <Route path={BANK.ACCOUNT.LIST} component={List} />
+                    <Redirect exact from={`${match.url}/`} to={BANK.PARTY.MANDATE.LIST} />
+                    <Route path={BANK.PARTY.MANDATE.LIST} component={List} />
+                    <Route path={BANK.PARTY.MANDATE.PRESTATION.SELF} component={Prestations} />
                 </Switch>
             </>
         </div>
@@ -23,4 +25,4 @@ const mapStateToProps = ({ requestGlobalLoader }) => {
     return { requestGlobalLoader }
 };
 
-export default connect(mapStateToProps, {})(withRouter(injectIntl(Accounts)));
+export default connect(mapStateToProps, {})(withRouter(injectIntl(Mandates)));

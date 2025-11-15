@@ -37,6 +37,10 @@ class UserSelect extends Component {
     }
 
     findUserByMembership = () => {
+        if(!this.state.membership.toString().startsWith("g") && this.props.onlyOrganisation) {
+            NotificationManager.error("Entrez la reference d'une personne morale");
+            return;
+        }
         this.props.setRequestGlobalAction(true);
         let data = {
             from_group: this.props.fromMyOrganisation ?? false

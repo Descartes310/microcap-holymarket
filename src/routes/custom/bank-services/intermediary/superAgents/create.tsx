@@ -1,27 +1,29 @@
 import { connect } from 'react-redux';
 import { BANK } from 'Url/frontendUrl';
-import UserService from 'Services/users';
 import BankService from 'Services/banks';
+import UserService from 'Services/users';
 import Button from '@material-ui/core/Button';
 import { withRouter } from "react-router-dom";
 import UnitSelect from 'Components/UnitSelect';
+import AccountService from 'Services/accounts';
+import UserSelect from 'Components/UserSelect';
 import { setRequestGlobalAction } from 'Actions';
 import React, { useState, useEffect } from 'react';
 import TextField from '@material-ui/core/TextField';
-import { getReferralTypeLabel } from 'Helpers/helpers';
 import Autocomplete from '@material-ui/lab/Autocomplete';
 import { NotificationManager } from 'react-notifications';
 import InputLabel from '@material-ui/core/InputLabel/InputLabel';
 import { Form, FormGroup, Input as InputStrap } from 'reactstrap';
 import RctCollapsibleCard from 'Components/RctCollapsibleCard/RctCollapsibleCard';
-import AccountService from 'Services/accounts';
 
 const Create = (props) => {
 
-    const [member, setMember] = useState(null);
-    const [prestations, setPrestations] = useState([]);
+    const [name, setName] = useState(null);
+    const [member, setMember] = useState(null); 
+    const [agency, setAgency] = useState(null);
+    const [agencies, setAgencies] = useState([]);
     const [membership, setMembership] = useState(null);
-    const [commercialName, setCommercialName] = useState('');  
+    const [prestations, setPrestations] = useState([]);
     const [selectedPrestations, setSelectedPrestations] = useState([]);
     
     const [bank, setBank] = useState(null);
@@ -34,13 +36,21 @@ const Create = (props) => {
 
     useEffect(() => {
         getPrestations();
-        getBanks()
+        getAgencies();
+        getBanks();
     }, []);
 
     const getPrestations = () => {
-        props.setRequestGlobalAction(true),
+        props.setRequestGlobalAction(true);
         BankService.getPrestations()
         .then(response => setPrestations(response))
+        .finally(() => props.setRequestGlobalAction(false))
+    }
+
+    const getAgencies = () => {
+        props.setRequestGlobalAction(true),
+        UserService.getInstitutions({type: 'PSG_AGENCY'})
+        .then(response => setAgencies(response))
         .finally(() => props.setRequestGlobalAction(false))
     }
 
@@ -53,15 +63,20 @@ const Create = (props) => {
 
     const onSubmit = () => {
 
-        if(!member || !commercialName || selectedPrestations.length <= 0) {
+        if(!name || !membership || selectedPrestations.length <= 0) {
             NotificationManager.error("Les informations renseignées sont incompletes ou incorrectes");
             return;
         }
 
+        
         let data: any = {
-            commercialName: commercialName,
-            referralCode: member.referralCode,
+            name: name,
+            referralCode: membership,
             prestations: selectedPrestations.map(p => p.id),
+        }
+        
+        if(agency) {
+            data.agency_id = agency.id;
         }
 
         if(!bank || !accountKey || !accountNumber || !bic || !iban || !currency) {
@@ -76,33 +91,29 @@ const Create = (props) => {
         data.account_balance = 0;
         data.account_currency = currency.code;
         data.account_number = accountNumber;
-
+        
         props.setRequestGlobalAction(true);
-
-        BankService.createMandate(data).then(() => {
-            NotificationManager.success("Le mandat a été créé avec succès");
-            props.history.push(BANK.ADMIN.MANDATE.LIST);
-        }).catch((err) => {
-            console.log(err);
-            NotificationManager.error("Une erreur est survenu lors du partenariat");
-        }).finally(() => {
-            props.setRequestGlobalAction(false);
-        })
-    }
-
-    const findUserByMembership = () => {
-        props.setRequestGlobalAction(true);
-        UserService.findUserByReference(membership, {type: 'PROVIDER_INTERMEDIARY'})
-        .then(response => {
-            setMember(response);
-        })
-        .catch((err) => {
-            console.log(err);
-            NotificationManager.error("L'utilisateur fourni n'est pas un prestataire");
-        })
-        .finally(() => {
-            props.setRequestGlobalAction(false);
-        })
+        if(props.authUser.referralTypes.includes('PROVIDER_SUPER_AGENT')) {
+            BankService.createSubAgentMandate(data).then(() => {
+                NotificationManager.success("Le réseau a été créée avec succès");
+                props.history.push(BANK.PARTY.SUPER_AGENT.LIST);
+            }).catch((err) => {
+                console.log(err);
+                NotificationManager.error("Une erreur est survenue lors de la création du réseau");
+            }).finally(() => {
+                props.setRequestGlobalAction(false);
+            })
+        } else {
+            BankService.createSuperAgentMandate(data).then(() => {
+                NotificationManager.success("Le réseau a été créée avec succès");
+                props.history.push(BANK.PARTY.SUPER_AGENT.LIST);
+            }).catch((err) => {
+                console.log(err);
+                NotificationManager.error("Une erreur est survenue lors de la création du réseau");
+            }).finally(() => {
+                props.setRequestGlobalAction(false);
+            })
+        }
     }
 
     return (
@@ -110,75 +121,59 @@ const Create = (props) => {
             <RctCollapsibleCard>
                 <Form onSubmit={onSubmit}>
 
-                <FormGroup className="has-wrapper">
-                        <InputLabel className="text-left" htmlFor="membership">
-                            Numéro utilisateur
-                        </InputLabel>
-                        <InputStrap
-                            required
-                            type="text"
-                            id="membership"
-                            name='membership'
-                            value={membership}
-                            className="input-lg"
-                            onChange={(e) => setMembership(e.target.value)}
-                        />
-                    </FormGroup>
-
-                    {member && (
-                        <>
-                            <FormGroup className="has-wrapper">
-                                <InputStrap
-                                    disabled
-                                    className="input-lg"
-                                    value={member.userName}
-                                />
-                            </FormGroup>
-                            <FormGroup className="has-wrapper">
-                                <InputStrap
-                                    disabled
-                                    className="input-lg"
-                                    value={member.email}
-                                />
-                            </FormGroup>
-                            <FormGroup className="has-wrapper">
-                                <InputStrap
-                                    disabled
-                                    className="input-lg"
-                                    value={getReferralTypeLabel(member.referralType)}
-                                />
-                            </FormGroup>
-                        </>
-                    )}
-
                     <FormGroup className="has-wrapper">
-                        <InputLabel className="text-left" htmlFor="label">
-                            Nom commercial
+                        <InputLabel className="text-left" htmlFor="name">
+                            Nom du réseau
                         </InputLabel>
                         <InputStrap
                             required
-                            id="label"
+                            id="name"
                             type="text"
-                            name='label'
+                            name='name'
+                            value={name}
                             className="input-lg"
-                            value={commercialName}
-                            onChange={(e) => setCommercialName(e.target.value)}
+                            onChange={(e) => setName(e.target.value)}
                         />
                     </FormGroup>
+                    
+                    <FormGroup className="has-wrapper">
+                        <UserSelect type={props.authUser.referralTypes.includes('PROVIDER_SUPER_AGENT') ? 'PROVIDER_AGENT' : 'PROVIDER_SUPER_AGENT'} label={props.authUser.referralTypes.includes('PROVIDER_SUPER_AGENT') ? 'Sélectionner l\'agent d\'agent de guichet' : 'Sélectionner le prestataire de guichet'} onChange={(_, user) => {
+                            setMember(user);
+                            setMembership(user.referralCode)
+                        }}/>
+                    </FormGroup>
+
+                    {props.authUser.referralTypes.includes('PROVIDER_SUPER_AGENT') && (
+                        <div className="col-md-12 col-sm-12 has-wrapper mb-30">
+                            <InputLabel className="text-left">
+                                Etablissement
+                            </InputLabel>
+                            <Autocomplete
+                                id="combo-box-demo"
+                                options={agencies}
+                                value={agency}
+                                onChange={(__, item) => {
+                                    setAgency(item);
+                                }}
+                                getOptionLabel={(option) => option.label}
+                                renderInput={(params) => <TextField {...params} variant="outlined" />}
+                            />
+                        </div>
+                    )}
 
                     <div className="col-md-12 col-sm-12 has-wrapper mb-30">
                         <InputLabel className="text-left">
-                            Prestations
+                            Prestations autorisées
                         </InputLabel>
                         <Autocomplete
-                            multiple
+                            multiple={true}
                             id="combo-box-demo"
                             options={prestations}
                             value={selectedPrestations}
                             onChange={(__, items) => {
                                 setSelectedPrestations(items);
                             }}
-                            getOptionLabel={(option) => option.label}
+                            getOptionLabel={(option) => `${option.label} (${option.bank})`}
                             renderInput={(params) => <TextField {...params} variant="outlined" />}
                         />
                     </div>
@@ -276,17 +271,9 @@ const Create = (props) => {
                     <FormGroup>
                         <Button
                             color="primary"
-                            variant="contained"
-                            disabled={!membership}
-                            onClick={() => findUserByMembership()}
-                            className="text-white font-weight-bold mr-20 bg-blue"
-                        >
-                            Vérifier l'utilisateur
-                        </Button>
-                        <Button
-                            color="primary"
-                            variant="contained"
                             onClick={onSubmit}
+                            variant="contained"
+                            disabled={!member}
                             className="text-white font-weight-bold"
                         >
                             Ajouter
@@ -298,4 +285,10 @@ const Create = (props) => {
     );
 };
 
-export default connect(() => { }, { setRequestGlobalAction })(withRouter(Create));
+const mapStateToProps = ({ authUser }) => {
+    return {
+        authUser: authUser.data,
+    }
+};
+
+export default connect(mapStateToProps, { setRequestGlobalAction })(withRouter(Create));

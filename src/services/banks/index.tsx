@@ -28,8 +28,28 @@ export default class BankService {
         return makeRequest('post', Routes.CREATE_MANDATE, data);
     }
 
+    static createSuperAgentMandate(data: any): Promise<any> {
+        return makeRequest('post', Routes.CREATE_SUPER_AGENT_MANDATE, data);
+    }
+
+    static createSubAgentMandate(data: any): Promise<any> {
+        return makeRequest('post', Routes.CREATE_SUB_AGENT_MANDATE, data);
+    }
+
     static getMandates(): Promise<any> {
         return makeRequest('get', Routes.GET_MANDATES);
+    }
+
+    static getSuperAgentMandates(): Promise<any> {
+        return makeRequest('get', Routes.GET_SUPER_AGENT_MANDATES);
+    }
+
+    static getSubAgentMandates(): Promise<any> {
+        return makeRequest('get', Routes.GET_SUB_AGENT_MANDATES);
+    }
+
+    static getBankMandates(): Promise<any> {
+        return makeRequest('get', Routes.GET_BANK_MANDATES);
     }
 
     static getIntermediateParty(): Promise<any> {
@@ -48,8 +68,16 @@ export default class BankService {
         return makeRequest('post', Routes.CREATE_AGENT, data);
     }
 
-    static getAgents(): Promise<any> {
-        return makeRequest('get', Routes.GET_PARTIES);
+    static createSuperAgent(data: any): Promise<any> {
+        return makeRequest('post', Routes.CREATE_SUPER_AGENT, data);
+    }
+
+    static getAgents(data): Promise<any> {
+        return makeRequest('get', Routes.GET_PARTIES, data);
+    }
+
+    static getSuperAgents(): Promise<any> {
+        return makeRequest('get', Routes.GET_SUPER_AGENTS);
     }
 
     static getAgentCounters(data: any): Promise<any> {
@@ -353,6 +381,10 @@ export default class BankService {
 
     static addPrestation(reference: string, data: any): Promise<any> {
         return makeRequest('post', Routes.ADD_MANDATE_PRESTATION(reference), data);
+    }
+
+    static getMandatePrestations(reference: string): Promise<any> {
+        return makeRequest('get', Routes.GET_MANDATE_PRESTATION(reference));
     }
 
     static getBanks(): Promise<any> {

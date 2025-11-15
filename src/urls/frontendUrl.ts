@@ -817,7 +817,8 @@ export const NETWORK = {
             BROKER: '/network/coverage/partnerships/broker',
             OPERATOR: '/network/coverage/partnerships/operator',
             COMMUNITY: '/network/coverage/partnerships/community',
-            COMPLEMENTARY: '/network/coverage/partnerships/complementary',
+            COMPLEMENTARY: '/network/coverage/partnerships/provider-generics',
+            PROVIDER_SPE: '/network/coverage/partnerships/provider-specialized',
         },
         AFFECTATION: {
             SELF: '/network/coverage/affectation',
@@ -1016,6 +1017,11 @@ export const BANK = {
             LIST: '/bank/party/agents/list',
             CREATE: '/bank/party/agents/create',
         },
+        SUPER_AGENT: {
+            SELF: '/bank/party/agent-networks',
+            LIST: '/bank/party/agent-networks/list',
+            CREATE: '/bank/party/agent-networks/create',
+        },
         CASHDESK: {
             SELF: '/bank/party/cashdesks',
             LIST: '/bank/party/cashdesks/list',
@@ -1026,10 +1032,14 @@ export const BANK = {
             LIST: '/bank/party/counters/list',
             CREATE: '/bank/party/counters/create',
         },
-        PRESTATION: {
-            SELF: '/bank/party/prestations',
-            LIST: '/bank/party/prestations/list',
-            CREATE: '/bank/party/prestations/create',
+        MANDATE: {
+            SELF:'/bank/party/mandates',
+            LIST:'/bank/party/mandates/list',
+            PRESTATION: {
+                SELF: '/bank/party/mandates/:id/prestations',
+                LIST: '/bank/party/mandates/:id/prestations/list',
+                CREATE: '/bank/party/mandates/:id/prestations/create',
+            }
         },
         COVERAGE: {
             SELF: '/bank/party/coverages',

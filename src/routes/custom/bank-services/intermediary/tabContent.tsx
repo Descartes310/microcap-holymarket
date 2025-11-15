@@ -1,13 +1,13 @@
 import React from 'react';
 import Agents from './agents';
 import Counters from './counters';
-import Cashdesks from './cashdesks';
 import Coverages from './coverages';
 import {connect} from "react-redux";
 import {injectIntl} from "react-intl";
 import { BANK } from 'Url/frontendUrl';
-import Prestations from './prestations';
+import SuperAgents from './superAgents';
 import {withRouter, Switch, Redirect, Route} from "react-router-dom";
+import Mandates from './mandates';
 
 const BankAgent = (props) => {
     const { match } = props;
@@ -17,9 +17,9 @@ const BankAgent = (props) => {
                 <Redirect exact from={`${match.url}/`} to={BANK.PARTY.COUNTER.SELF} />
                 <Route path={BANK.PARTY.AGENT.SELF} component={Agents} />
                 <Route path={BANK.PARTY.COUNTER.SELF} component={Counters} />
-                {/* <Route path={BANK.PARTY.CASHDESK.SELF} component={Cashdesks} /> */}
+                <Route path={BANK.PARTY.SUPER_AGENT.SELF} component={SuperAgents} />
                 <Route path={BANK.PARTY.COVERAGE.SELF} component={Coverages} />
-                <Route path={BANK.PARTY.PRESTATION.SELF} component={Prestations} />
+                <Route path={BANK.PARTY.MANDATE.SELF} component={Mandates} />
             </Switch>
         </div>
     );

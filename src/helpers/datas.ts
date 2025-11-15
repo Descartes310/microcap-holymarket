@@ -898,6 +898,18 @@ export const institutionTypes = () => {
             value: 'TRAVEL_AGENCY'
         },
         {
+            label: "Agence de guichet avancé", 
+            value: 'PSG_AGENCY'
+        },
+        {
+            label: "Point de service", 
+            value: 'PSG_COUNTER'
+        },
+        {
+            label: "Agence de voyage", 
+            value: 'TRAVEL_AGENCY'
+        },
+        {
             label: "Site logistique", 
             value: 'LOGISTIC_SITE'
         },

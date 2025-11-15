@@ -15,6 +15,7 @@ class Partnerships extends Component<any, any> {
         super(props);
         const defaultState = (function (url) {
             if (url.includes(NETWORK.COVERAGE.PARTNERSHIP.COMPLEMENTARY)) return 0;
+            if (url.includes(NETWORK.COVERAGE.PARTNERSHIP.PROVIDER_SPE)) return 1;
             else return 0;
         })(window.location.pathname);
 
@@ -29,6 +30,7 @@ class Partnerships extends Component<any, any> {
         if (oldActivateTab !== value) {
             switch (value) {
                 case 0: return this.props.history.push(NETWORK.COVERAGE.PARTNERSHIP.COMPLEMENTARY);
+                case 1: return this.props.history.push(NETWORK.COVERAGE.PARTNERSHIP.PROVIDER_SPE);
                 default: return this.props.history.push(NETWORK.COVERAGE.PARTNERSHIP.COMPLEMENTARY);
             }
         }
@@ -54,7 +56,10 @@ class Partnerships extends Component<any, any> {
                                         centered
                                     >
                                         <Tab
-                                            label={"Prestataires"}
+                                            label={"Génériques"}
+                                        />
+                                        <Tab
+                                            label={"Spécialisés"}
                                         />
                                     </Tabs>
                                 </div>

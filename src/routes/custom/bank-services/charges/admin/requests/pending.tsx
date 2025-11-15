@@ -7,8 +7,8 @@ import {setRequestGlobalAction} from 'Actions';
 import React, { useState, useEffect } from 'react';
 import ConfirmBox from "Components/dialog/ConfirmBox";
 import TimeFromMoment from 'Components/TimeFromMoment';
-import { getPriceWithCurrency } from 'Helpers/helpers';
 import {NotificationManager} from 'react-notifications';
+import { getFilePath, getPriceWithCurrency, getRechargeMethodLabel } from 'Helpers/helpers';
 
 
 const List = (props) => {
@@ -65,9 +65,13 @@ const List = (props) => {
                                 <table className="table table-hover table-middle mb-0">
                                     <thead>
                                         <tr>
+                                            <th className="fw-bold">Demandeur</th>
                                             <th className="fw-bold">Nature</th>
                                             <th className="fw-bold">Montant</th>
                                             <th className="fw-bold">Date</th>
+                                            <th className="fw-bold">Méthode</th>
+                                            <th className="fw-bold">Date de paiement</th>
+                                            <th className="fw-bold">Preuve</th>
                                             <th className="fw-bold">Status</th>
                                             <th className="fw-bold">Actions</th>
                                         </tr>
@@ -75,6 +79,13 @@ const List = (props) => {
                                     <tbody>
                                         {list && list.map((item, key) => (
                                             <tr key={key} className="cursor-pointer">
+                                                <td>
+                                                    <div className="media">
+                                                        <div className="media-body pt-10">
+                                                            <h4 className="m-0 fw-bold text-dark">{item.userName}</h4>
+                                                        </div>
+                                                    </div>
+                                                </td>
                                                 <td>
                                                     <div className="media">
                                                         <div className="media-body pt-10">
@@ -92,9 +103,46 @@ const List = (props) => {
                                                 <td>
                                                     <div className="media">
                                                         <div className="media-body pt-10">
-                                                            <h4 className="m-0 fw-bold text-dark"><TimeFromMoment time={item.paidAt} format='LLL' /></h4>
+                                                            <h4 className="m-0 fw-bold text-dark"><TimeFromMoment time={item.createdAt} /></h4>
                                                         </div>
                                                     </div>
+                                                </td>
+                                                <td>
+                                                    <div className="media">
+                                                        <div className="media-body pt-10">
+                                                            {getRechargeMethodLabel(item.paymentMethod)}
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    { item.paymentMethod === 'ACCOUNT_DEPOSIT' && (
+                                                        <div className="media">
+                                                            <div className="media-body pt-10">
+                                                                <h4 className="m-0 fw-bold text-dark"><TimeFromMoment time={item.paidAt} /></h4>
+                                                            </div>
+                                                        </div>
+                                                    )}
+                                                    { item.paymentMethod === 'DEFERRED_PAYMENT' && (
+                                                        <div className="media">
+                                                            <div className="media-body pt-10">
+                                                                <h4 className="m-0 fw-bold text-dark"><TimeFromMoment time={item.paymentDate} /></h4>
+                                                            </div>
+                                                        </div>
+                                                    )}
+                                                </td>
+                                                <td>
+                                                    { item.paymentMethod === 'ACCOUNT_DEPOSIT' && (
+                                                        <div className="media">
+                                                            <div className="media-body pt-10">
+                                                                <span
+                                                                    style={{ cursor: 'pointer'}} 
+                                                                    onClick={() => window.open(getFilePath(item.proof), 'blank')}
+                                                                >
+                                                                        Consulter
+                                                                </span> 
+                                                            </div>
+                                                        </div>
+                                                    )}
                                                 </td>
                                                 <td>
                                                     <div className="media">

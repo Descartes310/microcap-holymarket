@@ -14,10 +14,17 @@ export const GET_AVAILABLE_COVERAGES = (id) => `api/cashmanagements/prestations/
 
 export const GET_MANDATES = 'api/cashmanagements/mandates';
 export const CREATE_MANDATE = 'api/cashmanagements/mandates';
-export const CREATE_AGENT = 'api/cashmanagements/mandates/agents';
+export const CREATE_AGENT = 'api/cashmanagements/parties/agents';
+export const CREATE_SUPER_AGENT = 'api/cashmanagements/mandates/super-agents';
 export const GET_FUND_ACCOUNTS = 'api/cashmanagements/mandates/funding-accounts';
 export const GET_POTENTIAL_AGENT = 'api/cashmanagements/mandates/potential-agents';
-export const ADD_MANDATE_PRESTATION = (reference) => `api/cashmanagements/mandates/${reference}`;
+export const CREATE_SUPER_AGENT_MANDATE = 'api/cashmanagements/mandates/super-agents';
+export const CREATE_SUB_AGENT_MANDATE = 'api/cashmanagements/mandates/sub-agents';
+export const GET_SUPER_AGENT_MANDATES = 'api/cashmanagements/mandates/super-agents';
+export const GET_SUB_AGENT_MANDATES = 'api/cashmanagements/mandates/sub-agents';
+export const GET_BANK_MANDATES = 'api/cashmanagements/mandates/banks';
+export const ADD_MANDATE_PRESTATION = (reference) => `api/cashmanagements/mandates/${reference}/prestations`;
+export const GET_MANDATE_PRESTATION = (reference) => `api/cashmanagements/mandates/${reference}/prestations`;
 
 export const GET_PARTIES = 'api/cashmanagements/parties';
 export const GET_CHILD = 'api/cashmanagements/parties/child';
@@ -26,6 +33,7 @@ export const GET_COUNTERS = 'api/cashmanagements/parties/counters';
 export const CREATE_COUNTER = 'api/cashmanagements/parties/counters';
 export const GET_CASHDESKS = 'api/cashmanagements/parties/cashdesks';
 export const CREATE_CASHDESK = 'api/cashmanagements/parties/cashdesks';
+export const GET_SUPER_AGENTS = 'api/cashmanagements/parties/super-agents';
 export const GET_PARTY_COUNTERS = 'api/cashmanagements/parties/potential-counters';
 export const GET_INTERMEDIATE_PARTIES = 'api/cashmanagements/parties/intermediates';
 export const GET_INTERMEDIATE_BANKS = 'api/cashmanagements/parties/intermediates/banks';

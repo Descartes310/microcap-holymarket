@@ -1028,7 +1028,7 @@ export default [
             "new_item": false,
             "path": BANK.PARTY.SELF,
             "permissions": null,
-            "profiles": ['PROVIDER_INTERMEDIARY', 'PROVIDER_AGENT'],
+            "profiles": ['PROVIDER_INTERMEDIARY', 'PROVIDER_AGENT', 'PROVIDER_SUPER_AGENT', 'AGENT'],
             "child_routes": null
          },
          {
@@ -1051,7 +1051,7 @@ export default [
             "menu_title": "Souscription",
             "new_item": false,
             "path": BANK.SUBSCRIPTION.SELF,
-            "profiles": ['PROVIDER_COUNTER'],
+            "profiles": ['COUNTER'],
             "child_routes": null,
             "permissions": [Permission.bank.counter.subscription.name],
          },
@@ -1060,7 +1060,7 @@ export default [
             "new_item": false,
             "path": BANK.OPERATION.CREATE,
             "permissions": [Permission.general.confirmOperation.name],
-            "profiles": ['PROVIDER_COUNTER'],
+            "profiles": ['COUNTER'],
             "child_routes": null
          },
          {
@@ -1069,14 +1069,6 @@ export default [
             "path": BANK.OPERATION.BANK.LIQUIDATION,
             "permissions": [Permission.general.operation.name],
             "profiles": ['OPERATOR'],
-            "child_routes": null
-         },
-         {
-            "menu_title": "Opérations",
-            "new_item": false,
-            "path": BANK.OPERATION.CASHDESK.LIST,
-            "permissions": [Permission.general.confirmOperation.name],
-            "profiles": ['PROVIDER_CASHDESK'],
             "child_routes": null
          },
          {
@@ -1100,7 +1092,7 @@ export default [
             "new_item": false,
             "path": BANK.OPERATION.LIST,
             "permissions": [Permission.general.operation.name],
-            "profiles": ['PROVIDER_AGENT'],
+            "profiles": ['PROVIDER_AGENT', 'AGENT'],
             "child_routes": null
          },
          {
@@ -1108,7 +1100,7 @@ export default [
             "new_item": false,
             "path": BANK.CHARGE.AGENT.SELF,
             "permissions": null,
-            "profiles": ['PROVIDER_AGENT', 'PROVIDER_COUNTER'],
+            "profiles": ['PROVIDER_AGENT', 'COUNTER', 'AGENT', 'PROVIDER_SUPER_AGENT'],
             "child_routes": null
          },
          {
@@ -1132,7 +1124,7 @@ export default [
             "new_item": false,
             "path": BANK.ACCOUNT.LIST,
             "permissions": null,
-            "profiles": ['PROVIDER_INTERMEDIARY', 'OPERATOR', 'PROVIDER_AGENT', 'PROVIDER_COUNTER'],
+            "profiles": ['PROVIDER_INTERMEDIARY', 'AGENT', 'COUNTER', 'OPERATOR', 'PROVIDER_AGENT', 'PROVIDER_COUNTER', 'PROVIDER_SUPER_AGENT'],
             "child_routes": null
          },
          {
