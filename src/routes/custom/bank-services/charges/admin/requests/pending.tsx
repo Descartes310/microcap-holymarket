@@ -69,8 +69,6 @@ const List = (props) => {
                                             <th className="fw-bold">Nature</th>
                                             <th className="fw-bold">Montant</th>
                                             <th className="fw-bold">Date</th>
-                                            <th className="fw-bold">Méthode</th>
-                                            <th className="fw-bold">Date de paiement</th>
                                             <th className="fw-bold">Preuve</th>
                                             <th className="fw-bold">Status</th>
                                             <th className="fw-bold">Actions</th>
@@ -106,29 +104,6 @@ const List = (props) => {
                                                             <h4 className="m-0 fw-bold text-dark"><TimeFromMoment time={item.createdAt} /></h4>
                                                         </div>
                                                     </div>
-                                                </td>
-                                                <td>
-                                                    <div className="media">
-                                                        <div className="media-body pt-10">
-                                                            {getRechargeMethodLabel(item.paymentMethod)}
-                                                        </div>
-                                                    </div>
-                                                </td>
-                                                <td>
-                                                    { item.paymentMethod === 'ACCOUNT_DEPOSIT' && (
-                                                        <div className="media">
-                                                            <div className="media-body pt-10">
-                                                                <h4 className="m-0 fw-bold text-dark"><TimeFromMoment time={item.paidAt} /></h4>
-                                                            </div>
-                                                        </div>
-                                                    )}
-                                                    { item.paymentMethod === 'DEFERRED_PAYMENT' && (
-                                                        <div className="media">
-                                                            <div className="media-body pt-10">
-                                                                <h4 className="m-0 fw-bold text-dark"><TimeFromMoment time={item.paymentDate} /></h4>
-                                                            </div>
-                                                        </div>
-                                                    )}
                                                 </td>
                                                 <td>
                                                     { item.paymentMethod === 'ACCOUNT_DEPOSIT' && (

@@ -121,8 +121,10 @@ const List = (props) => {
                     show={showAddPrestationBox}
                     onClose={() => {
                         setShowAddPrestationBox(false);
+                        getParties();
                     }}
-                    mandateReference={mandate.reference}
+                    bank={true}
+                    mandateReference={mandate.mandateReference}
                     title={"Ajouter une prestation"}
                 />
             )}

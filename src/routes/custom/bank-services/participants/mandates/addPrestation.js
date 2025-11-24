@@ -46,7 +46,7 @@ class AddPrestationModal extends Component {
 
         this.props.setRequestGlobalAction(true);
 
-        let data = {prestations: selectedPrestations.map(p => p.id)};
+        let data = {prestations: this.props.bank ? selectedPrestations.map(p => p.id) : selectedPrestations.map(p => p.prestation.id)};
 
         BankService.addPrestation(this.props.mandateReference, data).then(() => {
             NotificationManager.success("Les prestations ont été ajoutés avec succès");

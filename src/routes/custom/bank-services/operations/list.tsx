@@ -34,7 +34,7 @@ const List = (props) => {
         }
 
         let data = {
-            operationIds: [selectedOperation.id]
+            operationReferences: [selectedOperation.reference]
         }
 
         props.setRequestGlobalAction(true);
@@ -71,6 +71,7 @@ const List = (props) => {
                                         <tr>
                                             <th className="fw-bold">Client</th>
                                             <th className="fw-bold">Montant</th>
+                                            <th className="fw-bold">Prestation</th>
                                             <th className="fw-bold">Raison</th>
                                             <th className="fw-bold">Date de valeur</th>
                                             <th className="fw-bold">Date d'enregistrement</th>
@@ -83,7 +84,7 @@ const List = (props) => {
                                                 <td>
                                                     <div className="media">
                                                         <div className="media-body pt-10">
-                                                            <h4 className="m-0 fw-bold text-dark">{item.clientName}</h4>
+                                                            <h4 className="m-0 fw-bold text-dark">{item.userName}</h4>
                                                         </div>
                                                     </div>
                                                 </td>
@@ -97,7 +98,14 @@ const List = (props) => {
                                                 <td>
                                                     <div className="media">
                                                         <div className="media-body pt-10">
-                                                            <p>{item.reason}</p>
+                                                            <p>{item.prestationName}</p>
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <div className="media">
+                                                        <div className="media-body pt-10">
+                                                            <p>{item.label}</p>
                                                         </div>
                                                     </div>
                                                 </td>
@@ -122,7 +130,7 @@ const List = (props) => {
                                                 <td>
                                                     <Button
                                                         color="primary"
-                                                        disabled={!item.validated}
+                                                        disabled={item.status !== 'AUHORIZED'}
                                                         className="text-white mr-2 ml-10"
                                                         onClick={() => {
                                                             setSelectedOperation(item);

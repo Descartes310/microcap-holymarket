@@ -22,9 +22,17 @@ class LiquidOperationModal extends Component {
     }
 
     liquidOperation = () => {
+
+        if(!this.state.liquidationDate || !this.state.liquidReference) {
+            NotificationManager.error("Veuillez bien remplir le formulaire.");
+            return;
+        }
+
         this.props.setRequestGlobalAction(true);
 
-        BankService.liquidServiceOrder(this.props.operation, this.state.liquidReference)
+        let data = {liquid_reference: this.state.liquidReference, liquid_date: this.state.liquidationDate};
+
+        BankService.liquidServiceOrder(this.props.operation, data)
         .then(() => {
             NotificationManager.success("La liquidation a réussie.");
         })

@@ -22,7 +22,7 @@ const List = (props) => {
 
     const getOperations = () => {
         props.setRequestGlobalAction(true),
-        BankService.getAvailableOP()
+        BankService.getOperations({status: 'PURGED'})
         .then(response => {
             setOperations(response);
         })
@@ -70,6 +70,7 @@ const List = (props) => {
                                         <tr>
                                             <th className="fw-bold">Client</th>
                                             <th className="fw-bold">Montant</th>
+                                            <th className="fw-bold">Prestation</th>
                                             <th className="fw-bold">Raison</th>
                                             <th className="fw-bold">Date</th>
                                             <th className="fw-bold">Actions</th>
@@ -81,7 +82,7 @@ const List = (props) => {
                                                 <td>
                                                     <div className="media">
                                                         <div className="media-body pt-10">
-                                                            <h4 className="m-0 fw-bold text-dark">{item.clientName}</h4>
+                                                            <h4 className="m-0 fw-bold text-dark">{item.userName}</h4>
                                                         </div>
                                                     </div>
                                                 </td>
@@ -95,7 +96,14 @@ const List = (props) => {
                                                 <td>
                                                     <div className="media">
                                                         <div className="media-body pt-10">
-                                                            <p>{item.reason}</p>
+                                                            <p>{item.prestationName}</p>
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <div className="media">
+                                                        <div className="media-body pt-10">
+                                                            <p>{item.label}</p>
                                                         </div>
                                                     </div>
                                                 </td>
@@ -112,7 +120,7 @@ const List = (props) => {
                                                     <Button
                                                         color="primary"
                                                         variant="contained"
-                                                        disabled={!item.validated}
+                                                        disabled={item.status !== 'PURGED'}
                                                         onClick={() => {
                                                             setSelectedOperation(item);
                                                             setShowConfirmBox(true);

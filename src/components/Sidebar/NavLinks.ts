@@ -1092,7 +1092,7 @@ export default [
             "new_item": false,
             "path": BANK.OPERATION.LIST,
             "permissions": [Permission.general.operation.name],
-            "profiles": ['PROVIDER_AGENT', 'AGENT'],
+            "profiles": ['PROVIDER_SUPER_AGENT'],
             "child_routes": null
          },
          {

@@ -2,13 +2,17 @@ import { connect } from 'react-redux';
 import { BANK } from 'Url/frontendUrl';
 import BankService from 'Services/banks';
 import { withRouter } from "react-router-dom";
+import Button from '@material-ui/core/Button';
 import CustomList from "Components/CustomList";
 import {setRequestGlobalAction} from 'Actions';
 import React, { useState, useEffect } from 'react';
+import AddPrestationModal from '../../participants/mandates/addPrestation';
 
 const List = (props) => {
 
+    const [mandate, setMandate] = useState(null);
     const [mandates, setMandates] = useState([]);
+    const [showAddPrestationBox, setShowAddPrestationBox] = useState(false);
 
     useEffect(() => {
         getParties();
@@ -55,6 +59,7 @@ const List = (props) => {
                                             <th className="fw-bold">Reference</th>
                                             <th className="fw-bold">Responsable</th>
                                             <th className="fw-bold">Email</th>
+                                            <th className="fw-bold">Prestations</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -88,6 +93,19 @@ const List = (props) => {
                                                         </div>
                                                     </div>
                                                 </td>
+                                                <td>
+                                                    <Button
+                                                        color="primary"
+                                                        variant="contained"
+                                                        onClick={() => {
+                                                            setMandate(item);
+                                                            setShowAddPrestationBox(true);
+                                                        }}
+                                                        className="text-white font-weight-bold"
+                                                    >
+                                                        Prestations
+                                                    </Button>
+                                                </td>
                                             </tr>
                                         ))}
                                     </tbody>
@@ -97,6 +115,17 @@ const List = (props) => {
                     </>
                 )}
             />
+
+            { showAddPrestationBox && mandate && (
+                <AddPrestationModal
+                    show={showAddPrestationBox}
+                    onClose={() => {
+                        setShowAddPrestationBox(false);
+                    }}
+                    mandateReference={mandate.reference}
+                    title={"Ajouter une prestation"}
+                />
+            )}
         </>
     );
 }

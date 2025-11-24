@@ -101,6 +101,7 @@ export const FIND_SERVICE_ORDER_BY_BANK_AUTH = (reference) => `api/cashmanagemen
 
 
 export const GET_OPERATIONS_FOG = `api/cashmanagements/operations/bl`;
+export const GET_ALL_OPERATIONS = `api/cashmanagements/operations/os/all`;
 export const GET_OPERATIONS_LIQUIDATION = `api/cashmanagements/operations/liquidations`;
 export const CREATE_BL = (reference) => `api/cashmanagements/operations/${reference}/os/bl`;
 export const LIQUIDATION_BL = (reference) => `api/cashmanagements/operations/${reference}/os/liquidation`;

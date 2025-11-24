@@ -168,8 +168,8 @@ export default class BankService {
         return makeRequest('get', Routes.CONFIRM_PERMISSION, data);
     }
 
-    static getOperations(): Promise<any> {
-        return makeRequest('get', Routes.GET_OPERATIONS);
+    static getOperations(data = {}): Promise<any> {
+        return makeRequest('get', Routes.GET_OPERATIONS, data);
     }
 
     static getAntidatedOperations(): Promise<any> {
@@ -319,8 +319,8 @@ export default class BankService {
         return makeRequest('get', Routes.FIND_SERVICE_ORDER_BY_BANK_AUTH(bankAuth));
     }
 
-    static liquidServiceOrder(reference: string, liquidationreference): Promise<any> {
-        return makeRequest('post', Routes.LIQUID_SERVICE_ORDER(reference), {liquid_reference: liquidationreference});
+    static liquidServiceOrder(reference: string, data: any): Promise<any> {
+        return makeRequest('post', Routes.LIQUID_SERVICE_ORDER(reference), data);
     }
 
     static liquidOPMCMServiceOrder(reference: string, liquidationreference): Promise<any> {
@@ -357,6 +357,10 @@ export default class BankService {
 
     static getOperationFog(): Promise<any> {
         return makeRequest('get', Routes.GET_OPERATIONS_FOG);
+    }
+
+    static getAllOperations(): Promise<any> {
+        return makeRequest('get', Routes.GET_ALL_OPERATIONS);
     }
 
     static getOperationLiquidation(): Promise<any> {

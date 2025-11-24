@@ -246,7 +246,7 @@ const Assist = (props) => {
 	}
 
     useEffect(() => {
-        if(account && action == 'INITIATE_OPERATION') {
+        if(account && action.value == 'INITIATE_OPERATION') {
             getAggregations();
             getPrestations(account.reference);
         } else {
@@ -279,7 +279,8 @@ const Assist = (props) => {
 
     const getPrestations = (reference: string) => {
         props.setRequestGlobalAction(true);
-        BankService.getDomiciliationPrestations(reference)
+        // BankService.getDomiciliationPrestations(reference)
+        BankService.getPrestations()
         .then(response => setPrestations(response))
         .finally(() => props.setRequestGlobalAction(false))
     }
@@ -325,10 +326,13 @@ const Assist = (props) => {
             reference: membership,
             accountId: account.reference,
             currency: currency.code,
-            prestationId: prestation.id,
-            detailsValues: details.map(d => d.value),
-            detailsIds: details.map(d => d.id.split('-')[1]),
+            prestationId: prestation.prestation ? prestation.prestation.id : 0,
         };
+
+        if(details && details.length > 0) {
+            data.detailsValues = details.map(d => d.value);
+            data.detailsIds = details.map(d => d.id.split('-')[1]);
+        }
 
         if(prestation?.prestation?.type  == 'DEPOSIT_SCHEDULED') {
             data.tickets = tickets.map(t => t.code);
@@ -622,7 +626,7 @@ const Assist = (props) => {
                                 onChange={(__, item) => {
                                     setPrestation(item);
                                 }}
-                                getOptionLabel={(option) => option.prestation.label}
+                                getOptionLabel={(option) => option.label}
                                 renderInput={(params) => <TextField {...params} variant="outlined" />}
                             />
                         </div>
@@ -707,7 +711,7 @@ const Assist = (props) => {
                             </div>
                         )}
 
-                        { prestation && prestation.details.map(prestationDetails => (
+                        {/* { prestation && prestation.details.map(prestationDetails => (
                             <FormGroup className="col-md-12 col-sm-12 has-wrapper">
                                 <InputLabel className="text-left" htmlFor={'details-'+prestationDetails.id}>
                                     {prestationDetails.label}
@@ -722,7 +726,7 @@ const Assist = (props) => {
                                     onChange={(e) => onChangeDetails(e.target.value, 'details-'+prestationDetails.id)}
                                 />
                             </FormGroup>
-                        ))}
+                        ))} */}
                     </div>
                 )}
                 <FormGroup>
@@ -858,6 +862,7 @@ const Assist = (props) => {
                     show={showAlert}
                     title={"L'opération a été initiée avec succès"}
                     onConfirm={() => {
+                        setShowAlert(false);
                         window.location.reload();
                     }}
                 />

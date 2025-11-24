@@ -9,7 +9,6 @@ import { setRequestGlobalAction } from 'Actions';
 import { getPriceWithCurrency } from 'Helpers/helpers';
 import TimeFromMoment from "Components/TimeFromMoment";
 import DialogComponent from "Components/dialog/DialogComponent";
-import LiquidOperationModal from '../components/liquidOperationModal';
 
 class BLLiquidOperations extends Component {
 
@@ -147,16 +146,6 @@ class BLLiquidOperations extends Component {
                         </>
                     )}
                 />
-                { (selectedOperation && showLiquidModal) && (
-                    <LiquidOperationModal
-                        title={"Liquidation"}
-                        show={showLiquidModal}
-                        operation={selectedOperation}
-                        onClose={() => {
-                            this.setState({ showLiquidModal: false, selectedOperation: null });
-                        }}
-                    />  
-                )}
             </DialogComponent>
         );
     }

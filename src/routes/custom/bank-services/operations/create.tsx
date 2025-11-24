@@ -24,6 +24,7 @@ import RctCollapsibleCard from 'Components/RctCollapsibleCard/RctCollapsibleCard
 import FormControlLabel from "@material-ui/core/FormControlLabel/FormControlLabel";
 import AccountVentilation from 'Components/Product/Ventilation/AccountVentilation';
 import PaymentRequestSupport from 'Routes/custom/marketplace/_components/paymentRequestSupport';
+import UserService from 'Services/users';
 
 const Create = (props) => {
 
@@ -57,7 +58,7 @@ const Create = (props) => {
 
     const findOperation = () => {
         props.setRequestGlobalAction(true);
-        BankService.findOperationByBankAuth({auth_code: authCode, prestation_id: prestation?.id})
+        BankService.findOperationByBankAuth({auth_code: authCode, prestation_id: prestation?.prestation ? prestation?.prestation.id : 0})
         .then(response => {
             setUser(response.user);
             setOperation(response.operation);
@@ -121,11 +122,16 @@ const Create = (props) => {
             return;
         }
         props.setRequestGlobalAction(true);
-        BankService.setConfirmOperationOtp(operation.reference, {referral_code: user.referralCode}).then(() => {
+        let data: any = {targetReference: operation.referralCode, type: 'CONFIRM_OPERATION'}
+        UserService.sendAuthOTP(data, {wantSuccessCode: true})
+        .then(() => {
             setShowModal(true);
-        }).catch(err => {
-            NotificationManager.error("Une erreur est survenue");
-        }).finally(() => {
+        })
+        .catch((err) => {
+            console.log(err);
+            NotificationManager.error("L'envoi du code de vérification a échoué");
+        })
+        .finally(() => {
             props.setRequestGlobalAction(false);
         })
     }
@@ -285,7 +291,7 @@ const Create = (props) => {
                                                     />
                                                 </div>
                                             )}
-                                            { serviceOrder && serviceOrder.coverages && (
+                                            {/* { serviceOrder && serviceOrder.coverages && (
                                                 <div className='row'>
                                                     <h2 style={{ marginBottom: 30 }}>Ordre de service</h2>
                                                     {
@@ -303,7 +309,7 @@ const Create = (props) => {
                                                         ))
                                                     }
                                                 </div>
-                                            )}
+                                            )} */}
                                         </>
                                     )}
 
@@ -341,13 +347,18 @@ const Create = (props) => {
                         </TabContainer>
                     </div>
                 </SwipeableViews>
-                <VerifyUserOTPModal 
-                    show={showModal}
-                    type="CONFIRM_OPERATION"
-                    title={'Entrer le code OTP'}
-                    onClose={() => setShowModal(false)}
-                    callback={(otp) => onSubmit(otp)}
-                />
+                { showModal &&(
+                    <VerifyUserOTPModal 
+                        show={showModal}
+                        type={'CONFIRM_OPERATION'}
+                        targetReference={operation.reference}
+                        title={'Entrer le code de validation'}
+                        callback={(otp) => {
+                            onSubmit(otp);
+                        }}
+                        onClose={() => setShowModal(false)}
+                    />
+                )}
                 { showPaymentRequest && order && (
                     <PaymentRequestSupport
                         order={order}
