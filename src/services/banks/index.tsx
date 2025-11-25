@@ -160,6 +160,10 @@ export default class BankService {
         return makeRequest('post', Routes.CREATE_OPERATION, data);
     }
 
+    static createNonFinancialOperation(data: any, config: any): Promise<any> {
+        return makeRequest('post', Routes.CREATE_NON_FINANCIAL_OPERATION, data, config);
+    }
+
     static sendCodeToClient(data: any): Promise<any> {
         return makeRequest('post', Routes.ASK_PERMISSION, data);
     }

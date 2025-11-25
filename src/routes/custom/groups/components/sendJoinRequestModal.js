@@ -48,31 +48,34 @@ class SendJoinRequestModal extends Component {
             return;
         }
 
-        this.props.setRequestGlobalAction(true);
-        
         let data = { 
             type: 'REQUEST', 
             userReference: this.props.referralId,
             postMotivationId: this.state.motivation.id, 
             groupReference: this.props.group.groupReference,
         };
-
-        GroupService.makeGroupRequest(data)
-            .then(() => {
-                NotificationManager.success("La requête a bien été envoyée");
-            })
-            .catch(() => {
-                NotificationManager.error("Vous devez être authentifié au préalable");
-            })
-            .finally(() => {
-                this.props.onClose(true)
-                this.props.setRequestGlobalAction(false);
-            })
+        
+        if(this.props.onSubmit) {
+            this.props.onSubmit({...data, type: 'JOIN_COMMUNITY', joining_type: data.type, referralCode: data.userReference})
+        } else {
+            this.props.setRequestGlobalAction(true);
+            GroupService.makeGroupRequest(data)
+                .then(() => {
+                    NotificationManager.success("La requête a bien été envoyée");
+                })
+                .catch(() => {
+                    NotificationManager.error("Vous devez être authentifié au préalable");
+                })
+                .finally(() => {
+                    this.props.onClose(true)
+                    this.props.setRequestGlobalAction(false);
+                });
+        }
     }
 
     render() {
 
-        const { onClose, show, title, onSubmit } = this.props;
+        const { onClose, show, title } = this.props;
         const { posts, motivations, post, motivation } = this.state;
 
         return (

@@ -17,18 +17,22 @@ const AuthenticateUser = (props) => {
     const [signatureReceived, setSignatureReceived] = useState(false);
 
     const onSubmit = () => {
-        props.setRequestGlobalAction(true);
-        UserService.authenticate(props.user?.referralId || props.user?.referralCode).then(() => {
-            NotificationManager.success('Authentification réussie');
-            props.onClose(true);
-        }).catch((err) => {
-            NotificationManager.error('Veuillez réessayer plus tard');
-            props.onClose(false);
-        }).finally(() => {
-            setPieceReceived(false);
-            setSignatureReceived(false);
-            props.setRequestGlobalAction(false);
-        });
+        if(props.onSubmit) {
+            props.onSubmit({type: 'AUTHENTICATE_PROFILE', referral_code: props.user?.referralId || props.user?.referralCode});
+        } else {
+            props.setRequestGlobalAction(true);
+            UserService.authenticate(props.user?.referralId || props.user?.referralCode).then(() => {
+                NotificationManager.success('Authentification réussie');
+                props.onClose(true);
+            }).catch((err) => {
+                NotificationManager.error('Veuillez réessayer plus tard');
+                props.onClose(false);
+            }).finally(() => {
+                setPieceReceived(false);
+                setSignatureReceived(false);
+                props.setRequestGlobalAction(false);
+            });
+        }
     }
     
     return (

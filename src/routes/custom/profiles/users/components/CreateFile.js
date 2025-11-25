@@ -27,31 +27,35 @@ const CreateFileModal = (props) => {
             NotificationManager.error("Toutes les informations sont obligatoires");
             return;
         }
-        props.setRequestGlobalAction(true);
-
+        
         let data = {
             file, source_reference: props.file.source,
             erase: page <= 0
         }
-
+        
         if(referralCode) {
             data.referralCode = referralCode
         }
-
-        UserService.createFile(data, { fileData: ['file'], multipart: true }).then(() => {
-            NotificationManager.success("La pièce a bien été ajoutée");
-            setFile(null);
-            if(hasManyPages) {
-                setPage(page+1);
-            } else {
-                props.onClose();
-            }
-        }).catch((err) => {
-            console.log(err);
-            NotificationManager.error("Une erreur est survenue");
-        }).finally(() => {
-            props.setRequestGlobalAction(false);
-        })
+        
+        if(props.onSubmit) {
+            props.onSubmit({...data, type: 'UPDATE_USER_FOLDER'});
+        } else {
+            props.setRequestGlobalAction(true);
+            UserService.createFile(data, { fileData: ['file'], multipart: true }).then(() => {
+                NotificationManager.success("La pièce a bien été ajoutée");
+                setFile(null);
+                if(hasManyPages) {
+                    setPage(page+1);
+                } else {
+                    props.onClose();
+                }
+            }).catch((err) => {
+                console.log(err);
+                NotificationManager.error("Une erreur est survenue");
+            }).finally(() => {
+                props.setRequestGlobalAction(false);
+            })
+        }
     }
 
     return (

@@ -111,23 +111,26 @@ const OrderPaymentProofModal = (props) => {
                 return;
             }
 
-            props.setRequestGlobalAction(true);
-
             let data = {
                 file, amount
             }
-
-            OrderService.paySaleByTransfer(order.reference, data, { fileData: ['file'], multipart: true }).then(() => {
-                NotificationManager.success("La preuve a bien été envoyé");
-                setFile(null);
-                setAmount(null);
-                props.onClose(true);
-            }).catch((err) => {
-                console.log(err);
-                NotificationManager.error("Une erreur est survenue");
-            }).finally(() => {
-                props.setRequestGlobalAction(false);
-            })
+            
+            if(props.onSubmit) {
+                props.onSubmit({...data, order_reference: order.reference, type: 'ORDER_PAYMENT'});
+            } else {
+                props.setRequestGlobalAction(true);
+                OrderService.paySaleByTransfer(order.reference, data, { fileData: ['file'], multipart: true }).then(() => {
+                    NotificationManager.success("La preuve a bien été envoyé");
+                    setFile(null);
+                    setAmount(null);
+                    props.onClose(true);
+                }).catch((err) => {
+                    console.log(err);
+                    NotificationManager.error("Une erreur est survenue");
+                }).finally(() => {
+                    props.setRequestGlobalAction(false);
+                })
+            }
         }
     }
 

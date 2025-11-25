@@ -82,20 +82,24 @@ const CreateAccessBox = (props) => {
             data.referralCode = props.referralCode;
         }
         
-        props.setRequestGlobalAction(true);
+        if(props.onSubmit) {
+            props.onSubmit({...data, type: 'ACTIVATE_CONTRACT'});
+        } else {
+            props.setRequestGlobalAction(true);
 
-        UserService.createUserAccess(data).then(() => {
-            NotificationManager.success('Le nouvel accès a été enregistré');
-            window.location.reload();
-        })
-        .catch((err) => {
-            console.log(err);
-            NotificationManager.error("Une erreur s'est produite");
-        })
-        .finally(() => {
-            props.setRequestGlobalAction(false);
-            onClose(true);
-        });
+            UserService.createUserAccess(data).then(() => {
+                NotificationManager.success('Le nouvel accès a été enregistré');
+                window.location.reload();
+            })
+            .catch((err) => {
+                console.log(err);
+                NotificationManager.error("Une erreur s'est produite");
+            })
+            .finally(() => {
+                props.setRequestGlobalAction(false);
+                onClose(true);
+            });
+        }
     }
     
     return (

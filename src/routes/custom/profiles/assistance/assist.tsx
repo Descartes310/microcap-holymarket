@@ -203,17 +203,18 @@ const Assist = (props) => {
     }
 
     const initiatePayment = () => {
-        props.setRequestGlobalAction(true);
-
-        OrderService.initiatePayment(order.reference, {})
-           .then(() => {
-              NotificationManager.success("La demande de paiement a été envoyée");
-              window.location.reload();
-           })
-           .catch((err) => {
-              NotificationManager.error("Une erreur est survenue");
-           })
-           .finally(() => props.setRequestGlobalAction(false))
+        createNonFinancialOperation({type: 'PAY_ORDER', order_reference: order.reference});
+        // props.setRequestGlobalAction(true);
+        
+        // OrderService.initiatePayment(order.reference, {})
+        //    .then(() => {
+        //       NotificationManager.success("La demande de paiement a été envoyée");
+        //       window.location.reload();
+        //    })
+        //    .catch((err) => {
+        //       NotificationManager.error("Une erreur est survenue");
+        //    })
+        //    .finally(() => props.setRequestGlobalAction(false))
     }  
     
     const confirmOtpCode = () => {
@@ -224,17 +225,18 @@ const Assist = (props) => {
     }  
      
      const assistanceResetPassword = () => {
-        props.setRequestGlobalAction(true);
+        createNonFinancialOperation({type: 'RESET_PASSWORD', referral_code: member.referralCode, branch_url: window.location.origin+AUTH.RESET_PASSWORD});
+        // props.setRequestGlobalAction(true);
 
-        UserService.assistanceResetPassword({username: member.referralCode, branch_url: window.location.origin+AUTH.RESET_PASSWORD})
-           .then(() => {
-              NotificationManager.success("La procédure de restauration a été envoyée");
-              window.location.reload();
-           })
-           .catch((err) => {
-              NotificationManager.error("Une erreur est survenue");
-           })
-           .finally(() => props.setRequestGlobalAction(false))
+        // UserService.assistanceResetPassword({username: member.referralCode, branch_url: window.location.origin+AUTH.RESET_PASSWORD})
+        //    .then(() => {
+        //       NotificationManager.success("La procédure de restauration a été envoyée");
+        //       window.location.reload();
+        //    })
+        //    .catch((err) => {
+        //       NotificationManager.error("Une erreur est survenue");
+        //    })
+        //    .finally(() => props.setRequestGlobalAction(false))
      }
 
     const addToCart = (cartItem) => {
@@ -427,6 +429,18 @@ const Assist = (props) => {
 
     const activateProfile = () => {
         setShowActivationBox(true);
+    }
+
+    const createNonFinancialOperation = (data: any) => {
+        props.setRequestGlobalAction(true);
+        BankService.createNonFinancialOperation(data, { fileData: ['file', 'agreement'], multipart: true }).then(() => {
+            NotificationManager.success("L'opération a été créée avec succès!");
+            setShowAlert(true);
+        }).catch((err) => {
+            console.log(err);
+        }).finally(() => {
+            props.setRequestGlobalAction(false);
+        })
     }
 
     return (
@@ -771,6 +785,9 @@ const Assist = (props) => {
                         setAction(null);
                         setMembership(null);
                     }}
+                    onSubmit={(data) => {
+                        createNonFinancialOperation(data);
+                    }}
                 />
             )}
             { member && showMemberFileBox && (
@@ -790,6 +807,9 @@ const Assist = (props) => {
                             window.location.reload();
                         }
                     }}
+                    onSubmit={(data) => {
+                        createNonFinancialOperation(data);
+                    }}
                 />
             )}
             { member && showAuthentificationBox && (
@@ -801,6 +821,9 @@ const Assist = (props) => {
                         if(reload) {
                             window.location.reload();
                         };
+                    }}
+                    onSubmit={(data) => {
+                        createNonFinancialOperation(data);
                     }}
                 />
             )}
@@ -828,7 +851,7 @@ const Assist = (props) => {
                     }}
                     codevData={codevData}
                     product={product}
-                    onSuccess={(response) => {
+                    onSuccess={() => {
                         getProducts();
                         setShowOrderModal(false);
                         setProduct(null);
@@ -860,7 +883,7 @@ const Assist = (props) => {
                     success
                     btnSize="sm"
                     show={showAlert}
-                    title={"L'opération a été initiée avec succès"}
+                    title={"L'opération a été réalisée avec succès"}
                     onConfirm={() => {
                         setShowAlert(false);
                         window.location.reload();
@@ -876,6 +899,9 @@ const Assist = (props) => {
                     show={showOrderFolderModal && action?.value == 'ORDER_FOLDER' }
                     onClose={() => {
                         window.location.reload();
+                    }}
+                    onSubmit={(data) => {
+                        createNonFinancialOperation(data);
                     }}
                 />
             )}
@@ -894,8 +920,11 @@ const Assist = (props) => {
                 <CreateAccessBox 
                     show={showCreateAccessModal}
                     referralCode={member.referralCode}
-                    onClose={(reload = false) => {
+                    onClose={() => {
                         setShowCreateAccessModal(false);
+                    }}
+                    onSubmit={(data) => {
+                        createNonFinancialOperation(data);
                     }}
                 />
             )}
@@ -909,6 +938,9 @@ const Assist = (props) => {
                     item={order}
                     amount={order.amount + order.complementaryPayment - order.amountPaid}
                     currency={order?.currency}
+                    onSubmit={(data) => {
+                        createNonFinancialOperation(data);
+                    }}
                 />
             )}
 
@@ -925,6 +957,9 @@ const Assist = (props) => {
                         }
                     }}
                     accountReference={account.reference}
+                    onSubmit={(data) => {
+                        createNonFinancialOperation(data);
+                    }}
                 />
             )}
 
@@ -941,6 +976,9 @@ const Assist = (props) => {
                         setShowCommunityRequestBox(false);
                     }}
                     referralId={member.referralCode}
+                    onSubmit={(data) => {
+                        createNonFinancialOperation(data);
+                    }}
                 />
             )}
         </RctCollapsibleCard>

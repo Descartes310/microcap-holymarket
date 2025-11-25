@@ -77,18 +77,22 @@ class AccountAgreement extends Component {
             data.aggregations = this.state.aggregations.map(a => a.id);
             data.ventilations = this.state.aggregations.map(a => Number(a.percentage));
         }
-
-        this.props.setRequestGlobalAction(true);
-        AccountService.setAgreement(this.props.accountReference, data, { fileData: ['agreement'], multipart: true }).then((response) => {
-            NotificationManager.success("La convention a été mis a jour avec succès");
-            window.location.reload();
-        }).catch((err) => {
-            console.log(err);
-            NotificationManager.error("Une erreur est survenue, veuillez reesayer");
-        }).finally(() => {
-            this.props.onClose();
-            this.props.setRequestGlobalAction(false);
-        })
+        
+        if(this.props.onSubmit) {
+            this.props.onSubmit({...data, type: 'ACTIVATE_ACCOUNT'});
+        } else {
+            this.props.setRequestGlobalAction(true);
+            AccountService.setAgreement(this.props.accountReference, data, { fileData: ['agreement'], multipart: true }).then(() => {
+                NotificationManager.success("La convention a été mis a jour avec succès");
+                window.location.reload();
+            }).catch((err) => {
+                console.log(err);
+                NotificationManager.error("Une erreur est survenue, veuillez reesayer");
+            }).finally(() => {
+                this.props.onClose();
+                this.props.setRequestGlobalAction(false);
+            })
+        }
     }
 
     setAgreementTemplate() {

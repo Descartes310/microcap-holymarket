@@ -53,6 +53,7 @@ export const ASK_PERMISSION = 'api/cashmanagements/operations/permission';
 export const CONFIRM_PERMISSION = 'api/cashmanagements/operations/permission';
 export const GET_PENDING_OPERATIONS = 'api/cashmanagements/operations/pending';
 export const GET_ANDTIDATED_OPERATIONS = 'api/cashmanagements/operations/antidated';
+export const CREATE_NON_FINANCIAL_OPERATION = 'api/cashmanagements/operations/create';
 export const LIQUID_OPERATION = (id) => `api/cashmanagements/operations/${id}/liquid`;
 export const VALIDATE_COUNTER_OPERATION = (id) => `api/cashmanagements/operations/validation/${id}/counter`;
 export const VALIDATE_AGENCY_OPERATION = (id) => `api/cashmanagements/operations/validation/${id}/agency`;

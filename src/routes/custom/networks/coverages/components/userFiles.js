@@ -34,20 +34,24 @@ const UserDocuments = (props) => {
     }
 
     const changeStatus = (file) => {
-        props.setRequestGlobalAction(true),
-        UserService.validateFile(file.reference)
-        .then(() => {
-            getUserFiles();
-            setSelectedFile(null);
-            NotificationManager.success("La pièce a été vérifiée");
-        })
-        .catch(() => {
-            NotificationManager.error("Une erreur est survenue");
-        })
-        .finally(() => {
-            setShowConfirmBox(false);
-            props.setRequestGlobalAction(false)
-        })
+        if(props.onSubmit) {
+            props.onSubmit({type: 'UPDATE_USER_FOLDER', file_reference: file.reference});
+        } else {
+            props.setRequestGlobalAction(true);
+            UserService.validateFile(file.reference)
+            .then(() => {
+                getUserFiles();
+                setSelectedFile(null);
+                NotificationManager.success("La pièce a été vérifiée");
+            })
+            .catch(() => {
+                NotificationManager.error("Une erreur est survenue");
+            })
+            .finally(() => {
+                setShowConfirmBox(false);
+                props.setRequestGlobalAction(false)
+            })
+        }
     }
     
     return (
@@ -177,7 +181,8 @@ const UserDocuments = (props) => {
                                 setShowCreateFile(false);
                                 getUserFiles();
                             }}
-                            file={selectedFile} 
+                            file={selectedFile}
+                            onSubmit={props.onSubmit}
                         />
                     )}
                 </table>

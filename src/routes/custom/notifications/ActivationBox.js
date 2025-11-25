@@ -116,24 +116,28 @@ class ActivationBox extends Component {
             data.bookingCode = this.state.bookingCode;
         }
 
-        UserService.confirmOTP(this.state.codeToVerify, data)
-        .then(() => {
-            NotificationManager.success("Vous avez activé le profile avec succès");
-            if(!this.props.member && this.props.notification) {
-                setTimeout(() => {
-                    this.logoutUser();
-                }, 2000);
-            }
-            this.props.onClose();
-        })
-        .catch((err) => {
-            console.log(err);
-            NotificationManager.error("Le code de validation est incorrect");
-        })
-        .finally(() => {
-            this.setState({ loading: false });
-            this.props.setRequestGlobalAction(false);
-        });
+        if(this.props.onSubmit) {
+            this.props.onSubmit({type: 'ACTIVATE_PROFILE', referral_code: data.userReference, code: this.state.codeToVerify, booking_code: data.bookingCode});
+        } else {
+            UserService.confirmOTP(this.state.codeToVerify, data)
+            .then(() => {
+                NotificationManager.success("Vous avez activé le profile avec succès");
+                if(!this.props.member && this.props.notification) {
+                    setTimeout(() => {
+                        this.logoutUser();
+                    }, 2000);
+                }
+                this.props.onClose();
+            })
+            .catch((err) => {
+                console.log(err);
+                NotificationManager.error("Le code de validation est incorrect");
+            })
+            .finally(() => {
+                this.setState({ loading: false });
+                this.props.setRequestGlobalAction(false);
+            });
+        }
     };
 
     findUserByMembership = () => {

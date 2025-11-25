@@ -95,25 +95,28 @@ class AddFileToOrderModal extends Component {
             NotificationManager.error("Votre dossier n'est pas complet");
             return;
         }
-
-        this.props.setRequestGlobalAction(true);
         
         let data = {};
-
+        
         if(this.state.order?.account) {
             data.agencyId = this.state.agency.id;
         }
-
-        OrderService.addFileToOrder(this.state.order.id, data, {})
-        .then(() => {
-            this.setState({ file: null, userFile: null })
-            NotificationManager.success("Cette pièce a été envoyée avec succès");
-            this.props.onClose()
-        }).catch(() => {
-            NotificationManager.error("Une erreur est survenue, la taille maximum de fichier autorisée est 1MB");
-        }).finally(() => {
-            this.props.setRequestGlobalAction(false);
-        })
+        
+        if(this.props.onSubmit) {
+            props.onSubmit({...data, order_id: this.state.order.id, type: 'ORDER_FOLDER'});
+        } else {
+            this.props.setRequestGlobalAction(true);
+            OrderService.addFileToOrder(this.state.order.id, data, {})
+            .then(() => {
+                this.setState({ file: null, userFile: null })
+                NotificationManager.success("Cette pièce a été envoyée avec succès");
+                this.props.onClose()
+            }).catch(() => {
+                NotificationManager.error("Une erreur est survenue, la taille maximum de fichier autorisée est 1MB");
+            }).finally(() => {
+                this.props.setRequestGlobalAction(false);
+            })
+        }
     }
 
     render() {
