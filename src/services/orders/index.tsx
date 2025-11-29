@@ -8,6 +8,10 @@ export default class OrderService {
         return makeRequest('get', Routes.GET_ORDERS, data ? data : null);
     }
 
+    static getUnpaidOrders(data: any = null): Promise<any> {
+        return makeRequest('get', Routes.GET_ORDER_FROM_ASSISTANCES, data ? data : null);
+    }
+
     static getSubOrders(reference: string, data = {}): Promise<any> {
         return makeRequest('get', Routes.GET_SUB_ORDERS(reference), data ? data : null);
     }

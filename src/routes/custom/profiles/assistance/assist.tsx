@@ -7,6 +7,7 @@ import OrderService from 'Services/orders';
 import GroupService from 'Services/groups';
 import Button from '@material-ui/core/Button';
 import { withRouter } from "react-router-dom";
+import UserSelect from 'Components/UserSelect';
 import ProductService from 'Services/products';
 import AccountService from 'Services/accounts';
 import React, { useEffect, useState } from 'react';
@@ -47,6 +48,7 @@ const Assist = (props) => {
     const [contacts, setContacts] = useState([]);
     const [codevData, setCodevData] = useState(null);
     const [membership, setMembership] = useState(null);
+    const [beneficiairy, setBeneficiairy] = useState(null);
     const [productModel, setProductModel] = useState(null);
     const [productModels, setProductModels] = useState([]);
     const [showOTPModal, setShowOTPModal] = useState(false);
@@ -105,13 +107,15 @@ const Assist = (props) => {
                     getProductModels();
                     break;
                 case 'PAY_ORDER':
+                    getUnpaidOrders();
+                    break;
                 case 'ORDER_FOLDER':
                 case 'MANAGE_ORDER':
                 case 'ORDER_PAYMENT':
                     getOrders();
                     break;
                 case 'INITIATE_OPERATION':
-                    getAccounts(member.referralCode);
+                    getPrestations();
                     break;
                 case 'ACTIVATE_ACCOUNT':
                     getActivableAccounts(member.referralCode);
@@ -167,6 +171,26 @@ const Assist = (props) => {
         }
     }, [otp])
 
+    useEffect(() => {
+        if(prestation) {
+            if(prestation.prestation.direction === 'THIRD_PARTY_PAYMENT') {
+                if(beneficiairy) {
+                    getAccounts(beneficiairy.referralCode);
+                } else {
+                    setAccounts([]);
+                    setAccount(null);
+                }
+            } else {
+                setAccounts([]);
+                setAccount(null);
+                getAccounts(member.referralCode);
+            }
+        } else {
+            setAccounts([]);
+            setAccount(null);
+        }
+    }, [prestation, beneficiairy])
+
     const getProducts = () => {
 		props.setRequestGlobalAction(true);
 		ProductService.getShopProducts({ model_reference: productModel.reference, referral_code: member.referralCode })
@@ -185,6 +209,13 @@ const Assist = (props) => {
         props.setRequestGlobalAction(true);
         OrderService.getOrders({referral_code: member.referralCode})
             .then(response => setOrders(response.filter(o => ['PENDING', 'CONFIRMED', 'PAYING'].includes(o.status))))
+            .finally(() => props.setRequestGlobalAction(false))
+    }
+
+    const getUnpaidOrders = () => {
+        props.setRequestGlobalAction(true);
+        OrderService.getUnpaidOrders({referral_code: member.referralCode, payment_status: ['NONE', 'PAYING'], })
+            .then(response => setOrders(response))
             .finally(() => props.setRequestGlobalAction(false))
     }
 
@@ -250,7 +281,6 @@ const Assist = (props) => {
     useEffect(() => {
         if(account && action.value == 'INITIATE_OPERATION') {
             getAggregations();
-            getPrestations(account.reference);
         } else {
             setPrestation(null);
             setPrestations([]);
@@ -279,9 +309,8 @@ const Assist = (props) => {
         })
     }
 
-    const getPrestations = (reference: string) => {
+    const getPrestations = () => {
         props.setRequestGlobalAction(true);
-        // BankService.getDomiciliationPrestations(reference)
         BankService.getPrestations()
         .then(response => setPrestations(response))
         .finally(() => props.setRequestGlobalAction(false))
@@ -433,7 +462,7 @@ const Assist = (props) => {
 
     const createNonFinancialOperation = (data: any) => {
         props.setRequestGlobalAction(true);
-        BankService.createNonFinancialOperation(data, { fileData: ['file', 'agreement'], multipart: true }).then(() => {
+        BankService.createNonFinancialOperation({...data, referral_code: membership}, { fileData: ['file', 'agreement'], multipart: true }).then(() => {
             NotificationManager.success("L'opération a été créée avec succès!");
             setShowAlert(true);
         }).catch((err) => {
@@ -614,21 +643,7 @@ const Assist = (props) => {
                 )}
                 { action?.value == 'INITIATE_OPERATION' && (
                     <div>
-                        <div className="col-md-12 col-sm-12 has-wrapper mb-30">
-                            <InputLabel className="text-left">
-                                Compte
-                            </InputLabel>
-                            <Autocomplete
-                                id="combo-box-demo"
-                                value={account}
-                                options={accounts}
-                                onChange={(__, item) => {
-                                    setAccount(item);
-                                }}
-                                getOptionLabel={(option) => option.iban}
-                                renderInput={(params) => <TextField {...params} variant="outlined" />}
-                            />
-                        </div> 
+
                         <div className="col-md-12 col-sm-12 has-wrapper mb-30">
                             <InputLabel className="text-left">
                                 Prestation
@@ -645,38 +660,63 @@ const Assist = (props) => {
                             />
                         </div>
                         
-                        <FormGroup className="col-md-12 col-sm-12 has-wrapper">
-                            <InputLabel className="text-left" htmlFor="amount">
-                                Montant
-                            </InputLabel>
-                            <InputStrap
-                                required
-                                type="number"
-                                id="amount"
-                                name='amount'
-                                value={amount}
-                                className="input-lg"
-                                onChange={(e) => setAmount(e.target.value)}
-                                disabled={prestation?.prestation?.type  == 'DEPOSIT_SCHEDULED'}
-                            />
-                        </FormGroup>
+                        { prestation && (
+                            <>
+                                { prestation.prestation?.direction == 'THIRD_PARTY_PAYMENT' && (
+                                    <UserSelect label={'Numéro utilisateur du bénéficiaire'} onChange={(_, user) => {
+                                        setBeneficiairy(user);
+                                    }}/>
+                                )}
+                                <div className="col-md-12 col-sm-12 has-wrapper mb-30">
+                                    <InputLabel className="text-left">
+                                        Compte
+                                    </InputLabel>
+                                    <Autocomplete
+                                        id="combo-box-demo"
+                                        value={account}
+                                        options={accounts}
+                                        onChange={(__, item) => {
+                                            setAccount(item);
+                                        }}
+                                        getOptionLabel={(option) => option.iban}
+                                        renderInput={(params) => <TextField {...params} variant="outlined" />}
+                                    />
+                                </div> 
+                                
+                                <FormGroup className="col-md-12 col-sm-12 has-wrapper">
+                                    <InputLabel className="text-left" htmlFor="amount">
+                                        Montant
+                                    </InputLabel>
+                                    <InputStrap
+                                        required
+                                        type="number"
+                                        id="amount"
+                                        name='amount'
+                                        value={amount}
+                                        className="input-lg"
+                                        onChange={(e) => setAmount(e.target.value)}
+                                        disabled={prestation?.prestation?.type  == 'DEPOSIT_SCHEDULED'}
+                                    />
+                                </FormGroup>
 
-                        <div className="col-md-12 col-sm-12 has-wrapper mb-30">
-                            <InputLabel className="text-left">
-                                Devise
-                            </InputLabel>
-                            <Autocomplete
-                                id="combo-box-demo"
-                                value={currency}
-                                options={currencies}
-                                onChange={(__, item) => {
-                                    setCurrency(item);
-                                }}
-                                getOptionLabel={(option) => option.label}
-                                disabled={prestation?.prestation?.type  == 'DEPOSIT_SCHEDULED'}
-                                renderInput={(params) => <TextField {...params} variant="outlined" />}
-                            />
-                        </div>
+                                <div className="col-md-12 col-sm-12 has-wrapper mb-30">
+                                    <InputLabel className="text-left">
+                                        Devise
+                                    </InputLabel>
+                                    <Autocomplete
+                                        id="combo-box-demo"
+                                        value={currency}
+                                        options={currencies}
+                                        onChange={(__, item) => {
+                                            setCurrency(item);
+                                        }}
+                                        getOptionLabel={(option) => option.label}
+                                        disabled={prestation?.prestation?.type  == 'DEPOSIT_SCHEDULED'}
+                                        renderInput={(params) => <TextField {...params} variant="outlined" />}
+                                    />
+                                </div>
+                            </>
+                        )}
 
                         { (prestation && prestation?.prestation?.direction == 'CASH_IN') && (
                             <div>
