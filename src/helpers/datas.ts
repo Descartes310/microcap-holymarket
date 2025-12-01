@@ -445,7 +445,7 @@ export const getUserAssistanceTypes = () => {
             label: 'Confirmer le paiement d\'une commande',
             value: 'ORDER_PAYMENT',
             permission: 'ASSIST_ORDER_PAYMENT_PRIVILEGE',
-            regularizable: true
+            regularizable: false
         },
         {
             label: 'Gérer une commande',

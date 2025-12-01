@@ -1058,7 +1058,7 @@ export default [
          {
             "menu_title": "Opérations",
             "new_item": false,
-            "path": BANK.OPERATION.CREATE,
+            "path": BANK.OPERATION.CREATE.SELF,
             "permissions": [Permission.general.confirmOperation.name],
             "profiles": ['COUNTER'],
             "child_routes": null

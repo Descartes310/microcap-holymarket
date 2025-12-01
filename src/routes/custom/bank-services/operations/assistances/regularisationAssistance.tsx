@@ -5,8 +5,7 @@ import UnitService from 'Services/units';
 import OrderService from 'Services/orders';
 import Button from '@material-ui/core/Button';
 import { withRouter } from "react-router-dom";
-import ProductService from 'Services/products';
-import AccountService from 'Services/accounts';
+import UserSelect from 'Components/UserSelect';
 import React, { useEffect, useState } from 'react';
 import SweetAlert from 'react-bootstrap-sweetalert';
 import TextField from '@material-ui/core/TextField';
@@ -29,11 +28,8 @@ const regularisationAssistance = (props) => {
     const [orders, setOrders] = useState([]);
     const [member, setMember] = useState(null);
     const [action, setAction] = useState(null);
-    const [product, setProduct] = useState(null);
-    const [products, setProducts] = useState([]);
     const [membership, setMembership] = useState(null);
-    const [productModel, setProductModel] = useState(null);
-    const [productModels, setProductModels] = useState([]);
+    const [beneficiairy, setBeneficiairy] = useState(null);
     const [showOTPModal, setShowOTPModal] = useState(false);
     
     const [date, setDate] = useState(null);
@@ -74,10 +70,10 @@ const regularisationAssistance = (props) => {
         if(action) {
             switch (action.value) {
                 case 'PAY_ORDER':
-                    getOrders();
+                    getUnpaidOrders();
                     break;
                 case 'INITIATE_OPERATION':
-                    getAccounts(member.referralCode);
+                    getPrestations();
                     break;
                 default:
                     break;
@@ -85,11 +81,32 @@ const regularisationAssistance = (props) => {
         }
     }, [action])
 
+    const getUnpaidOrders = () => {
+        props.setRequestGlobalAction(true);
+        OrderService.getUnpaidOrders({referral_code: member.referralCode, payment_status: ['NONE', 'PAYING'], })
+            .then(response => setOrders(response))
+            .finally(() => props.setRequestGlobalAction(false))
+    }
+
     useEffect(() => {
-        if(productModel) {
-            getProducts();
+        if(prestation) {
+            if(prestation.prestation.direction === 'THIRD_PARTY_PAYMENT') {
+                if(beneficiairy) {
+                    getAccounts(beneficiairy.referralCode);
+                } else {
+                    setAccounts([]);
+                    setAccount(null);
+                }
+            } else {
+                setAccounts([]);
+                setAccount(null);
+                getAccounts(member.referralCode);
+            }
+        } else {
+            setAccounts([]);
+            setAccount(null);
         }
-    }, [productModel])
+    }, [prestation, beneficiairy])
 
     const sendOtp = () => {
         if(!member || !action) {
@@ -116,57 +133,22 @@ const regularisationAssistance = (props) => {
         }
     }, [otp])
 
-    const getProducts = () => {
-		props.setRequestGlobalAction(true);
-		ProductService.getShopProducts({ model_reference: productModel.reference, referral_code: member.referralCode })
-			.then(response => setProducts(response))
-			.finally(() => props.setRequestGlobalAction(false))
-	}
-
-    const getOrders = () => {
-        props.setRequestGlobalAction(true);
-        OrderService.getOrders({referral_code: member.referralCode})
-            .then(response => setOrders(response.filter(o => ['PENDING', 'CONFIRMED', 'PAYING'].includes(o.status))))
-            .finally(() => props.setRequestGlobalAction(false))
-    }
-
     const initiatePayment = () => {
-        if(!order || !date || !reason) {
-            NotificationManager.error("Le formulaire n'est pas correctement renseigné");
-            return;
-        }
-        props.setRequestGlobalAction(true);
-        setShowOTPModal(false);
-
-        OrderService.initiatePayment(order.reference, {date, reason})
-           .then(() => {
-              NotificationManager.success("La demande de paiement a été envoyée");
-              window.location.reload();
-           })
-           .catch((err) => {
-              NotificationManager.error("Une erreur est survenue");
-           })
-           .finally(() => props.setRequestGlobalAction(false))
+        createNonFinancialOperation({type: 'PAY_ORDER', order_reference: order.reference});
     }
 
-    useEffect(() => {
-        if(account) {
-            getAggregations();
-            getPrestations(account.reference);
-        } else {
-            setPrestation(null);
-            setPrestations([]);
-            setAggregations([]);
-        }
-    }, [account]);
-
-    const getAggregations = () => {
+    const getPrestations = () => {
         props.setRequestGlobalAction(true);
-        AccountService.getAccountActivationDetails(account.accountReference).then((response) => {
-            setAggregations(response?.accounts ? response.accounts : []);
-        }).finally(() => {
-            props.setRequestGlobalAction(false);
-        })
+        BankService.getPrestations()
+        .then(response => setPrestations(response))
+        .finally(() => props.setRequestGlobalAction(false))
+    }
+
+    const getAccounts = (reference: string) => {
+        props.setRequestGlobalAction(true);
+        BankService.getUserAccounts(reference, {all: true})
+        .then(response => setAccounts(response))
+        .finally(() => props.setRequestGlobalAction(false))
     }
 
     const getCurrencies = () => {
@@ -179,26 +161,6 @@ const regularisationAssistance = (props) => {
         .finally(() => {
             props.setRequestGlobalAction(false);
         })
-    }
-
-    const getPrestations = (reference: string) => {
-        props.setRequestGlobalAction(true);
-        BankService.getDomiciliationPrestations(reference)
-        .then(response => setPrestations(response))
-        .finally(() => props.setRequestGlobalAction(false))
-    }
-
-    const getAccounts = (reference: string) => {
-        props.setRequestGlobalAction(true);
-        BankService.getUserAccounts(reference, {all: true})
-        .then(response => setAccounts(response))
-        .finally(() => props.setRequestGlobalAction(false))
-    }
-
-    const onChangeDetails = (value, index) => {
-        let remainingDetails = details.filter(d => d.id !== index);
-        let newDetails = {id: index, value};
-        setDetails([...remainingDetails, newDetails]);
     }
 
     const askForBankAuthorization = () => {
@@ -222,10 +184,13 @@ const regularisationAssistance = (props) => {
             reference: membership,
             accountId: account.reference,
             currency: currency.code,
-            prestationId: prestation.id,
-            detailsValues: details.map(d => d.value),
-            detailsIds: details.map(d => d.id.split('-')[1]),
+            prestationId: prestation.prestation ? prestation.prestation.id : 0,
         };
+
+        if(details && details.length > 0) {
+            data.detailsValues = details.map(d => d.value);
+            data.detailsIds = details.map(d => d.id.split('-')[1]);
+        }
 
         if(prestation?.prestation?.type  == 'DEPOSIT_SCHEDULED') {
             data.tickets = tickets.map(t => t.code);
@@ -237,11 +202,9 @@ const regularisationAssistance = (props) => {
         }
 
         props.setRequestGlobalAction(true);
-        setShowOTPModal(false);
-
         BankService.createOperation(data).then(() => {
             NotificationManager.success("L'opération a été créée avec succès!");
-            window.location.reload();
+            setShowAlert(true);
         }).catch(err => {
             console.log(err);
         }).finally(() => {
@@ -271,6 +234,17 @@ const regularisationAssistance = (props) => {
         }
     }
 
+    const createNonFinancialOperation = (data: any) => {
+        props.setRequestGlobalAction(true);
+        BankService.createNonFinancialOperation({...data, referral_code: membership}, { fileData: ['file', 'agreement'], multipart: true }).then(() => {
+            NotificationManager.success("L'opération a été créée avec succès!");
+            setShowAlert(true);
+        }).catch((err) => {
+            console.log(err);
+        }).finally(() => {
+            props.setRequestGlobalAction(false);
+        })
+    }
 
     return (
         <RctCollapsibleCard>
@@ -367,40 +341,6 @@ const regularisationAssistance = (props) => {
                         </div>
                     </>
                 )}
-                { (action?.value == 'PLACE_ORDER' || action?.value == 'BOOK_ORDER') && (
-                    <>
-                        <FormGroup className="col-md-12 col-sm-12 has-wrapper">
-                            <InputLabel className="text-left">
-                                Produits MicroCap
-                            </InputLabel>
-                            <Autocomplete
-                                value={productModel}
-                                options={productModels}
-                                id="combo-box-demo"
-                                onChange={(__, item) => {
-                                    setProductModel(item);
-                                }}
-                                getOptionLabel={(option) => `${option.label}`}
-                                renderInput={(params) => <TextField {...params} variant="outlined" />}
-                            />
-                        </FormGroup>
-                        <FormGroup className="col-md-12 col-sm-12 has-wrapper">
-                            <InputLabel className="text-left">
-                                Prestataire
-                            </InputLabel>
-                            <Autocomplete
-                                value={product}
-                                options={products}
-                                id="combo-box-demo"
-                                onChange={(__, item) => {
-                                    setProduct(item);
-                                }}
-                                getOptionLabel={(option) => `${option.seller} (${getPriceWithCurrency(option.price, option.currency)})`}
-                                renderInput={(params) => <TextField {...params} variant="outlined" />}
-                            />
-                        </FormGroup>
-                    </>
-                )}
                 { (action?.value == 'PAY_ORDER') && (
                     <FormGroup className="col-md-12 col-sm-12 has-wrapper">
                         <InputLabel className="text-left">
@@ -408,7 +348,7 @@ const regularisationAssistance = (props) => {
                         </InputLabel>
                         <Autocomplete
                             value={order}
-                            options={orders.filter(o => o.paymentStatus !== 'PAID')}
+                            options={orders.filter(o => (o.paymentStatus !== 'PAID' && ['PAY_ORDER', 'ORDER_PAYMENT'].includes(action?.value)) || !['PAY_ORDER', 'ORDER_PAYMENT'].includes(action?.value))}
                             id="combo-box-demo"
                             onChange={(__, item) => {
                                 setOrder(item);
@@ -420,21 +360,7 @@ const regularisationAssistance = (props) => {
                 )}
                 { action?.value == 'INITIATE_OPERATION' && (
                     <div>
-                        <div className="col-md-12 col-sm-12 has-wrapper mb-30">
-                            <InputLabel className="text-left">
-                                Compte
-                            </InputLabel>
-                            <Autocomplete
-                                id="combo-box-demo"
-                                value={account}
-                                options={accounts}
-                                onChange={(__, item) => {
-                                    setAccount(item);
-                                }}
-                                getOptionLabel={(option) => option.iban}
-                                renderInput={(params) => <TextField {...params} variant="outlined" />}
-                            />
-                        </div> 
+
                         <div className="col-md-12 col-sm-12 has-wrapper mb-30">
                             <InputLabel className="text-left">
                                 Prestation
@@ -446,43 +372,68 @@ const regularisationAssistance = (props) => {
                                 onChange={(__, item) => {
                                     setPrestation(item);
                                 }}
-                                getOptionLabel={(option) => option.prestation.label}
+                                getOptionLabel={(option) => option.label}
                                 renderInput={(params) => <TextField {...params} variant="outlined" />}
                             />
                         </div>
                         
-                        <FormGroup className="col-md-12 col-sm-12 has-wrapper">
-                            <InputLabel className="text-left" htmlFor="amount">
-                                Montant
-                            </InputLabel>
-                            <InputStrap
-                                required
-                                type="number"
-                                id="amount"
-                                name='amount'
-                                value={amount}
-                                className="input-lg"
-                                onChange={(e) => setAmount(e.target.value)}
-                                disabled={prestation?.prestation?.type  == 'DEPOSIT_SCHEDULED'}
-                            />
-                        </FormGroup>
+                        { prestation && (
+                            <>
+                                { prestation.prestation?.direction == 'THIRD_PARTY_PAYMENT' && (
+                                    <UserSelect label={'Numéro utilisateur du bénéficiaire'} onChange={(_, user) => {
+                                        setBeneficiairy(user);
+                                    }}/>
+                                )}
+                                <div className="col-md-12 col-sm-12 has-wrapper mb-30">
+                                    <InputLabel className="text-left">
+                                        Compte
+                                    </InputLabel>
+                                    <Autocomplete
+                                        id="combo-box-demo"
+                                        value={account}
+                                        options={accounts}
+                                        onChange={(__, item) => {
+                                            setAccount(item);
+                                        }}
+                                        getOptionLabel={(option) => option.iban}
+                                        renderInput={(params) => <TextField {...params} variant="outlined" />}
+                                    />
+                                </div> 
+                                
+                                <FormGroup className="col-md-12 col-sm-12 has-wrapper">
+                                    <InputLabel className="text-left" htmlFor="amount">
+                                        Montant
+                                    </InputLabel>
+                                    <InputStrap
+                                        required
+                                        type="number"
+                                        id="amount"
+                                        name='amount'
+                                        value={amount}
+                                        className="input-lg"
+                                        onChange={(e) => setAmount(e.target.value)}
+                                        disabled={prestation?.prestation?.type  == 'DEPOSIT_SCHEDULED'}
+                                    />
+                                </FormGroup>
 
-                        <div className="col-md-12 col-sm-12 has-wrapper mb-30">
-                            <InputLabel className="text-left">
-                                Devise
-                            </InputLabel>
-                            <Autocomplete
-                                id="combo-box-demo"
-                                value={currency}
-                                options={currencies}
-                                onChange={(__, item) => {
-                                    setCurrency(item);
-                                }}
-                                getOptionLabel={(option) => option.label}
-                                disabled={prestation?.prestation?.type  == 'DEPOSIT_SCHEDULED'}
-                                renderInput={(params) => <TextField {...params} variant="outlined" />}
-                            />
-                        </div>
+                                <div className="col-md-12 col-sm-12 has-wrapper mb-30">
+                                    <InputLabel className="text-left">
+                                        Devise
+                                    </InputLabel>
+                                    <Autocomplete
+                                        id="combo-box-demo"
+                                        value={currency}
+                                        options={currencies}
+                                        onChange={(__, item) => {
+                                            setCurrency(item);
+                                        }}
+                                        getOptionLabel={(option) => option.label}
+                                        disabled={prestation?.prestation?.type  == 'DEPOSIT_SCHEDULED'}
+                                        renderInput={(params) => <TextField {...params} variant="outlined" />}
+                                    />
+                                </div>
+                            </>
+                        )}
 
                         { (prestation && prestation?.prestation?.direction == 'CASH_IN') && (
                             <div>
@@ -530,23 +481,6 @@ const regularisationAssistance = (props) => {
                                 )}
                             </div>
                         )}
-
-                        { prestation && prestation.details.map(prestationDetails => (
-                            <FormGroup className="col-md-12 col-sm-12 has-wrapper">
-                                <InputLabel className="text-left" htmlFor={'details-'+prestationDetails.id}>
-                                    {prestationDetails.label}
-                                </InputLabel>
-                                <InputStrap
-                                    type="text"
-                                    required={false}
-                                    className="input-lg"
-                                    id={'details-'+prestationDetails.id}
-                                    name={'details-'+prestationDetails.id}
-                                    value={details.find(d => d.id === 'details-'+prestationDetails.id)?.value}
-                                    onChange={(e) => onChangeDetails(e.target.value, 'details-'+prestationDetails.id)}
-                                />
-                            </FormGroup>
-                        ))}
                     </div>
                 )}
                 <FormGroup>
@@ -567,7 +501,6 @@ const regularisationAssistance = (props) => {
                                 disabled={!member}
                                 onClick={() => {
                                     sendOtp();
-                                    // onSubmit();
                                 }}
                                 className="text-white font-weight-bold mr-20"
                             >

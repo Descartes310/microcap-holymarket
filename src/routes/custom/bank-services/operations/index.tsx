@@ -1,8 +1,8 @@
 import List from './list';
 import React from 'react';
-import Create from './create';
 import AdminList from './bank';
 import PSGAVList from './psgav';
+import Create from './assistances';
 import Cashdesk from './cashdesks';
 import {connect} from "react-redux";
 import Assitance from './assistance';
@@ -16,8 +16,8 @@ const BankOperation = (props) => {
         <div className="full-height">
             <>
                 <Switch>
-                    <Redirect exact from={`${match.url}/`} to={BANK.OPERATION.CREATE} />
-                    <Route path={BANK.OPERATION.CREATE} component={Create} />
+                    <Redirect exact from={`${match.url}/`} to={BANK.OPERATION.CREATE.SELF} />
+                    <Route path={BANK.OPERATION.CREATE.SELF} component={Create} />
                     <Route path={BANK.OPERATION.ASSISTANCE} component={Assitance} />
                     <Route path={BANK.OPERATION.LIST} component={List} />
                     <Route path={BANK.OPERATION.BANK.SELF} component={AdminList} />

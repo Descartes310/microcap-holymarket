@@ -929,7 +929,11 @@ export const BANK = {
     OPERATION: {
         SELF: '/bank/operations',
         LIST: '/bank/operations/list',
-        CREATE: '/bank/operations/create',
+        CREATE: {
+            SELF: '/bank/operations/create',
+            STANDARD: '/bank/operations/create/standard',
+            REGULARISATION: '/bank/operations/create/regularisation',
+        },
         ASSISTANCE: '/bank/operations/assistance',
         CASHDESK: {
             SELF: '/bank/operations/cashdesks',

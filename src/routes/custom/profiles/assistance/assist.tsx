@@ -330,12 +330,6 @@ const Assist = (props) => {
         .finally(() => props.setRequestGlobalAction(false))
     }
 
-    const onChangeDetails = (value, index) => {
-        let remainingDetails = details.filter(d => d.id !== index);
-        let newDetails = {id: index, value};
-        setDetails([...remainingDetails, newDetails]);
-    }
-
     const askForBankAuthorization = () => {
         if(!member || !account || !prestation || !currency) {
             NotificationManager.error("Le formulaire n'est pas correctement renseigné");
