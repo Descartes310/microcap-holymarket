@@ -371,5 +371,21 @@ export default class GroupService {
     static treatAdminClan(data): Promise<any> {
         return makeRequest('post', Routes.TREAT_ADMIN_CLAN, data);
     }
+
+    static getGroupRelations(): Promise<any> {
+        return makeRequest('get', Routes.GET_GROUP_RELATIONS);
+    }
+
+    static createGroupRelation(data): Promise<any> {
+        return makeRequest('post', Routes.CREATE_GROUP_RELATION, data);
+    }
+
+    static updateGroupRelation(reference, data): Promise<any> {
+        return makeRequest('put', Routes.UPDATE_GROUP_RELATION(reference), data);
+    }
+
+    static findGroupRelation(reference): Promise<any> {
+        return makeRequest('get', Routes.FIND_GROUP_RELATION(reference));
+    }
     
 }

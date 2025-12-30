@@ -1,5 +1,6 @@
 import { connect } from 'react-redux';
 import { useTheme } from "@material-ui/core";
+import SystemService from "Services/systems";
 import Button from "@material-ui/core/Button";
 import { withRouter } from "react-router-dom";
 import SettingService from "Services/settings";
@@ -33,27 +34,44 @@ const TYPES = [{
 const CreateFileItem = (props) => {
 
     const theme = useTheme();
-    const [label, setLabel] = useState('');
-    const [type, setType] = useState(null);
-    const [unique, setUnique] = useState(false);
+    const [input, setInput] = useState(null);
+    const [inputs, setInputs] = useState([]);
+    const [updateData, setUpdateData] = useState(false);
     const fullScreen = useMediaQuery(theme.breakpoints.down('md'));
 
     useEffect(() => {
+        getGlobalDataInputs();
+    }, []);
+
+    const getGlobalDataInputs = () => {
+        props.setRequestGlobalAction(true);
+        SystemService.getGlobalDataInputs().then((data) => {
+            setInputs(data);
+        })
+        .catch(() => {
+            setInputs([]);
+        })
+        .finally(() => {
+            props.setRequestGlobalAction(false);
+        })
+    }
+
+    useEffect(() => {
         if(props.item) {
-            setLabel(props.item.label);
-            setUnique(props.item.unique);
+            setInput(props.item.userDataItem);
+            setUpdateData(props.item.updateAssociatedInput);
             setType(TYPES.find(t => t.value == props.item.type));
         }
     }, props.item);
 
     const onSubmit = () => {
-        if (!type || !label) {
+        if (!input) {
             NotificationManager.error("Vous devez correctement remplir le formulaire");
             return;
         }
         props.setRequestGlobalAction(true);
         if(props.item) {
-            SettingService.updateFileTranscriptionItem(props.item.reference, {label, type: type.value, unique})
+            SettingService.updateFileTranscriptionItem(props.item.reference, {user_data_code: input.code, update_associated_input: updateData})
             .then(() => {
                 NotificationManager.success("La donnée a été éditée avec succès");
                 props.onClose();
@@ -63,7 +81,7 @@ const CreateFileItem = (props) => {
             })
             .finally(() => props.setRequestGlobalAction(false))
         } else {
-            SettingService.createFileTranscriptionItem(props.reference, {label, type: type.value, unique})
+            SettingService.createFileTranscriptionItem(props.reference, {user_data_code: input.code, update_associated_input: updateData})
             .then(() => {
                 NotificationManager.success("La donnée a été créee avec succès");
                 props.onClose();
@@ -107,38 +125,24 @@ const CreateFileItem = (props) => {
                                 Type de donnée
                             </InputLabel>
                             <Autocomplete
-                                value={type}
+                                value={input}
                                 id="combo-box-demo"
-                                options={TYPES}
+                                options={inputs}
                                 onChange={(__, data) => {
-                                    setType(data);
+                                    setInput(data);
                                 }}
                                 getOptionLabel={(option) => option.label}
                                 renderInput={(params) => <TextField {...params} variant="outlined" />}
                             />
                         </div>
-                        <FormGroup className="has-wrapper">
-                            <InputLabel className="text-left" htmlFor="label">
-                                Désignation
-                            </InputLabel>
-                            <Input
-                                required
-                                id="label"
-                                type="text"
-                                name='label'
-                                className="input-lg"
-                                value={label}
-                                onChange={(e) => setLabel(e.target.value)}
-                            />
-                        </FormGroup>
                         <FormGroup className="col-sm-12 has-wrapper">
                             <FormControlLabel control={
                                 <Checkbox
                                     color="primary"
-                                    checked={unique}
-                                    onChange={() => setUnique(!unique)}
+                                    checked={updateData}
+                                    onChange={() => setUpdateData(!updateData)}
                                 />
-                            } label={'Donnée unique'}
+                            } label={'Editer la donnée utilisateur'}
                             />
                         </FormGroup>
 

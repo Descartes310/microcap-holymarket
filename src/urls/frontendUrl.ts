@@ -417,6 +417,12 @@ export const GROUP = {
                 CREATE: '/groups/administration/posts/:id/motivations/create',
             }
         },
+        RELATION: {
+            SELF: '/groups/administration/relations',
+            LIST: '/groups/administration/relations/list',
+            CREATE: '/groups/administration/relations/create',
+            UPDATE: '/groups/administration/relations/:id/update',
+        },
         ROLE: {
             SELF: '/groups/administration/roles',
             LIST: '/groups/administration/roles/list',

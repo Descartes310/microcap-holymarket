@@ -11,6 +11,9 @@ import { NotificationManager } from 'react-notifications';
 import DialogComponent from "Components/dialog/DialogComponent";
 import InputLabel from '@material-ui/core/InputLabel/InputLabel';
 import { FormGroup, Input as InputStrap, Button } from 'reactstrap';
+import IconButton from '@material-ui/core/IconButton';
+import AddIcon from '@material-ui/icons/Add';
+import DeleteIcon from '@material-ui/icons/Delete';
 
 const TranscriptFile = (props) => {
 
@@ -59,9 +62,57 @@ const TranscriptFile = (props) => {
         SettingService.getFileItems(model.reference)
         .then(response => {
             setItems(response);
-            setValues(response.map(i => { return {reference: i.reference, value: defaultValues.find(v => v.reference == i.reference) ? defaultValues.find(v => v.reference == i.reference)?.value : ''}}))
+            setValues(response.map(i => {
+                const existingValue = defaultValues.find(v => v.reference == i.reference);
+                const valueArray = existingValue && existingValue.value 
+                    ? existingValue.value.split('::').filter(v => v !== '')
+                    : [''];
+                
+                return {
+                    reference: i.reference,
+                    values: valueArray.length > 0 ? valueArray : ['']
+                }
+            }))
         })
         .finally(() => props.setRequestGlobalAction(false))
+    }
+
+    const updateItemValue = (itemReference, index, newValue) => {
+        setValues(prevValues => {
+            return prevValues.map(v => {
+                if (v.reference === itemReference) {
+                    const newValues = [...v.values];
+                    newValues[index] = newValue;
+                    return { ...v, values: newValues };
+                }
+                return v;
+            });
+        });
+    }
+
+    const addItemValue = (itemReference) => {
+        setValues(prevValues => {
+            return prevValues.map(v => {
+                if (v.reference === itemReference) {
+                    return { ...v, values: [...v.values, ''] };
+                }
+                return v;
+            });
+        });
+    }
+
+    const removeItemValue = (itemReference, index) => {
+        setValues(prevValues => {
+            return prevValues.map(v => {
+                if (v.reference === itemReference) {
+                    if (v.values.length > 1) {
+                        const newValues = v.values.filter((_, i) => i !== index);
+                        return { ...v, values: newValues };
+                    }
+                }
+                return v;
+            });
+        });
     }
 
     const onSubmit = () => {
@@ -70,7 +121,7 @@ const TranscriptFile = (props) => {
             return
         }
         const references = values.map(v => v.reference).join(",");
-        const datas = values.map(v => v.value);
+        const datas = values.map(v => v.values.join("::"));
 
         props.setRequestGlobalAction(true),
         UserService.createFileTranscription(file.reference, {item_values: datas, item_references: references})
@@ -111,22 +162,59 @@ const TranscriptFile = (props) => {
                     />
                 </div>
 
-                { items.map((item, index) => (
-                    <FormGroup key={index} className="has-wrapper">
-                        <InputLabel className="text-left" htmlFor="label">
-                            {item.label}
-                        </InputLabel>
-                        <InputStrap
-                            required
-                            id={"label"}
-                            name={'label'}
-                            className="input-lg"
-                            type={item.type.toLowerCase()}
-                            value={values.find(v => v.reference == item.reference)?.value}
-                            onChange={(e) => setValues([...values.filter(v => v.reference != item.reference), {reference: item.reference, value: e.target.value}])}
-                        />
-                    </FormGroup>
-                ))}
+                { items.map((item, itemIndex) => {
+                    const itemValues = values.find(v => v.reference == item.reference)?.values || [''];
+                    const isUnique = item.userDataItem.unique;
+
+                    return (
+                        <div key={itemIndex} className="mb-20">
+                            <InputLabel className="text-left">
+                                {item.userDataItem.label}
+                            </InputLabel>
+                            
+                            {itemValues.map((value, valueIndex) => (
+                                <FormGroup key={valueIndex} className="has-wrapper d-flex align-items-center">
+                                    <div style={{ flex: 1 }}>
+                                        <InputStrap
+                                            required
+                                            id={`${item.reference}-${valueIndex}`}
+                                            name={`${item.reference}-${valueIndex}`}
+                                            className="input-lg"
+                                            type={item.userDataItem.type.toLowerCase()}
+                                            value={value}
+                                            onChange={(e) => updateItemValue(item.reference, valueIndex, e.target.value)}
+                                        />
+                                    </div>
+                                    
+                                    {!isUnique && (
+                                        <div className="ml-2 d-flex">
+                                            {itemValues.length > 1 && (
+                                                <IconButton
+                                                    size="small"
+                                                    color="secondary"
+                                                    onClick={() => removeItemValue(item.reference, valueIndex)}
+                                                    title="Supprimer"
+                                                >
+                                                    <DeleteIcon />
+                                                </IconButton>
+                                            )}
+                                            {valueIndex === itemValues.length - 1 && (
+                                                <IconButton
+                                                    size="small"
+                                                    color="primary"
+                                                    onClick={() => addItemValue(item.reference)}
+                                                    title="Ajouter"
+                                                >
+                                                    <AddIcon />
+                                                </IconButton>
+                                            )}
+                                        </div>
+                                    )}
+                                </FormGroup>
+                            ))}
+                        </div>
+                    );
+                })}
                 
                 <Button
                     color="primary"

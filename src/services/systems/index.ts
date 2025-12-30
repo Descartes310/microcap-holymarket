@@ -46,6 +46,10 @@ export default class SystemService {
     static getContactRequests(): Promise<any> {
         return makeRequest('get', Routes.GET_CONTACT_REQUESTS);
     }    
+
+    static getGlobalDataInputs(): Promise<any> {
+        return makeRequest('get', Routes.GET_INPUT_DATAS);
+    }    
     
     static treatContactRequest(reference, data): Promise<any> {
         return makeRequest('post', Routes.TREAT_CONTACT_REQUEST(reference), data);

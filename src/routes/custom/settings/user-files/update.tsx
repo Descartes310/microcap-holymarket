@@ -18,6 +18,7 @@ import RctCollapsibleCard from 'Components/RctCollapsibleCard/RctCollapsibleCard
 
 const Update = (props) => {
 
+    const [code, setCode] = useState('');
     const [label, setLabel] = useState('');
     const [sample, setSample] = useState(null);
     const [userFile, setUserFile] = useState(null);
@@ -34,6 +35,7 @@ const Update = (props) => {
         .then(response => {
             setUserFile(response);
             setLabel(response.label);
+            setCode(response.code);
             setDescription(response.description);
             setReferralType(referraTypes().find(t => t.value == response.referralType));
         })
@@ -50,6 +52,7 @@ const Update = (props) => {
 
         let data: any = {
             label: label,
+            code: code,
             sample: sample,
             description: description,
             referralType: referralType.value
@@ -73,6 +76,20 @@ const Update = (props) => {
             />
             <RctCollapsibleCard>
                 <Form onSubmit={onSubmit}>
+                    <FormGroup className="has-wrapper">
+                        <InputLabel className="text-left" htmlFor="code">
+                            Code
+                        </InputLabel>
+                        <InputStrap
+                            required
+                            id="code"
+                            type="text"
+                            name='code'
+                            className="input-lg"
+                            value={code}
+                            onChange={(e) => setCode(e.target.value)}
+                        />
+                    </FormGroup>
                     <FormGroup className="has-wrapper">
                         <InputLabel className="text-left" htmlFor="label">
                             Label

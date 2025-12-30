@@ -410,7 +410,14 @@ export default [
             "menu_title": "Postes",
             "new_item": false,
             "path": GROUP.ADMINISTRATION.POST.LIST,
-            "permissions": [Permission.group.admin.post.name,],
+            "permissions": [Permission.group.admin.post.name],
+            "profiles": ['GROUP'],
+         },
+         {
+            "menu_title": "Liens initiaux",
+            "new_item": false,
+            "path": GROUP.ADMINISTRATION.RELATION.LIST,
+            "permissions": [Permission.group.admin.relation.name],
             "profiles": ['GROUP'],
          },
          {

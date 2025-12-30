@@ -69,7 +69,7 @@ const List = (props) => {
                                     <thead>
                                         <tr>
                                             <th className="fw-bold">Désignation</th>
-                                            <th className="fw-bold">Unique</th>
+                                            <th className="fw-bold">Edite la donée</th>
                                             <th className="fw-bold">Type</th>
                                             <th className="fw-bold">Action</th>
                                         </tr>
@@ -80,36 +80,25 @@ const List = (props) => {
                                                 <td>
                                                     <div className="media">
                                                         <div className="media-body pt-10">
-                                                            <h4 className="m-0 fw-bold text-dark">{item.label}</h4>
+                                                            <h4 className="m-0 fw-bold text-dark">{item.userDataItem.label}</h4>
                                                         </div>
                                                     </div>
                                                 </td>
                                                 <td>
                                                     <div className="media">
                                                         <div className="media-body pt-10">
-                                                            <h4 className="m-0 fw-bold text-dark">{item.unique ? 'Oui' : 'Non'}</h4>
+                                                            <h4 className="m-0 fw-bold text-dark">{item.updateAssociatedInput ? 'Oui' : 'Non'}</h4>
                                                         </div>
                                                     </div>
                                                 </td>
                                                 <td>
                                                     <div className="media">
                                                         <div className="media-body pt-10">
-                                                            <h4 className="m-0 fw-bold text-dark">{item.type}</h4>
+                                                            <h4 className="m-0 fw-bold text-dark">{item.userDataItem.type}</h4>
                                                         </div>
                                                     </div>
                                                 </td>
                                                 <td>
-                                                    <Button
-                                                        color="primary"
-                                                        variant="contained"
-                                                        className="text-white font-weight-bold"
-                                                        onClick={() => {
-                                                            setModelItem(item);
-                                                            setShowCreateBox(true);
-                                                        }}
-                                                    >
-                                                        Editer
-                                                    </Button>
                                                     <Button
                                                         color="secondary"
                                                         variant="contained"

@@ -18,6 +18,7 @@ import RctCollapsibleCard from 'Components/RctCollapsibleCard/RctCollapsibleCard
 const Create = (props) => {
 
     const [label, setLabel] = useState('');
+    const [code, setCode] = useState('');
     const [sample, setSample] = useState(null);
     const [description, setDescription] = useState('');
     const [referralType, setReferralType] = useState(null);
@@ -27,6 +28,7 @@ const Create = (props) => {
         props.setRequestGlobalAction(true);
 
         let data: any = {
+            code: code,
             label: label,
             sample: sample,
             description: description,
@@ -52,6 +54,20 @@ const Create = (props) => {
             />
             <RctCollapsibleCard>
                 <Form onSubmit={onSubmit}>
+                    <FormGroup className="has-wrapper">
+                        <InputLabel className="text-left" htmlFor="code">
+                            Code
+                        </InputLabel>
+                        <InputStrap
+                            required
+                            id="code"
+                            type="text"
+                            name='code'
+                            className="input-lg"
+                            value={code}
+                            onChange={(e) => setCode(e.target.value)}
+                        />
+                    </FormGroup>
                     <FormGroup className="has-wrapper">
                         <InputLabel className="text-left" htmlFor="label">
                             Label

@@ -3,10 +3,11 @@ import Posts from './posts';
 import Roles from './roles';
 import Clans from './clans';
 import Members from './members';
+import Projects from './project';
 import Requests from './requests';
 import Articles from './articles';
-import Projects from './project';
 import Settings from './settings';
+import Relations from './relations';
 import {connect} from "react-redux";
 import {injectIntl} from "react-intl";
 import { GROUP } from 'Url/frontendUrl';
@@ -21,6 +22,7 @@ const GroupAdministration = (props) => {
                     <Redirect exact from={`${match.url}/`} to={GROUP.ADMINISTRATION.MEMBER.SELF} />
                     <Route path={GROUP.ADMINISTRATION.ROLE.SELF} component={Roles} />
                     <Route path={GROUP.ADMINISTRATION.POST.SELF} component={Posts} />
+                    <Route path={GROUP.ADMINISTRATION.RELATION.SELF} component={Relations} />
                     <Route path={GROUP.ADMINISTRATION.MEMBER.SELF} component={Members} />
                     <Route path={GROUP.ADMINISTRATION.CLAN.SELF} component={Clans} />
                     <Route path={GROUP.ADMINISTRATION.REQUEST.SELF} component={Requests} />

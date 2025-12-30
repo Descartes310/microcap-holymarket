@@ -35,6 +35,11 @@ export const UPDATE_GROUP_POST = (id) => `api/socialnetworks/groups/posts/${id}`
 export const GET_GROUP_POST_MOTIVATIONS = `api/socialnetworks/groups/posts/motivations`;
 export const CREATE_GROUP_POST_MOTIVATION = `api/socialnetworks/groups/posts/motivations`;
 
+export const GET_GROUP_RELATIONS = "api/socialnetworks/groups/relations";
+export const CREATE_GROUP_RELATION = "api/socialnetworks/groups/relations";
+export const FIND_GROUP_RELATION = (id) => `api/socialnetworks/groups/relations/${id}`;
+export const UPDATE_GROUP_RELATION = (id) => `api/socialnetworks/groups/relations/${id}`;
+
 export const CREATE_ARTICLE = 'api/socialnetworks/groups/articles';
 export const GET_ALL_ARTICLES = 'api/socialnetworks/groups/articles';
 export const GET_ACTIVE_ARTICLES = 'api/socialnetworks/groups/articles/list';
