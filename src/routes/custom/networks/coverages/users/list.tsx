@@ -9,8 +9,8 @@ import React, { useState, useEffect } from 'react';
 import ConfirmBox from "Components/dialog/ConfirmBox";
 import TimeFromMoment from "Components/TimeFromMoment";
 import { NotificationManager } from "react-notifications";
-import PageTitleBar from "Components/PageTitleBar/PageTitleBar";
 import { joinUrlWithParamsId, NETWORK } from 'Url/frontendUrl';
+import PageTitleBar from "Components/PageTitleBar/PageTitleBar";
 
 const List = (props) => {
 
@@ -18,6 +18,7 @@ const List = (props) => {
     const [status, setStatus] = useState(false);
     const [selectedMember, setSelectedMember] = useState(null);
     const [showConfirmBox, setShowConfirmBox] = useState(false);
+    const profile = new URLSearchParams(props.location.search).get("profile");
 
     useEffect(() => {
         getUsers();
@@ -25,7 +26,7 @@ const List = (props) => {
 
     const getUsers = () => {
         props.setRequestGlobalAction(true);
-        UserService.getBranchUsers()
+        UserService.getBranchUsers(profile ? {profile_reference: profile} : {})
             .then(response => {
                 setUsers(response);
             })

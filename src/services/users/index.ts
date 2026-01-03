@@ -91,8 +91,8 @@ export default class UserService {
         return makeRequest('post', Routes.ASSISTANCE_RESET_PASSWORD, datas);
     }
 
-    static getBranchUsers(): Promise<any> {
-        return makeRequest('get', Routes.GET_BRANCH_USERS);    
+    static getBranchUsers(data = {}): Promise<any> {
+        return makeRequest('get', Routes.GET_BRANCH_USERS, data);    
     }
 
     static getResiliatedUsers(): Promise<any> {

@@ -1,14 +1,9 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { connect } from 'react-redux';
 import QueueAnim from 'rc-queue-anim';
-import { Link } from 'react-router-dom';
 import { injectIntl } from "react-intl";
-import AppConfig from 'Constants/AppConfig';
-import IntlMessages from "Util/IntlMessages";
-import AppBar from '@material-ui/core/AppBar';
-import Toolbar from '@material-ui/core/Toolbar';
+import {MARKETPLACE} from "Url/frontendUrl";
 import { setRequestGlobalAction } from 'Actions';
-import {HOME, AUTH, LANDING, MARKETPLACE} from "Url/frontendUrl";
 import { FormGroup, Button } from 'reactstrap';
 
 const VoteReserveRecap = (props) => {

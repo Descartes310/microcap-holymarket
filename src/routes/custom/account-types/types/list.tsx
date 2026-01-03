@@ -8,7 +8,7 @@ import React, { useState, useEffect } from 'react';
 import { getReferralTypeLabel } from 'Helpers/helpers';
 import UserAccountTypeService from 'Services/account-types';
 import PageTitleBar from "Components/PageTitleBar/PageTitleBar";
-import { joinUrlWithParamsId, USER_ACCOUNT_TYPE } from 'Url/frontendUrl';
+import { joinUrlWithParamsId, USER_ACCOUNT_TYPE, NETWORK } from 'Url/frontendUrl';
 
 const Types = (props) => {
 
@@ -66,7 +66,8 @@ const Types = (props) => {
                                             <th className="fw-bold">Cible</th>
                                             <th className="fw-bold">Catégorie</th>
                                             <th className="fw-bold">Par défaut</th>
-                                            <th className="fw-bold">Action</th>
+                                            <th className="fw-bold">Utilis.</th>
+                                            <th className="fw-bold">Chaines</th>
                                             <th className="fw-bold">Action</th>
                                         </tr>
                                     </thead>
@@ -114,6 +115,16 @@ const Types = (props) => {
                                                         checked={item.default}
                                                         onChange={() => { changeAccountTypeStatus(item) }}
                                                     />
+                                                </td>
+                                                <td>
+                                                    <Button
+                                                        color="primary"
+                                                        variant="contained"
+                                                        className="text-white font-weight-bold"
+                                                        onClick={() => props.history.push(`${NETWORK.COVERAGE.USERS.LIST}?profile=${item.reference}`)}
+                                                    >
+                                                        Utilisateurs
+                                                    </Button>
                                                 </td>
                                                 <td>
                                                     <Button
