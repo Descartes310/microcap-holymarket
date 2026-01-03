@@ -1,26 +1,24 @@
 import { connect } from 'react-redux';
 import UserService from 'Services/users';
-import Button from '@material-ui/core/Button';
 import { withRouter } from "react-router-dom";
 import CustomList from "Components/CustomList";
 import {setRequestGlobalAction} from 'Actions';
 import React, { useState, useEffect } from 'react';
 import PageTitleBar from "Components/PageTitleBar/PageTitleBar";
-import { joinUrlWithParamsId, SUPERVISION } from 'Url/frontendUrl';
 
-const Users = (props) => {
+const Access = (props) => {
 
-    const [users, setUsers] = useState([]);
+    const [accesses, setAccesses] = useState([]);
 
     useEffect(() => {
-        getUsers();
+        getAccesses();
     }, []);
 
-    const getUsers = () => {
+    const getAccesses = () => {
         props.setRequestGlobalAction(true);
-        UserService.getBaseUsers()
+        UserService.getAccessByUserAndProfile({reference: props.match.params.id, user_account_type_reference: props.match.params.id2})
             .then(response => {
-                setUsers(response);
+                setAccesses(response);
             })
             .catch(err => {
                 console.log(err);
@@ -33,18 +31,18 @@ const Users = (props) => {
     return (
         <>
             <PageTitleBar
-                title={"Liste des utilisateurs"}
+                title={"Liste des accès"}
             />
             <CustomList
-                list={users}
+                list={accesses}
                 loading={false}
-                itemsFoundText={n => `${n} utilisateurs trouvés`}
+                itemsFoundText={n => `${n} accès trouvés`}
                 renderItem={list => (
                     <>
                         {list && list.length === 0 ? (
                             <div className="d-flex justify-content-center align-items-center py-50">
                                 <h4>
-                                    Aucun utilisateur trouvé
+                                    Aucun accès trouvé
                                 </h4>
                             </div>
                         ) : (
@@ -52,11 +50,9 @@ const Users = (props) => {
                                 <table className="table table-hover table-middle mb-0">
                                     <thead>
                                         <tr>
-                                            <th className="fw-bold">Nom</th>
-                                            <th className="fw-bold">Email</th>
-                                            <th className="fw-bold">Numéro utilisateur</th>
-                                            <th className="fw-bold">Profils</th>
-                                            <th className="fw-bold">Actions</th>
+                                            <th className="fw-bold">Reference</th>
+                                            <th className="fw-bold">Type</th>
+                                            <th className="fw-bold">Login</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -65,47 +61,25 @@ const Users = (props) => {
                                                 <td>
                                                     <div className="media">
                                                         <div className="media-body pt-10">
-                                                            <h4 className="m-0 fw-bold text-dark">{item.userName}</h4>
+                                                            <h4 className="m-0 fw-bold text-dark">{item.reference}</h4>
                                                         </div>
                                                     </div>
                                                 </td>
                                                 <td>
                                                     <div className="media">
                                                         <div className="media-body pt-10">
-                                                            <h4 className="m-0 fw-bold text-dark">{item.email}</h4>
+                                                            <h4 className="m-0 fw-bold text-dark">
+                                                                {item.type}
+                                                            </h4>
                                                         </div>
                                                     </div>
                                                 </td>
                                                 <td>
                                                     <div className="media">
                                                         <div className="media-body pt-10">
-                                                            <p className="m-0 fw-bold text-dark">{item.referralCode}</p>
+                                                            <h4 className="m-0 text-dark">{item.login}</h4>
                                                         </div>
                                                     </div>
-                                                </td>
-                                                <td>
-                                                    <Button
-                                                        color="primary"
-                                                        variant="contained"
-                                                        className="text-white font-weight-bold"
-                                                        onClick={() => {
-                                                            props.history.push(joinUrlWithParamsId(SUPERVISION.USERS.PROFILES, item.userReference))
-                                                        }}
-                                                    >
-                                                        Profiles
-                                                    </Button>
-                                                </td>
-                                                <td>
-                                                    <Button
-                                                        color="primary"
-                                                        variant="contained"
-                                                        className="text-white font-weight-bold"
-                                                        onClick={() => {
-                                                            props.history.push(joinUrlWithParamsId(SUPERVISION.USERS.DETAILS, item.referralCode))
-                                                        }}
-                                                    >
-                                                        Détails
-                                                    </Button>
                                                 </td>
                                             </tr>
                                         ))}
@@ -120,4 +94,4 @@ const Users = (props) => {
     );
 }
 
-export default connect(() => {}, { setRequestGlobalAction })(withRouter(Users));
+export default connect(() => {}, { setRequestGlobalAction })(withRouter(Access));

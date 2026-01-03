@@ -1088,6 +1088,8 @@ export const SUPERVISION = {
         SELF: '/supervision/users',
         LIST: '/supervision/users/list',
         DETAILS: '/supervision/users/:id/details',
+        PROFILES: '/supervision/users/:id/profiles',
+        ACCESSES: '/supervision/users/:id/:id2/accesses',
     },
     PARTNERS: {
         SELF: '/supervision/partners',

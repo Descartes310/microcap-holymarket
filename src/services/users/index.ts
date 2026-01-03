@@ -16,6 +16,18 @@ export default class UserService {
         return makeRequest('get', Routes.KYC);
     }
 
+    static getBaseUsers(): Promise<any> {
+        return makeRequest('get', Routes.BASE_USERS);
+    }
+
+    static getUserProfiles(data): Promise<any> {
+        return makeRequest('get', Routes.USER_PROFILES, data);
+    }
+
+    static getAccessByUserAndProfile(data): Promise<any> {
+        return makeRequest('get', Routes.GET_ACCESS_BY_USER_AND_PROFILE, data);
+    }
+
     static userKYC(reference: string = null): Promise<any> {
         if(reference) {
             return makeRequest('get', Routes.USER_KYC(reference));

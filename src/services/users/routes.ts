@@ -1,9 +1,11 @@
 export const KYCU = "api/socialnetworks/users/self";
 export const KYC = "api/socialnetworks/users/self/all";
+export const BASE_USERS = "api/socialnetworks/users/self/base";
 export const GENERATE_OTP = "api/socialnetworks/users/self/otp";
 export const REGISTER = "api/socialnetworks/users/self/register";
 export const USER_BLOGS = "api/socialnetworks/users/self/blogs";
 export const CREATE_ACCESS = 'api/socialnetworks/users/access/new';
+export const USER_PROFILES = "api/socialnetworks/users/self/profiles";
 export const GET_USER_ACCESS = "api/socialnetworks/users/self/access";
 export const UPDATE_PROFILE = "api/socialnetworks/users/self/profile";
 export const GET_BRANCH_USERS = "api/socialnetworks/users/self/by-branch";
@@ -19,6 +21,7 @@ export const USER_KYC = (reference) => `api/socialnetworks/users/self/${referenc
 export const CREATE_PROCURATION_ACCESS = `api/socialnetworks/users/access/procurations`;
 export const RESET_PASSWORD_LINK = "api/socialnetworks/users/access/send-password-link";
 export const CHANGE_ACCESS_LOGIN = (id) => `api/socialnetworks/users/access/${id}/login`;
+export const GET_ACCESS_BY_USER_AND_PROFILE = "api/socialnetworks/users/access/by-user";
 export const CHANGE_ACCESS_CONTACT = (id) => `api/socialnetworks/users/access/${id}/contact`;
 export const ACTIVATE_OR_BLOCK_ACCESS = "api/socialnetworks/users/access/activate-or-block";
 export const USER_ARTICLES = (reference) => `api/socialnetworks/users/self/blogs/${reference}`;
