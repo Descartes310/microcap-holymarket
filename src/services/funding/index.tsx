@@ -74,6 +74,10 @@ export default class FundingService {
         return makeRequest('post', Routes.ACTIVATE_ACCOUNT(reference), data);
     }
 
+    static activateUserPageAccount(reference: string, data: any): Promise<any> {
+        return makeRequest('put', Routes.ACTIVATE_PAGE_ACCOUNT(reference), data);
+    }
+
     static getFundingPolitics(): Promise<any> {
         return makeRequest('get', Routes.GET_POLITICS);
     }

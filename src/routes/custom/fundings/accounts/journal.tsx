@@ -7,10 +7,10 @@ import { setRequestGlobalAction } from 'Actions';
 import AddJournal from '../components/addJournal';
 import React, { useState, useEffect } from 'react';
 import ConfirmBox from "Components/dialog/ConfirmBox";
-import { NotificationManager } from 'react-notifications';
+import { getPriceWithCurrency } from 'Helpers/helpers';
 import { FUNDING, joinUrlWithParamsId } from 'Url/frontendUrl';
 import PageTitleBar from "Components/PageTitleBar/PageTitleBar";
-import { getPriceWithCurrency } from 'Helpers/helpers';
+import ActivateUserPageAccount from '../components/ActivateUserPageAccount';
 
 const Journal = (props) => {
 
@@ -18,6 +18,7 @@ const Journal = (props) => {
     const [accounts, setAccounts] = useState([]);
     const [showAddBox, setShowAddBox] = useState(false);
     const [selectedAccount, setSelectedAccount] = useState(null);
+    const [showActivationBox, setShowActivationBox] = useState(false);
 
     useEffect(() => {
         findAccount();
@@ -62,7 +63,7 @@ const Journal = (props) => {
                 list={accounts}
                 loading={false}
                 itemsFoundText={n => `${n} journaux`}
-                onAddClick={() => setShowAddBox(true)}
+                // onAddClick={() => setShowAddBox(true)}
                 renderItem={list => (
                     <>
                         {list && list.length === 0 ? (
@@ -77,7 +78,8 @@ const Journal = (props) => {
                                     <thead>
                                         <tr>
                                             <th className="fw-bold">Désignation</th>
-                                            <th className="fw-bold">Ndjangui</th>
+                                            {/* <th className="fw-bold">Ndjangui</th> */}
+                                            <th className="fw-bold">Status</th>
                                             <th className="fw-bold">Solde</th>
                                             <th className="fw-bold">Actions</th>
                                         </tr>
@@ -92,10 +94,19 @@ const Journal = (props) => {
                                                         </div>
                                                     </div>
                                                 </td>
-                                                <td>
+                                                {/* <td>
                                                     <div className="media">
                                                         <div className="media-body pt-10">
-                                                            <h4 className="m-0 fw-bold text-dark">{item.codev.label}</h4>
+                                                            <h4 className="m-0 fw-bold text-dark">{item.codev?.label}</h4>
+                                                        </div>
+                                                    </div>
+                                                </td> */}
+                                                <td>
+                                                    <div className="media">
+                                                        <div className="user-status-pending d-flex flex-row align-items-center" style={{ position: 'relative' }}>
+                                                            <div className={`user-status-pending-circle rct-notify mr-10`} style={{
+                                                                background: item.synchronised.active ? 'green' : 'red'
+                                                            }} />
                                                         </div>
                                                     </div>
                                                 </td>
@@ -117,6 +128,19 @@ const Journal = (props) => {
                                                     >
                                                         Détails
                                                     </Button>
+                                                    { !item.synchronised.active && (
+                                                        <Button
+                                                            color="primary"
+                                                            variant="contained"
+                                                            className="text-white font-weight-bold ml-5"
+                                                            onClick={() => {
+                                                                setSelectedAccount(item.synchronised);
+                                                                setShowActivationBox(true);
+                                                            }}
+                                                        >
+                                                            Activer
+                                                        </Button>
+                                                    )}
                                                 </td>
                                             </tr>
                                         ))}
@@ -135,6 +159,14 @@ const Journal = (props) => {
                         getjournals();
                     }}
                     currentAccount={account}
+                />
+            )}
+            { selectedAccount && showActivationBox && (
+                <ActivateUserPageAccount
+                    onClose={() => setShowActivationBox(false)}
+                    show={showActivationBox}
+                    title={'Activation d\'une page'}
+                    account={selectedAccount}
                 />
             )}
         </>

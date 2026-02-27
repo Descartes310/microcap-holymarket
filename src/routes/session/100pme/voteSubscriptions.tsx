@@ -24,8 +24,6 @@ const VoteSubscriptions = (props) => {
     const option = voteOptions.find(vo => vo.id == props.match.params.id)
     const [product, setProduct] = useState(null);
     const [products, setProducts] = useState([]);
-    const [orderData, setOrderData] = useState(null);
-    const [myProduct, setMyProduct] = useState(null);
     const [productModel, setProductModel] = useState(null);
     const [productModels, setProductModels] = useState([]);
     const [showOrderModal, setShowOrderModal] = useState(false);

@@ -1,5 +1,4 @@
 import { connect } from 'react-redux';
-import { GROUP } from 'Url/frontendUrl';
 import GroupService from 'Services/groups';
 import { withRouter } from "react-router-dom";
 import CustomList from "Components/CustomList";
@@ -23,10 +22,6 @@ const Members = (props) => {
         GroupService.getGroupMembers()
         .then(response => setMembers(response))
         .finally(() => props.setRequestGlobalAction(false))
-    }
-
-    const goToCreate = () => {
-        //props.history.push(GROUP.ADMINISTRATION.MEMBER.CREATE);
     }
 
     return (

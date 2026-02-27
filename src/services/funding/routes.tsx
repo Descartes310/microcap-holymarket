@@ -21,6 +21,7 @@ export const CHANGE_ACCOUNT_DEAL = (reference) => `api/fundings/funding-offers/d
 
 export const GET_BONDS = 'api/fundings/bonds';
 export const ACTIVATE_ACCOUNT = (reference) => `api/fundings/accounts/${reference}/activate`;
+export const ACTIVATE_PAGE_ACCOUNT = (reference) => `api/fundings/accounts/${reference}/activate/user`;
 
 
 export const GET_POLITICS = 'api/products/codevs/investments/politics';

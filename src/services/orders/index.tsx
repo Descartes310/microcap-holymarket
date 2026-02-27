@@ -52,6 +52,10 @@ export default class OrderService {
         return makeRequest('post', Routes.PAY_ORDER_BY_TRANSFER(id), data, config);
     }
 
+    static paySaleByCommunity(id, data: any): Promise<any> {
+        return makeRequest('post', Routes.PAY_ORDER_BY_COMMUNITY(id), data);
+    }
+
     static approveSale(id, data: any): Promise<any> {
         return makeRequest('post', Routes.APPROVE_PAYMENT(id), data);
     }

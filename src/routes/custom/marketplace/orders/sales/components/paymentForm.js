@@ -3,28 +3,36 @@ import { FormGroup } from 'reactstrap';
 import { injectIntl } from "react-intl";
 import React, { Component } from 'react';
 import OrderService from "Services/orders";
+import GroupService from "Services/groups";
 import Button from '@material-ui/core/Button';
 import { withRouter } from "react-router-dom";
 import { setRequestGlobalAction } from 'Actions';
+import TextField from '@material-ui/core/TextField';
 import { getPriceWithCurrency } from 'Helpers/helpers';
+import Autocomplete from '@material-ui/lab/Autocomplete';
 import OrderPaymentProofModal from './OrderPaymentProof';
 import { NotificationManager } from 'react-notifications';
 import Checkbox from "@material-ui/core/Checkbox/Checkbox";
 import { RctCard, RctCardContent } from 'Components/RctCard';
+import InputLabel from '@material-ui/core/InputLabel/InputLabel';
 import FormControlLabel from "@material-ui/core/FormControlLabel/FormControlLabel";
 
 class PaymentCard extends Component {
 
    state = {
       discount: null,
+      community: null,
+      communities: [],
       paymentData: null,
       showStripeBox: false,
       showTransferBox: false,
-      isBankTransfer: false
+      isBankTransfer: false,
+      isCommunityAccount: false
    }
 
    componentDidMount() {
       this.findDiscount();
+      this.getGroups();
    }
 
    findDiscount = () => {
@@ -41,6 +49,13 @@ class PaymentCard extends Component {
          .finally(() => this.props.setRequestGlobalAction(false))
       }
   }
+
+  getGroups = () => {
+      this.props.setRequestGlobalAction(true),
+      GroupService.getCommunityDatas({ belongs: 'IN'})
+      .then(response => this.setState({ communities: response }))
+      .finally(() => this.props.setRequestGlobalAction(false))
+   }
 
    getAmountToPay = () => {
       let baseAmount = this.props.order?.amount;
@@ -69,9 +84,26 @@ class PaymentCard extends Component {
          .finally(() => this.props.setRequestGlobalAction(false))
    }
 
+   initiateCommunityPayment = () => {
+      if(this.state.community == null) {
+         NotificationManager.error("Sélectionnez une communauté");
+      }
+      this.props.setRequestGlobalAction(true);
+
+      OrderService.paySaleByCommunity(this.props.order.reference, {community_id: this.state.community.groupReference, amount: this.props.order.amount})
+         .then(() => {
+            NotificationManager.success("La demande de paiement a été traitée");
+            window.location.reload();
+         })
+         .catch((err) => {
+            NotificationManager.error("Vous n'avez pas de compte actif dans cette communauté");
+         })
+         .finally(() => this.props.setRequestGlobalAction(false))
+   }
+
    render() {
       const { order } = this.props;
-      const { discount, isBankTransfer, showTransferBox } = this.state;
+      const { discount, isBankTransfer, showTransferBox, isCommunityAccount, communities, community } = this.state;
       return (
          <RctCard className="payment">
             <RctCardContent>
@@ -97,6 +129,17 @@ class PaymentCard extends Component {
                      } label={'J\'ai fais un virement bancaire'}
                      />
                   </FormGroup>
+
+                  <FormGroup className="col-sm-12 has-wrapper">
+                     <FormControlLabel control={
+                           <Checkbox
+                              color="primary"
+                              checked={isCommunityAccount}
+                              onChange={() => this.setState({ isCommunityAccount: !isCommunityAccount })}
+                           />
+                     } label={'Caisse communautaire'}
+                     />
+                  </FormGroup>
                   { isBankTransfer && (
                      <Button
                         color="primary"
@@ -109,21 +152,36 @@ class PaymentCard extends Component {
                         Envoyer la preuve
                      </Button>
                   )}
+                  {
+                     isCommunityAccount && (
+                        <div className="col-md-12 col-sm-12 has-wrapper mb-30">
+                           <InputLabel className="text-left">
+                              Communautés
+                           </InputLabel>
+                           <Autocomplete
+                              value={community}
+                              id="combo-box-demo"
+                              options={communities}
+                              onChange={(__, item) => {
+                                 this.setState({ community: item });
+                              }}
+                              getOptionLabel={(option) => option.userName}
+                              renderInput={(params) => <TextField {...params} variant="outlined" />}
+                           />
+                           <Button
+                              color="primary"
+                              variant="contained"
+                              onClick={() => {
+                                 this.initiateCommunityPayment();
+                              }}
+                              className="col-md-12 col-sm-12 text-white font-weight-bold mt-10 mb-20"
+                           >
+                              Initier le paiement
+                           </Button>
+                        </div>
+                     )
+                  }
                </div>
-               {/* <PaymentRequest
-                  hideReference={true}
-                  defaultReference={order.reference}
-                  defaultType={order.orderType}
-                  onSendData={(paymentData) => {
-                     this.setState({ paymentData }, () => {
-                        this.initiatePayment();
-                     })
-                  }}
-                  onError={() => {
-                     onClose()
-                  }}
-               /> */}
-               {}
                <OrderPaymentProofModal
                   show={showTransferBox}
                   onClose={(reload) => {
