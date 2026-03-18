@@ -6,11 +6,10 @@ import CustomList from "Components/CustomList";
 import { setRequestGlobalAction } from 'Actions';
 import AddJournal from '../components/addJournal';
 import React, { useState, useEffect } from 'react';
-import ConfirmBox from "Components/dialog/ConfirmBox";
 import { getPriceWithCurrency } from 'Helpers/helpers';
 import { FUNDING, joinUrlWithParamsId } from 'Url/frontendUrl';
 import PageTitleBar from "Components/PageTitleBar/PageTitleBar";
-import ActivateUserPageAccount from '../components/ActivateUserPageAccount';
+import ActivateUserPageAccount from '../components/activateUserPageAccount';
 
 const Journal = (props) => {
 
