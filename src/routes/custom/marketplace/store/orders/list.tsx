@@ -23,10 +23,10 @@ const List = (props) => {
     const [dropdownOpen, setDropdownOpen] = useState([]);
     const [showDetails, setShowDetails] = useState(false);
     const [selectedItem, setSelectedItem] = useState(null);
+    const [showDeliveryModal, setShowDeliveryModal] = useState(false);
     const [showPaymentRequest, setShowPaymentRequest] = useState(false);
     const [showAccountInfoModal, setShowAccountInfoModal] = useState(false);
     const [showAccountAgreementBox, setShowAccountAgreementBox] = useState(false);
-    const [showDeliveryModal, setShowDeliveryModal] = useState(false);
 
     const onToggleButton = (key) => {
         let currentArray = dropdownOpen;

@@ -16,6 +16,8 @@ import CodevStep1 from 'Routes/custom/marketplace/shop/components/codev/step1';
 import CodevStep2 from 'Routes/custom/marketplace/shop/components/codev/step2';
 import CodevStep3 from 'Routes/custom/marketplace/shop/components/codev/step3';
 import CodevStep4 from 'Routes/custom/marketplace/shop/components/codev/step4';
+import DeliveryModal from 'Routes/custom/marketplace/store/components/deliveryModal';
+import { ButtonDropdown, DropdownToggle, DropdownMenu, DropdownItem } from 'reactstrap';
 
 const OrderComponent = (props) => {
 
@@ -24,6 +26,7 @@ const OrderComponent = (props) => {
     const [order, setOrder] = useState(null);
     const [product, setProduct] = useState(null);
     const [codevData, setCodevData] = useState(null);
+    const [dropdownOpen, setDropdownOpen] = useState([]);
     const [showPassBox, setShowPassBox] = useState(false);
     const [showSellerBox, setShowSellerBox] = useState(false);
     const [showAddFileBox, setShowAddFileBox] = useState(false);
@@ -32,6 +35,13 @@ const OrderComponent = (props) => {
     const [showCodevStep3, setShowCodevStep3] = useState(false);
     const [showCodevStep4, setShowCodevStep4] = useState(false);
     const [showParticipants, setShowParticipants] = useState(false);
+    const [showDeliveryModal, setShowDeliveryModal] = useState(false);
+
+    const onToggleButton = (key) => {
+        let currentArray = dropdownOpen;
+        currentArray[key] = !currentArray[key];
+        setDropdownOpen([...currentArray]);
+    }
 
     useEffect(() => {
         if(order && order.hasSeller) {
@@ -120,7 +130,7 @@ const OrderComponent = (props) => {
                                             <th className="fw-bold">Payé ?</th>
                                             <th className="fw-bold">Détails</th>
                                             <th className="fw-bold">Paiements</th>
-                                            <th className="fw-bold">Dossiers</th>
+                                            <th className="fw-bold">Actions</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -260,6 +270,23 @@ const OrderComponent = (props) => {
                                                             Dossiers
                                                         </Button>
                                                     )}
+                                                    <ButtonDropdown isOpen={dropdownOpen[key]} toggle={() => onToggleButton(key)} className="mr-3">
+                                                        <DropdownToggle caret color='primary' style={{ color: 'white', fontSize: '0.9rem' }}>
+                                                            Prestations
+                                                        </DropdownToggle>
+                                                        <DropdownMenu>
+                                                            { item.physical && !item.parcelReference && (
+                                                                <DropdownItem style={{ color: 'black' }}
+                                                                    onClick={() => {
+                                                                        setOrder(item);
+                                                                        setShowDeliveryModal(true);
+                                                                    }}
+                                                                >
+                                                                    Livraison
+                                                                </DropdownItem>
+                                                            )}
+                                                        </DropdownMenu>
+                                                    </ButtonDropdown>
                                                 </td>
                                             </tr>
                                         ))}
@@ -391,6 +418,15 @@ const OrderComponent = (props) => {
                     }}
                 />
             )}
+
+            <DeliveryModal
+                show={showDeliveryModal}
+                onClose={() => setShowDeliveryModal(false)}
+                orderReference={order?.reference}
+                onSuccess={() => {
+
+                }}
+            />
         </>
     );
 }

@@ -9,26 +9,14 @@ import {FormGroup} from 'reactstrap';
 import InputLabel from '@material-ui/core/InputLabel/InputLabel';
 import TextField from '@material-ui/core/TextField';
 
-interface DeliveryModalProps {
-    show: boolean;
-    onClose: () => void;
-    orderReference: string;
-    onSuccess: () => void;
-}
-
-const DeliveryModal: React.FC<DeliveryModalProps> = ({
-    show,
-    onClose,
-    orderReference,
-    onSuccess
-}) => {
+const DeliveryModal = (props) => {
     const [deliverers, setDeliverers] = useState<any[]>([]);
     const [loading, setLoading] = useState(false);
-    const [selectedDeliverer, setSelectedDeliverer] = useState<any>(null);
     const [saving, setSaving] = useState(false);
+    const [selectedDeliverer, setSelectedDeliverer] = useState<any>(null);
 
     useEffect(() => {
-        if (show) {
+        if (props.show) {
             setLoading(true);
             setSelectedDeliverer(null);
             ProductService.getAvailableDeliverers()
@@ -40,7 +28,7 @@ const DeliveryModal: React.FC<DeliveryModalProps> = ({
                 })
                 .finally(() => setLoading(false));
         }
-    }, [show]);
+    }, [props.show]);
 
     const handleSave = () => {
         if (!selectedDeliverer) {
@@ -49,13 +37,13 @@ const DeliveryModal: React.FC<DeliveryModalProps> = ({
         }
         setSaving(true);
         OrderService.assignDeliverer({
-            order_reference: orderReference,
+            order_reference: props.orderReference,
             deliver_reference: selectedDeliverer.referralCode
         })
         .then(() => {
             NotificationManager.success("Commande envoyée en livraison avec succès");
-            onClose();
-            onSuccess();
+            props.onClose();
+            props.onSuccess();
         })
         .catch(() => {
             NotificationManager.error("Une erreur est survenue lors de l'envoi en livraison");
@@ -63,8 +51,8 @@ const DeliveryModal: React.FC<DeliveryModalProps> = ({
         .finally(() => setSaving(false));
     };
     return (
-        <Modal isOpen={show} toggle={onClose} size="md">
-            <ModalHeader toggle={onClose}>
+        <Modal isOpen={props.show} toggle={props.onClose} size="md">
+            <ModalHeader toggle={props.onClose}>
                 Sélectionner un livreur
             </ModalHeader>
             <ModalBody>
@@ -99,7 +87,7 @@ const DeliveryModal: React.FC<DeliveryModalProps> = ({
                         color="primary"
                         variant="contained"
                         className="text-white font-weight-bold"
-                        onClick={onClose}
+                        onClick={props.onClose}
                     >
                         Annuler
                     </Button>
