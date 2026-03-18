@@ -19,6 +19,9 @@ const Shop = (props) => {
 		if(props.match.params.categoryReference) {
 			datas.category_reference = props.match.params.categoryReference;
 		}
+		if(props.match.params.marketReference) {
+			datas.market_reference = props.match.params.marketReference;
+		}
 		ProductService.getShopProductModels(datas)
 			.then(response => setProductModels(response))
 			.finally(() => props.setRequestGlobalAction(false))

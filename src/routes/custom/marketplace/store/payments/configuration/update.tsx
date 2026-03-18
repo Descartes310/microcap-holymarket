@@ -33,13 +33,13 @@ const Update = (props) => {
     const [oldConfig, setOldConfig] = useState(null);
     const [startDate, setStartDate] = useState(null);
     const [stripeKey, setStripeKey] = useState(null);
-    const [accountIBAN, setAccountIBAN] = useState(null);
     const [accountName, setAccountName] = useState(null);
     const [transferLabel, setTransferLabel] = useState(null);
     const [selectedOrders, setSelectedOrders] = useState([]);
     const [selectedProducts, setSelectedProducts] = useState([]);
     const [externalAccounts, setExternalAccounts] = useState([]);
     const [externalAccount, setExternalAccount] = useState(null);
+    const [updateStripeKey, setUpdateStripeKey] = useState(false);
     const [notificationMethod, setNotificationMethod] = useState(['LOGIN_EMAIL', 'ADDRESS']);
     const [paymentMethod, setPaymentMethod] = useState(defaultPaymentMethod ? [defaultPaymentMethod] : []);
 
@@ -134,7 +134,7 @@ const Update = (props) => {
             data.references = selectedOrders.map(o => o.reference).join(',')
         }
 
-        if(paymentMethod.includes('CREDIT_CARD')) {
+        if(paymentMethod.includes('CREDIT_CARD') && updateStripeKey) {
             if(!stripeKey) {
                 NotificationManager.error("La clé secrète Stripe est obligatoire");
                 return;
@@ -310,24 +310,6 @@ const Update = (props) => {
                     </FormGroup>
                 )}
             </div>
-            { paymentMethod.includes('CREDIT_CARD') && (
-                <div className="row has-wrapper">
-                    <FormGroup className="col-md-12 col-sm-12">
-                        <InputLabel className="text-left" htmlFor="stripeKey">
-                            Clé secrète du compte Stripe
-                        </InputLabel>
-                        <InputStrap
-                            required
-                            type="text"
-                            id="stripeKey"
-                            name='stripeKey'
-                            value={stripeKey}
-                            className="input-lg"
-                            onChange={(e) => setStripeKey(e.target.value)}
-                        />
-                    </FormGroup>
-                </div>
-            )}
             { paymentMethod.includes('BANK_TRANSFER') && (
                 <div className="row has-wrapper">
                     <FormGroup className="col-md-4 col-sm-12 has-wrapper">
@@ -375,6 +357,42 @@ const Update = (props) => {
                     </FormGroup>
                 </div>
             )}
+
+            { paymentMethod.includes('CREDIT_CARD') && (
+                <>
+                    <FormGroup className="col-md-12 col-sm-12 has-wrapper mb-0">
+                        <FormControlLabel control={
+                            <Checkbox
+                                color="primary"
+                                checked={updateStripeKey}
+                                onChange={() => {
+                                    setUpdateStripeKey(!updateStripeKey);
+                                }}
+                            />
+                        } label={"Mettre a jour la clé Stripe"}
+                        />
+                    </FormGroup>
+                    { updateStripeKey && (
+                        <div className="row has-wrapper">
+                            <FormGroup className="col-md-12 col-sm-12">
+                                <InputLabel className="text-left" htmlFor="stripeKey">
+                                    Clé secrète du compte Stripe
+                                </InputLabel>
+                                <InputStrap
+                                    required
+                                    type="text"
+                                    id="stripeKey"
+                                    name='stripeKey'
+                                    value={stripeKey}
+                                    className="input-lg"
+                                    onChange={(e) => setStripeKey(e.target.value)}
+                                />
+                            </FormGroup>
+                        </div>
+                    )}
+                </>
+            )}
+
             { paymentMethod.includes('DEPOSIT') && (
                 <FormGroup className="col-md-12 col-sm-12 has-wrapper">
                     <InputLabel className="text-left">
