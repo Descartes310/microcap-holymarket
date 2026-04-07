@@ -3,7 +3,7 @@ name: test-holymarket-deployment # workflow name
 
 on:
   push:
-    branches: [ "main" ]
+    branches: [ "master" ]
 
 jobs:
   build-and-deploy-docker-test-image: #job name
