@@ -2,7 +2,7 @@ import { connect } from 'react-redux';
 import React, { Component } from 'react';
 import { withRouter } from 'react-router-dom';
 import { textTruncate, getFilePath } from "Helpers/helpers";
-import { joinUrlWithParams, PRODUCTS } from 'Url/frontendUrl';
+import { joinUrlWithParams, MARKET_PRODUCT_MODELS } from 'Url/frontendUrl';
 
 const hitModelStyles = `
     @import url('https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=DM+Sans:wght@300;400;500&display=swap');
@@ -114,27 +114,18 @@ const hitModelStyles = `
     }
 `;
 
-class HitModel extends Component {
+class MarketItem extends Component {
     state = {
         loading: false
     }
 
     navigate = () => {
-        const { product, match } = this.props;
-        const query = (match.params.categoryReference && match.params.marketReference)
-            ? `?category=${match.params.categoryReference}&market=${match.params.marketReference}`
-            : '';
-        this.props.history.push(
-            joinUrlWithParams(PRODUCTS, [
-                { param: 'reference', value: product.reference },
-                { param: 'marketReference', value: match.params.marketReference },
-                { param: 'categoryReference', value: match.params.categoryReference },
-            ]) + query
-        );
+        const { match, market } = this.props;
+		this.props.history.push(joinUrlWithParams(MARKET_PRODUCT_MODELS, [{param: 'categoryReference', value: match.params.categoryReference}, {param: 'marketReference', value: market.reference }]));
     }
 
     render() {
-        const { product } = this.props;
+        const { market } = this.props;
 
         return (
             <>
@@ -144,25 +135,22 @@ class HitModel extends Component {
 
                         {/* Image */}
                         <div className="mc-product-img-wrap">
-                            <img
-                                src={product.image ? getFilePath(product.image) : require('Assets/img/product.png')}
-                                alt={product.label}
-                            />
+							<img src={market.image ? getFilePath(market.image) : require('Assets/img/product.png')} className="img-fluid" alt="market" style={{ height: 185 }} />
                             <div className="mc-product-img-corner" />
                         </div>
 
                         {/* Body */}
                         <div className="mc-product-body">
                             <h4 className="mc-product-name">
-                                {textTruncate(product.label, 25)}
+                                {textTruncate(market.label, 25)}
                             </h4>
                             <p className="mc-product-desc">
-                                {textTruncate(product.description, 60)}
+                                {textTruncate(market.description, 60)}
                             </p>
 
                             <div className="mc-product-footer" onClick={this.navigate}>
                                 <span className="mc-product-cta text-white">
-                                    Voir le produit →
+                                    Voir le marché →
                                 </span>
                             </div>
                         </div>
@@ -178,4 +166,4 @@ const mapStateToProps = ({ cart }) => {
     return { cart };
 }
 
-export default connect(mapStateToProps, {})(withRouter(HitModel));
+export default connect(mapStateToProps, {})(withRouter(MarketItem));

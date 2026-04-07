@@ -6,6 +6,7 @@ export const FIND_ORDER = (id) => `api/orders/${id}`;
 export const CREATE_PRE_ORDER = 'api/orders/pre-order';
 export const GET_SALES = (id) => `api/orders/${id}/sales`;
 export const ACTIVATE_MEMBERSHIP = 'api/orders/membership';
+export const CREATE_HOLYMARKET_ORDER = 'api/orders/holymarket';
 export const GET_FULL_DETAILS = (id) => `api/orders/${id}/all`;
 export const PAY_ORDER = (id) => `api/orders/${id}/pay/stripe`;
 export const GET_ORDER_FROM_ASSISTANCES = 'api/orders/assistance';

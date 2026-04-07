@@ -59,9 +59,6 @@ const Signin = (props) => {
                                     <Button variant="contained" className="btn-light mr-2 p-10" onClick={onUserSignUp}>
                                         <IntlMessages id="auth.signup" />
                                     </Button>
-                                    <Button variant="contained" className="btn-primary mr-2 p-10" onClick={onDiscoverClick}>
-                                        Tout Microcap
-                                    </Button>
                                 </div>
                             </div>
                         </div>

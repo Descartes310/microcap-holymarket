@@ -5,7 +5,6 @@ import { withRouter } from "react-router-dom";
 import { MARKETPLACE } from 'Url/frontendUrl';
 import BillingForm from './components/BillingForm';
 import SweetAlert from 'react-bootstrap-sweetalert';
-import InvitationBox from 'Components/InvitationBox';
 import CheckoutItem from './components/CheckoutItem';
 import { NotificationManager } from 'react-notifications';
 import { RctCard, RctCardContent } from 'Components/RctCard';
@@ -208,16 +207,6 @@ class OrderForm extends Component<any, any> {
                     }}
                     onCancel={() => this.confirmSweetAlert()}
                 />
-
-                { showInvitation && (
-                    <InvitationBox
-                        show={showInvitation}
-                        onClose={() => {
-                            this.setState({ showInvitation: false });
-                            this.confirmSweetAlert();
-                        }}
-                    />
-                )}
             </>
         )
     }

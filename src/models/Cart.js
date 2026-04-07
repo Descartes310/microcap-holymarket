@@ -4,13 +4,9 @@ export default class Cart {
     constructor(objectCart) {
         this.items = [];
         if(objectCart) {
-            if(objectCart.data) {
-                if(objectCart.data[objectCart.authId]) {
-                    this.items = objectCart.data[objectCart.authId].map(item => new CartItem(item));
-                    if (!objectCart.shouldSkipSaving) {
-                        localStorage.setItem('cartItems', JSON.stringify(objectCart.data));
-                    }
-                }
+            if(objectCart.data.items) {
+                this.items = objectCart.data.items.map(item => new CartItem(item));
+                localStorage.setItem('cartItems', JSON.stringify(objectCart.data.items));
             }
         }
     }

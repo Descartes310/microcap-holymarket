@@ -1,22 +1,16 @@
 import React from 'react';
+import MarketSale from './markets';
 import { connect } from 'react-redux';
-import MarketSale from './tabs/market';
 import { withRouter } from "react-router-dom";
 import { MARKETPLACE } from "Url/frontendUrl";
-import PrivateSale from './tabs/private-sale';
-import ClassicSale from './tabs/classic-sale';
-import FinancialSale from './tabs/financial-sale';
 import { Redirect, Route, Switch } from 'react-router-dom';
 
 const ShopTabContent = ({ match }) => {
     return (
         <div>
             <Switch>
-                <Redirect exact from={`${match.url}/`} to={MARKETPLACE.SHOP.CLASSIC} />
-                <Route path={MARKETPLACE.SHOP.CLASSIC} component={ClassicSale} />
-                <Route path={MARKETPLACE.SHOP.PRIVATE} component={PrivateSale} />
-                <Route path={MARKETPLACE.SHOP.FINANCIAL} component={FinancialSale} />
-                <Route path={MARKETPLACE.SHOP.HOLYMARKET.SELF} component={MarketSale} />
+                <Redirect exact from={`${match.url}/`} to={MARKETPLACE.SHOP.HOLYMARKET.MARKETS} />
+                <Route path={MARKETPLACE.SHOP.HOLYMARKET.MARKETS} component={MarketSale} />
             </Switch>
         </div>
     )

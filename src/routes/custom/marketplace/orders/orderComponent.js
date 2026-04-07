@@ -16,7 +16,6 @@ import CodevStep1 from 'Routes/custom/marketplace/shop/components/codev/step1';
 import CodevStep2 from 'Routes/custom/marketplace/shop/components/codev/step2';
 import CodevStep3 from 'Routes/custom/marketplace/shop/components/codev/step3';
 import CodevStep4 from 'Routes/custom/marketplace/shop/components/codev/step4';
-import DeliveryModal from 'Routes/custom/marketplace/store/components/deliveryModal';
 import { ButtonDropdown, DropdownToggle, DropdownMenu, DropdownItem } from 'reactstrap';
 
 const OrderComponent = (props) => {
@@ -418,15 +417,6 @@ const OrderComponent = (props) => {
                     }}
                 />
             )}
-
-            <DeliveryModal
-                show={showDeliveryModal}
-                onClose={() => setShowDeliveryModal(false)}
-                orderReference={order?.reference}
-                onSuccess={() => {
-
-                }}
-            />
         </>
     );
 }

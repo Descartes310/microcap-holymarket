@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import NatureType from "Enums/NatureType";
 import IntlMessages from 'Util/IntlMessages';
-import { MARKETPLACE } from "Url/frontendUrl";
+import { CART } from "Url/frontendUrl";
 import { deleteItemFromCart } from "Actions";
 import { getFilePath } from "Helpers/helpers";
 import { withRouter } from "react-router-dom";
@@ -49,7 +49,7 @@ class Carts extends Component {
 	render() {
 		const { cart, deleteItemFromCart } = this.props;
 		return (
-			<UncontrolledDropdown nav className="list-inline-item cart-dropdown">
+			<UncontrolledDropdown nav className="list-inline-item cart-dropdown z-9999999">
 				<DropdownToggle nav className="p-0">
 					<Tooltip title="Shopping Cart" placement="bottom">
 						<IconButton aria-label="bag">
@@ -109,7 +109,7 @@ class Carts extends Component {
 											variant="contained"
 											component={Link}
 											color="primary"
-											to={MARKETPLACE.CART}
+											to={CART}
 											className="mr-10 btn-xs bg-blue text-white"
 										>
 											Voir le panier

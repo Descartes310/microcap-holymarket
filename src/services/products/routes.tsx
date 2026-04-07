@@ -16,7 +16,7 @@ export const FIND_AGGREGATION_PRODUCT_MODELS = (reference) => `api/products/mode
 
 export const GET_PRODUCTS = 'api/products';
 export const CREATE_PRODUCT = 'api/products';
-export const GET_SHOP_PRODUCTS = 'api/products/shop';
+export const GET_SHOP_PRODUCTS = 'api/products/shop/public';
 export const GET_SHOP_PRODUCT_MODELS = 'api/products/shop/models';
 export const UPDATE_PRODUCT = (reference) => `api/products/${reference}`;
 export const CHANGE_PRODUCT_STATUS = (id) => `api/products/${id}/status`;

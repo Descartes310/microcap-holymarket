@@ -4,22 +4,15 @@ import React, { Component } from 'react';
 import Tabs from '@material-ui/core/Tabs';
 import { withRouter } from "react-router-dom";
 import Button from '@material-ui/core/Button';
-import FundingService from "Services/funding";
 import AppBar from '@material-ui/core/AppBar';
 import CustomList from "Components/CustomList";
-import ProductService from "Services/products";
 import { setRequestGlobalAction } from 'Actions';
 import SwipeableViews from "react-swipeable-views";
 import TabContainer from "Components/TabContainer";
 import { getPriceWithCurrency } from "Helpers/helpers";
 import TimeFromMoment from "Components/TimeFromMoment";
-import InviteParticipantModal from "./InviteParticipant";
 import { FUNDING, joinUrlWithParamsId } from 'Url/frontendUrl';
 import DialogComponent from "Components/dialog/DialogComponent";
-import InitDealModal from 'Routes/custom/fundings/components/InitDealModal';
-import InitSpotModal from 'Routes/custom/fundings/components/InitSpotModal';
-import InitBigDealModal from 'Routes/custom/fundings/components/InitBigDealModal';
-import DealDetailsModal from 'Routes/custom/fundings/components/DealDetailsModal';
 
 class CodevParticipants extends Component {
 
@@ -35,12 +28,7 @@ class CodevParticipants extends Component {
         member: null,
         activeTab: 0,
         participants: [],
-        showInitDeal: false,
-        showInitSpot: false,
-        showInitBigdeal: false,
-        showDealDetails: false,
-        showSearchMember: false,
-        showInviteMemberModal: false
+        showSearchMember: false
     }
 
     componentDidMount() {
@@ -56,59 +44,13 @@ class CodevParticipants extends Component {
         }
     }
 
-    getDeals = () => {
-        this.props.setRequestGlobalAction(true),
-        FundingService.getDeals({free: true, type: 'DEAL', all: true, received: true, referral_code: this.props.referralCode, entity_reference: this.props.order?.externalReference})
-        .then(response => this.setState({ deals: response }))
-        .catch(() => this.setState({ deals: [] }))
-        .finally(() => this.props.setRequestGlobalAction(false))
-    }
-
-    getSpots = () => {
-        this.props.setRequestGlobalAction(true),
-        FundingService.getDeals({free: true, type: 'SPOT', all: true, received: true, referral_code: this.props.referralCode, entity_reference: this.props.order?.externalReference})
-        .then(response => this.setState({ spots: response }))
-        .catch(() => this.setState({ spots: [] }))
-        .finally(() => this.props.setRequestGlobalAction(false))
-    }
-
-    getBigDeals = () => {
-        this.props.setRequestGlobalAction(true),
-        FundingService.getDeals({free: true, type: 'BIGDEAL', all: true, received: true, referral_code: this.props.referralCode, entity_reference: this.props.order?.externalReference})
-        .then(response => this.setState({ bigdeals: response }))
-        .catch(() => this.setState({ spots: [] }))
-        .finally(() => this.props.setRequestGlobalAction(false))
-    }
-
-    inviteSubscriber = (member) => {
-        this.props.setRequestGlobalAction(true);
-        ProductService.inviteCodevSubscriber({referral_code: member.referralCode, account_reference: this.props.order?.externalReference})
-        .then(() => {
-            this.props.onClose();
-        })
-        .catch((err) => {
-            console.log(err);
-            NotificationManager.error("Une erreur est survenue");
-        })
-        .finally(() => {
-            this.props.setRequestGlobalAction(false);
-        })
-    }
-
-    getParticipants = () => {
-        this.props.setRequestGlobalAction(true);
-        ProductService.getParticipantsByOrderRef({reference: this.props.order?.externalReference})
-        .then(response => this.setState({participants: response}))
-        .finally(() => this.props.setRequestGlobalAction(false))
-    }
-
     handleChange = (__, value) => {
         this.setState({ activeTab: value });
     };
 
     render() {
         const { onClose, show, type } = this.props;
-        const { showInviteMemberModal, participants, showInitDeal, member, activeTab, deals, deal, spots, bigdeals, showDealDetails, showInitSpot, showInitBigdeal } = this.state;
+        const { participants, activeTab, deals, spots, bigdeals } = this.state;
 
         return (
             <DialogComponent
@@ -283,16 +225,7 @@ class CodevParticipants extends Component {
                                                                             </div>
                                                                         </td>
                                                                         <td>
-                                                                            <Button
-                                                                                color="primary"
-                                                                                variant="contained"
-                                                                                className="text-white font-weight-bold"
-                                                                                onClick={() => {
-                                                                                    this.setState({ deal: item, showDealDetails: true });
-                                                                                }}
-                                                                            >
-                                                                                Détails
-                                                                            </Button>
+                                                                        
                                                                         </td>
                                                                     </tr>
                                                                 ))}
@@ -375,16 +308,6 @@ class CodevParticipants extends Component {
                                                                             </div>
                                                                         </td>
                                                                         <td>
-                                                                            <Button
-                                                                                color="primary"
-                                                                                variant="contained"
-                                                                                className="text-white font-weight-bold"
-                                                                                onClick={() => {
-                                                                                    this.setState({ deal: item, showDealDetails: true });
-                                                                                }}
-                                                                            >
-                                                                                Détails
-                                                                            </Button>
                                                                         </td>
                                                                     </tr>
                                                                 ))}
@@ -470,16 +393,6 @@ class CodevParticipants extends Component {
                                                                             <Button
                                                                                 color="primary"
                                                                                 variant="contained"
-                                                                                className="text-white font-weight-bold"
-                                                                                onClick={() => {
-                                                                                    this.setState({ deal: item, showDealDetails: true });
-                                                                                }}
-                                                                            >
-                                                                                Détails
-                                                                            </Button>
-                                                                            <Button
-                                                                                color="primary"
-                                                                                variant="contained"
                                                                                 className="text-white font-weight-bold ml-5"
                                                                                 onClick={() => {
                                                                                     this.props.history.push(joinUrlWithParamsId(FUNDING.FINANCIAL_STRUCTURES.PARAM.CREATE, item.reference))
@@ -509,74 +422,6 @@ class CodevParticipants extends Component {
                         </div>
                     )}
                 </SwipeableViews>
-
-                {showInitDeal && (
-                    <InitDealModal 
-                        show={showInitDeal}
-                        onClose={() => {
-                            this.setState({ showSearchMember: false, member: null, showInitDeal: false });
-                            this.getDeals();
-                        }}
-                        dealType='NDJANGUI'
-                        subscriber={member}
-                        accountReference={this.props.order?.externalReference}
-                    />
-                )}
-
-                {showInitBigdeal && (
-                    <InitBigDealModal 
-                        show={showInitBigdeal}
-                        onClose={() => {
-                            this.setState({ showSearchMember: false, member: null, showInitBigdeal: false });
-                            this.getBigDeals();
-                        }}
-                        dealType='NDJANGUI'
-                        subscriber={member}
-                        accountReference={this.props.order?.externalReference}
-                    />
-                )}
-
-                {showInitSpot && (
-                    <InitSpotModal 
-                        show={showInitSpot}
-                        onClose={() => {
-                            this.setState({ showSearchMember: false, member: null, showInitSpot: false });
-                            this.getSpots();
-                        }}
-                        dealType='NDJANGUI'
-                        subscriber={member}
-                        order={this.props.order}
-                        accountReference={this.props.order?.externalReference}
-                    />
-                )}
-
-                {showInviteMemberModal && (
-                    <InviteParticipantModal
-                        show={showInviteMemberModal}
-                        referralCode={this.props.referralCode}
-                        onClose={() => {
-                            this.setState({ showInviteMemberModal: false });
-                            this.getParticipants();
-                        }}
-                        accountReference={this.props.order?.externalReference}
-                        type={this.props.type}
-                    />
-                )}
-
-                {deal && (
-                    <DealDetailsModal
-                        show={showDealDetails}
-                        onClose={() => {
-                            this.setState({ showDealDetails: false, deal: null });
-                        }}
-                        reference={deal?.reference}
-                        negociate={() => {
-                            this.setState({ showDealDetails: false, deal: null });
-                        }}
-                        isSender={false}
-                        isBlocked={true}
-                    />
-                )}
             </DialogComponent>
         );
     }

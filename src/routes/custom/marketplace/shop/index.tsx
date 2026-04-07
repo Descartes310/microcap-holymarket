@@ -1,96 +1,59 @@
+import './style.css';
 import { connect } from "react-redux";
-import Tab from '@material-ui/core/Tab';
-import Tabs from '@material-ui/core/Tabs';
-import TabContent from "./shopTabContent";
+import ShopFooter from './components/Footer';
+import ShopHeader from './components/Header';
+import HitModel from './components/HitModel';
 import { RctCard } from 'Components/RctCard';
-import { MARKETPLACE } from "Url/frontendUrl";
 import { withRouter } from "react-router-dom";
-import AppBar from '@material-ui/core/AppBar';
+import ProductService from "Services/products";
 import React, { useEffect, useState } from 'react';
-import PageTitleBar from "Components/PageTitleBar/PageTitleBar";
 import { setRequestGlobalAction } from "Actions/RequestGlobalAction";
 
 const Shop = (props) => {
 
-    const [activeTab, setActiveTab] = useState<Number>(0);
+	const [productModels, setProductModels] = useState([]);
 
-    useEffect(() => {
-        const defaultState = (function (url) {
-            if (url.includes(MARKETPLACE.SHOP.CLASSIC)) return 0;
-            if (url.includes(MARKETPLACE.SHOP.FINANCIAL)) return 1;
-            if (url.includes(MARKETPLACE.SHOP.PRIVATE)) return 2;
-            if (url.includes(MARKETPLACE.SHOP.HOLYMARKET.SELF)) return 3;
-            else return 0;
-        })(window.location.pathname);
+	useEffect(() => {
+		getProducts();
+	}, []);
 
-        setActiveTab(defaultState);
-    });
-
-    const handleChange = (event, value) => {
-        const oldActivateTab = activeTab;
-        setActiveTab(value);
-        if (oldActivateTab !== value) {
-            switch (value) {
-                case 0: return props.history.push(MARKETPLACE.SHOP.CLASSIC);
-                case 1: return props.history.push(MARKETPLACE.SHOP.FINANCIAL);
-                case 2: return props.history.push(MARKETPLACE.SHOP.PRIVATE);
-                case 3: return props.history.push(MARKETPLACE.SHOP.HOLYMARKET.SELF);
-                default: return props.history.push(MARKETPLACE.SHOP.CLASSIC);
-            }
-        }
-    };
-
+	const getProducts = () => {
+		props.setRequestGlobalAction(true);
+		ProductService.getShopProductModels({ type: 'HOLYMARKET' })
+			.then(response => setProductModels(response))
+			.finally(() => props.setRequestGlobalAction(false))
+	}
+    
     return (
-        <div className="userProfile-wrapper overflow-hidden">
-            <PageTitleBar title={"MicroCap Store"} match={props.match} enableBreadCrumb={false} />
-            <RctCard>
-                <div className="rct-tabs">
-                    <AppBar position="static">
-                        <div className="d-flex align-items-center">
-                            <div className="w-100">
-                                <Tabs
-                                    value={activeTab}
-                                    onChange={handleChange}
-                                    scrollButtons="off"
-                                    indicatorColor="primary"
-                                    variant="scrollable"
-                                    centered
-                                >
-                                    <Tab
-                                        icon={<i className="zmdi zmdi-group-work" />}
-                                        label={"Produits MicroCap"}
-                                    />
-                                    <Tab
-                                        icon={<i className="ti-world"></i>}
-                                        label={"Distributions bancaires"}
-                                    />
-                                    <Tab
-                                        icon={<i className="icon-shield"></i>}
-                                        label={"Ventes promotionnelles"}
-                                    />
-                                    <Tab
-                                        icon={<i className="zmdi zmdi-group-work" />}
-                                        label={"Holy Market"}
-                                    />
-                                    {/* <Tab
-                                        icon={<i className="zmdi zmdi-store"></i>}
-                                        label={"Marchés"}
-                                    /> */}
-                                </Tabs>
+        <div className="mc-shop-root userProfile-wrapper overflow-hidden">
+
+            <ShopHeader />
+
+            <RctCard className="mc-card-container">
+
+                <div className="mc-tab-body">
+                    <div className="shop-wrapper">
+                        <div className="ais-InstantSearch p-25">
+                            <div className="row">
+                                { productModels.map(product => (
+                                    <HitModel product={product} />
+                                ))}
                             </div>
                         </div>
-                    </AppBar>
+                    </div>
                 </div>
-                <TabContent />
+
+                <ShopFooter />
             </RctCard>
         </div>
     );
-    
-}
-
-// map state to props
-const mapStateToProps = ({ requestGlobalLoader }) => {
-    return { requestGlobalLoader }
 };
 
-export default connect(mapStateToProps, { setRequestGlobalAction })(withRouter(Shop));
+const mapStateToProps = ({ requestGlobalLoader }) => ({
+    requestGlobalLoader
+});
+
+export default connect(
+    mapStateToProps,
+    { setRequestGlobalAction }
+)(withRouter(Shop));
