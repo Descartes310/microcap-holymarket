@@ -3,8 +3,8 @@ import CartItem from "Models/CartItem";
 export default class Cart {
     constructor(objectCart) {
         this.items = [];
-        if(objectCart) {
-            if(objectCart.data.items) {
+        if(objectCart && objectCart.data) {
+            if(objectCart.data.items && objectCart.data.items) {
                 this.items = objectCart.data.items.map(item => new CartItem(item));
                 localStorage.setItem('cartItems', JSON.stringify(objectCart.data.items));
             }
