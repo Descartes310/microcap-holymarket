@@ -18,7 +18,7 @@ import { ROOT } from "Url/frontendUrl";
 class BillingForm extends Component<any, any> {
 
    state = {
-      showSweetAlert: true,
+      showSweetAlert: false,
       billingInformation: {
          firstName: '',
          lastName: '',
