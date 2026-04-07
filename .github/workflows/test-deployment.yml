@@ -1,9 +1,9 @@
 
-name: test-app-deployment # workflow name
+name: test-holymarket-deployment # workflow name
 
 on:
   push:
-    branches: [ "master" ]
+    branches: [ "main" ]
 
 jobs:
   build-and-deploy-docker-test-image: #job name
@@ -31,11 +31,11 @@ jobs:
           context: .
           file: ./deployments/test/Dockerfile
           push: true
-          tags: ghcr.io/descartes310/microcap-app-test:latest
+          tags: ghcr.io/descartes310/microcap-holymarket-test:latest
 #          build-args: VITE_API_BASE_URL=${{ env.VITE_API_BASE_URL }}
 
       - name: Install sshpass
         run: sudo apt-get install sshpass
       - name: SSH into server and run docker-compose
         run: |
-            sshpass -p ${{ secrets.SSH_TEST_PASSWORD }} ssh -o StrictHostKeyChecking=no ${{ secrets.SSH_USERNAME }}@${{ secrets.SSH_TEST_HOST }} 'docker login ghcr.io -u ${{ secrets.GH_USERNAME }} -p ${{ secrets.GHRC_TOKEN }} && cd server/apps/microcap/test/frontend && docker compose stop && docker compose pull && docker compose up -d'
+            sshpass -p ${{ secrets.SSH_TEST_PASSWORD }} ssh -o StrictHostKeyChecking=no ${{ secrets.SSH_USERNAME }}@${{ secrets.SSH_TEST_HOST }} 'docker login ghcr.io -u ${{ secrets.GH_USERNAME }} -p ${{ secrets.GHRC_TOKEN }} && cd server/apps/microcap/test/holymarket && docker compose stop && docker compose pull && docker compose up -d'
