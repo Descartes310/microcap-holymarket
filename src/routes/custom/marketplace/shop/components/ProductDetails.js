@@ -90,6 +90,14 @@ class ProductDetails extends Component {
                                 <td>{getPriceWithCurrency(product?.price, product?.currency)}</td>
                             </tr>
                             <tr>
+                                <td>TVA</td>
+                                <td>{product?.tva} %</td>
+                            </tr>
+                            <tr>
+                                <td>Charge</td>
+                                <td>{product?.commission} %</td>
+                            </tr>
+                            <tr>
                                 <td>Vendeur</td>
                                 <td>{product?.seller}</td>
                             </tr>
